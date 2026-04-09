@@ -860,115 +860,177 @@
 
     .form-success.visible { display: flex; }
 
-    @media (max-width: 600px) {
-      .contact-cards-grid { grid-template-columns: 1fr !important; }
-      #contact-form > div[style*="grid-template-columns:1fr 1fr"] {
-        grid-template-columns: 1fr !important;
-      }
-    }
-
     /* ─── HAMBURGER ─── */
     .hamburger {
       display: none;
       flex-direction: column;
+      justify-content: center;
       gap: 5px;
       cursor: pointer;
-      padding: 6px;
+      padding: 8px;
       border: none;
       background: none;
-      margin-right: 4px;
+      flex-shrink: 0;
     }
 
     .hamburger span {
       display: block;
-      width: 20px;
+      width: 22px;
       height: 2px;
       background: var(--text);
       border-radius: 2px;
-      transition: all 0.2s;
+      transition: all 0.22s ease;
     }
 
     .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
     .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-    /* ─── MOBILE OVERLAY ─── */
+    /* ─── MOBILE SIDEBAR OVERLAY ─── */
     #sidebar-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.55);
       z-index: 90;
+      backdrop-filter: blur(2px);
     }
 
     #sidebar-overlay.open { display: block; }
 
+    /* ─── TABLET (≤ 900px) ─── */
     @media (max-width: 900px) {
+      /* Nav */
+      nav { padding: 0 16px; gap: 8px; }
       .hamburger { display: flex; }
-
       .nav-links { display: none; }
-
+      .search-trigger { padding: 7px 10px; gap: 6px; }
+      .search-trigger > span { display: none; } /* hide "Search specs" text */
       .search-trigger kbd { display: none; }
+      .github-btn { padding: 7px 10px; gap: 0; }
+      .github-btn > svg { display: block; }
+      .github-btn > :not(svg) { display: none; } /* icon only */
 
+      /* Sidebar drawer */
       aside {
         transform: translateX(-100%);
-        transition: transform 0.25s ease;
+        transition: transform 0.28s cubic-bezier(.4,0,.2,1);
         z-index: 95;
-        width: 280px;
+        width: min(300px, 85vw);
+        box-shadow: 4px 0 24px rgba(0,0,0,0.4);
       }
-
       aside.open { transform: translateX(0); }
 
-      main {
-        margin-left: 0;
-        padding: 32px 20px;
-      }
+      /* Layout */
+      main { margin-left: 0; padding: 28px 20px 48px; max-width: 100%; }
+      footer { margin-left: 0; padding: 24px 20px; flex-direction: column; gap: 10px; align-items: flex-start; }
 
-      footer {
-        margin-left: 0;
-        padding: 24px 20px;
-        flex-direction: column;
-        gap: 12px;
-        align-items: flex-start;
-      }
+      /* Typography */
+      h1 { font-size: 26px; }
+      h2 { font-size: 20px; }
+      h3 { font-size: 16px; }
+      .lead { font-size: 16px; }
+      section { margin-bottom: 56px; }
 
+      /* Hero */
       .hero-title { font-size: 28px; }
+      .hero-actions { flex-direction: column; align-items: stretch; gap: 10px; }
+      .btn { justify-content: center; width: 100%; }
 
-      .hero-actions {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .btn { width: 100%; justify-content: center; }
-
+      /* Cards & grids */
+      .cards { grid-template-columns: 1fr 1fr; }
       .domain-grid { grid-template-columns: 1fr 1fr; }
 
-      .cards { grid-template-columns: 1fr 1fr; }
+      /* Tables — force scroll inside wrapper */
+      .table-wrap { -webkit-overflow-scrolling: touch; border-radius: 6px; }
+      .table-wrap table { min-width: 520px; font-size: 13px; }
+      thead th { padding: 9px 10px; font-size: 11px; }
+      tbody td { padding: 8px 10px; }
 
-      .citation-row { gap: 8px; }
+      /* Code blocks */
+      pre { padding: 14px; font-size: 12px; line-height: 1.6; }
+      .code-block .copy-btn { font-size: 10px; padding: 3px 8px; }
 
-      /* Make 2-col grids single column */
+      /* Citation rows — stack vertically */
+      .citation-example { padding: 14px; font-size: 12px; }
+      .citation-row {
+        flex-direction: column;
+        gap: 2px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border-soft);
+      }
+      .citation-row:last-child { border-bottom: none; }
+      .cit-code { min-width: unset; font-size: 12px; }
+
+      /* Composite score cards */
+      .score-card { padding: 14px; }
+      .score-name { font-size: 16px; }
+      .score-components td { padding: 5px 0; font-size: 12px; }
+
+      /* Callouts */
+      .callout { padding: 12px 14px; font-size: 13px; }
+
+      /* Tabs */
+      .tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; gap: 0; }
+      .tab { white-space: nowrap; padding: 10px 14px; font-size: 13px; }
+
+      /* Contact cards — always stack */
+      .contact-section-grid { grid-template-columns: 1fr !important; }
+
+      /* Form grid — single column */
+      .form-row { grid-template-columns: 1fr !important; }
+
+      /* Inline grid overrides (2-col → 1-col) */
+      div[style*="grid-template-columns:1fr 1fr"],
       div[style*="grid-template-columns: 1fr 1fr"] {
         grid-template-columns: 1fr !important;
       }
 
-      .tabs { overflow-x: auto; }
-      .tab { white-space: nowrap; }
+      /* Search overlay */
+      #search-overlay { padding: 16px; align-items: flex-start; }
+      .search-modal { width: 100%; max-width: 100%; border-radius: 10px; }
+      #search-results { max-height: 55vh; }
 
-      h1 { font-size: 28px; }
-      h2 { font-size: 20px; }
-
-      .score-card { padding: 14px; }
-
-      pre { font-size: 12px; }
+      /* Scroll-to-top button */
+      #scroll-top { bottom: 16px; right: 16px; }
     }
 
+    /* ─── MOBILE (≤ 480px) ─── */
     @media (max-width: 480px) {
-      main { padding: 24px 16px; }
-      .domain-grid { grid-template-columns: 1fr; }
+      nav { padding: 0 12px; }
+      main { padding: 20px 14px 40px; }
+
+      h1 { font-size: 22px; }
+      h2 { font-size: 18px; }
+      .hero-title { font-size: 22px; line-height: 1.15; }
+      .lead { font-size: 15px; }
+
+      section { margin-bottom: 44px; }
+
+      /* Single-column everything */
       .cards { grid-template-columns: 1fr; }
-      .hero-title { font-size: 24px; }
-      .nav-right .github-btn span { display: none; }
+      .domain-grid { grid-template-columns: 1fr 1fr; }
+
+      /* Even narrower tables */
+      .table-wrap table { min-width: 460px; font-size: 12px; }
+      thead th { padding: 8px 8px; }
+      tbody td { padding: 7px 8px; }
+
+      pre { font-size: 11px; padding: 12px; }
+
+      /* Score components: hide source column */
+      .score-components td:last-child { display: none; }
+      .score-components td:first-child { width: 65%; }
+
+      /* Contact card: icon on top */
+      .contact-card { flex-direction: column; }
+      .contact-card-icon { width: 36px; height: 36px; }
+
+      /* Hero badge font */
+      .hero-badge { font-size: 11px; }
+
+      /* Scroll-top smaller */
+      #scroll-top { width: 32px; height: 32px; }
     }
   </style>
 </head>
