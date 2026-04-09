@@ -1,0 +1,2423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SNOMI — Standard Nomenclature of Influence Metrics</title>
+  <style>
+    :root {
+      --bg: #09090b;
+      --surface: #111113;
+      --surface-2: #18181b;
+      --border: #27272a;
+      --border-soft: #1c1c1f;
+      --text: #fafafa;
+      --muted: #71717a;
+      --muted-2: #52525b;
+      --primary: #818cf8;
+      --primary-dim: #3730a3;
+      --accent: #a78bfa;
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --red: #f87171;
+      --orange: #fb923c;
+      --blue: #60a5fa;
+      --sidebar-w: 260px;
+      --nav-h: 56px;
+      --radius: 8px;
+      --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* ─── NAVBAR ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--nav-h);
+      background: rgba(9,9,11,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      padding: 0 24px;
+      gap: 32px;
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+
+    .nav-logo .badge {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex; gap: 2px;
+      flex: 1;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--text); background: var(--surface-2); }
+
+    .nav-right {
+      display: flex; align-items: center; gap: 12px;
+      margin-left: auto;
+    }
+
+    .search-trigger {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 12px;
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .search-trigger:hover { border-color: var(--primary); color: var(--text); }
+    .search-trigger kbd {
+      background: var(--border);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 11px;
+      font-family: var(--mono);
+    }
+
+    .github-btn {
+      display: flex; align-items: center; gap: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: all 0.15s;
+    }
+
+    .github-btn:hover { color: var(--text); border-color: var(--muted); }
+
+    /* ─── LAYOUT ─── */
+    .layout {
+      display: flex;
+      padding-top: var(--nav-h);
+      min-height: 100vh;
+    }
+
+    /* ─── SIDEBAR ─── */
+    aside {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      position: fixed;
+      top: var(--nav-h);
+      bottom: 0;
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+      background: var(--bg);
+    }
+
+    aside::-webkit-scrollbar { width: 4px; }
+    aside::-webkit-scrollbar-track { background: transparent; }
+    aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .sidebar-section {
+      margin-bottom: 24px;
+    }
+
+    .sidebar-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted-2);
+      padding: 0 16px;
+      margin-bottom: 4px;
+    }
+
+    aside a {
+      display: block;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13.5px;
+      padding: 5px 16px;
+      border-radius: 0;
+      transition: all 0.12s;
+      border-left: 2px solid transparent;
+    }
+
+    aside a:hover {
+      color: var(--text);
+      background: var(--surface-2);
+      border-left-color: var(--border);
+    }
+
+    aside a.active {
+      color: var(--primary);
+      background: rgba(129,140,248,0.08);
+      border-left-color: var(--primary);
+    }
+
+    .sidebar-sub a {
+      padding-left: 28px;
+      font-size: 13px;
+    }
+
+    /* ─── MAIN ─── */
+    main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      max-width: 900px;
+      padding: 56px 64px;
+    }
+
+    /* ─── SECTIONS ─── */
+    section {
+      margin-bottom: 80px;
+      scroll-margin-top: calc(var(--nav-h) + 24px);
+    }
+
+    .score-card[id] {
+      scroll-margin-top: calc(var(--nav-h) + 24px);
+    }
+
+    /* ─── TYPOGRAPHY ─── */
+    h1 { font-size: 36px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 16px; }
+    h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; padding-top: 8px; }
+    h3 { font-size: 17px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+    h4 { font-size: 14px; font-weight: 600; margin-bottom: 6px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    p { margin-bottom: 12px; color: #c4c4cc; }
+
+    .lead {
+      font-size: 18px;
+      line-height: 1.65;
+      color: #a1a1aa;
+      margin-bottom: 32px;
+      max-width: 680px;
+    }
+
+    /* ─── DIVIDER ─── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+    /* ─── HERO ─── */
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(129,140,248,0.1);
+      border: 1px solid rgba(129,140,248,0.25);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+      letter-spacing: 0.04em;
+    }
+
+    .hero-title {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #fff 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-actions {
+      display: flex; gap: 12px; margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover { background: #a5b4fc; }
+
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover { background: var(--surface); border-color: var(--muted-2); }
+
+    /* ─── CARDS ─── */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin: 24px 0; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      transition: border-color 0.15s;
+    }
+
+    .card:hover { border-color: var(--muted-2); }
+
+    .card-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .card h3 { font-size: 14px; margin-bottom: 4px; }
+    .card p { font-size: 12px; color: var(--muted); margin: 0; }
+
+    /* ─── CODE BLOCKS ─── */
+    pre {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      overflow-x: auto;
+      margin: 16px 0;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.7;
+      color: #c9d1d9;
+    }
+
+    code {
+      font-family: var(--mono);
+      font-size: 13px;
+      background: var(--surface-2);
+      border: 1px solid var(--border-soft);
+      padding: 1px 5px;
+      border-radius: 4px;
+      color: #c9d1d9;
+    }
+
+    pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: inherit;
+    }
+
+    .code-block {
+      position: relative;
+    }
+
+    .copy-btn {
+      position: absolute; top: 10px; right: 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: var(--mono);
+    }
+
+    .copy-btn:hover { color: var(--text); border-color: var(--muted); }
+    .copy-btn.copied { color: var(--green); border-color: var(--green); }
+
+    /* ─── TABLES ─── */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 16px 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    thead tr { background: var(--surface-2); border-bottom: 1px solid var(--border); }
+    thead th {
+      text-align: left;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    tbody tr { border-bottom: 1px solid var(--border-soft); }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--surface); }
+
+    tbody td {
+      padding: 9px 14px;
+      color: #c4c4cc;
+      vertical-align: top;
+    }
+
+    tbody td:first-child { color: var(--text); font-family: var(--mono); font-size: 13px; }
+
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-family: var(--mono);
+    }
+
+    .t5 { background: rgba(52,211,153,0.15); color: var(--green); border: 1px solid rgba(52,211,153,0.25); }
+    .t4 { background: rgba(96,165,250,0.15); color: var(--blue); border: 1px solid rgba(96,165,250,0.25); }
+    .t3 { background: rgba(251,191,36,0.15); color: var(--yellow); border: 1px solid rgba(251,191,36,0.25); }
+    .t2 { background: rgba(251,146,60,0.15); color: var(--orange); border: 1px solid rgba(251,146,60,0.25); }
+    .t1 { background: rgba(248,113,113,0.15); color: var(--red); border: 1px solid rgba(248,113,113,0.25); }
+
+    /* ─── CALLOUTS ─── */
+    .callout {
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin: 16px 0;
+      border-left: 3px solid;
+      font-size: 14px;
+    }
+
+    .callout-info { background: rgba(96,165,250,0.06); border-color: var(--blue); color: #c4c4cc; }
+    .callout-warn { background: rgba(251,191,36,0.06); border-color: var(--yellow); color: #c4c4cc; }
+    .callout-error { background: rgba(248,113,113,0.06); border-color: var(--red); color: #c4c4cc; }
+    .callout-success { background: rgba(52,211,153,0.06); border-color: var(--green); color: #c4c4cc; }
+
+    .callout strong { display: block; margin-bottom: 4px; }
+    .callout-info strong { color: var(--blue); }
+    .callout-warn strong { color: var(--yellow); }
+    .callout-error strong { color: var(--red); }
+    .callout-success strong { color: var(--green); }
+
+    /* ─── TRUST SCORE LEGEND ─── */
+    .trust-legend {
+      display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0;
+    }
+
+    .trust-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ─── DOMAIN CARDS ─── */
+    .domain-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .domain-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+      display: block;
+    }
+
+    .domain-card:hover { border-color: var(--primary); background: rgba(129,140,248,0.04); }
+
+    .domain-code {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .domain-name { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+    .domain-desc { font-size: 12px; color: var(--muted); }
+
+    /* ─── SEARCH OVERLAY ─── */
+    #search-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 80px;
+    }
+
+    #search-overlay.open { display: flex; }
+
+    .search-modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      width: 560px;
+      max-width: 90vw;
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    }
+
+    .search-input-wrap {
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .search-input-wrap svg { color: var(--muted); flex-shrink: 0; }
+
+    #search-input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-size: 16px;
+      font-family: var(--mono);
+    }
+
+    #search-input::placeholder { color: var(--muted); }
+
+    #search-results {
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .search-result {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.1s;
+      cursor: pointer;
+    }
+
+    .search-result:hover { background: var(--surface-2); }
+
+    .search-result-code {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .search-result-name {
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .search-result-desc {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .search-empty {
+      padding: 32px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* ─── AI INTEGRATION TABS ─── */
+    .tabs {
+      display: flex; gap: 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      font-size: 14px;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .tab:hover { color: var(--text); }
+    .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ─── MODEL BADGES ─── */
+    .model-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .model-claude { background: rgba(167,139,250,0.15); color: var(--accent); border: 1px solid rgba(167,139,250,0.3); }
+    .model-gpt { background: rgba(52,211,153,0.12); color: var(--green); border: 1px solid rgba(52,211,153,0.25); }
+    .model-gemini { background: rgba(96,165,250,0.12); color: var(--blue); border: 1px solid rgba(96,165,250,0.25); }
+
+    /* ─── RULES ─── */
+    .rules-list {
+      list-style: none;
+      margin: 16px 0;
+    }
+
+    .rules-list li {
+      display: flex; gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-soft);
+      align-items: flex-start;
+    }
+
+    .rules-list li:last-child { border-bottom: none; }
+
+    .rule-num {
+      flex-shrink: 0;
+      width: 24px; height: 24px;
+      background: var(--primary-dim);
+      color: var(--primary);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .rule-text { font-size: 14px; color: #c4c4cc; }
+    .rule-text strong { color: var(--text); }
+
+    /* ─── VERSION BADGE ─── */
+    .version-row {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .version-tag {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      font-family: var(--mono);
+      padding: 3px 8px;
+      border-radius: 5px;
+    }
+
+    /* ─── CITATION FORMAT ─── */
+    .citation-example {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin: 16px 0;
+      font-family: var(--mono);
+      font-size: 13px;
+    }
+
+    .citation-row {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 4px 0;
+      flex-wrap: wrap;
+    }
+
+    .cit-code { color: var(--primary); font-weight: 600; min-width: 120px; }
+    .cit-val { color: var(--text); }
+    .cit-window { color: var(--muted); }
+    .cit-source { color: #71717a; }
+    .cit-trust { }
+
+    /* ─── COMPOSITE SCORES ─── */
+    .score-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin: 16px 0;
+    }
+
+    .score-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .score-name {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .score-abbr {
+      font-family: var(--mono);
+      color: var(--primary);
+      font-size: 14px;
+    }
+
+    .score-desc { font-size: 13px; color: var(--muted); }
+
+    .score-components {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+
+    .score-components td {
+      padding: 6px 0;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .score-components td:first-child { color: var(--text); font-family: var(--mono); width: 60%; }
+    .score-components td:nth-child(2) { color: var(--primary); font-weight: 600; text-align: right; padding-right: 16px; }
+    .score-components td:last-child { color: var(--muted); font-size: 12px; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      margin-left: var(--sidebar-w);
+      padding: 32px 64px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+
+    /* ─── HIGHLIGHT ─── */
+    mark {
+      background: rgba(251,191,36,0.25);
+      color: var(--yellow);
+      border-radius: 2px;
+      padding: 0 1px;
+    }
+
+    /* ─── STAR ─── */
+    .star { color: var(--primary); }
+
+    /* ─── BETA BADGE ─── */
+    .beta {
+      font-size: 10px;
+      font-weight: 700;
+      background: rgba(251,191,36,0.15);
+      color: var(--yellow);
+      border: 1px solid rgba(251,191,36,0.3);
+      padding: 1px 5px;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-left: 4px;
+    }
+
+    /* ─── SCROLL TO TOP ─── */
+    #scroll-top {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      width: 36px; height: 36px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.2s;
+      color: var(--muted);
+      z-index: 50;
+    }
+
+    #scroll-top.visible { opacity: 1; }
+    #scroll-top:hover { color: var(--text); border-color: var(--muted); }
+
+    /* ─── CONTACT CARDS ─── */
+    .contact-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      text-decoration: none;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .contact-card:hover {
+      border-color: var(--primary);
+      background: rgba(129,140,248,0.04);
+    }
+
+    .contact-card-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: var(--primary);
+    }
+
+    .contact-card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .contact-card-sub {
+      font-size: 12px;
+      font-family: var(--mono);
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+
+    .contact-card-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ─── FORM ─── */
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+
+    .form-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .form-input {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+      padding: 9px 12px;
+      outline: none;
+      transition: border-color 0.15s;
+      width: 100%;
+    }
+
+    .form-input:focus { border-color: var(--primary); }
+    .form-input::placeholder { color: var(--muted); }
+
+    select.form-input { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2371717a' stroke-width='2'%3E%3Cpolyline points='6,9 12,15 18,9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+    select.form-input option { background: var(--surface-2); }
+
+    .form-textarea { min-height: 120px; resize: vertical; }
+
+    .form-success {
+      display: none;
+      background: rgba(52,211,153,0.08);
+      border: 1px solid rgba(52,211,153,0.25);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      color: var(--green);
+      font-size: 14px;
+      margin-top: 16px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-success.visible { display: flex; }
+
+    @media (max-width: 600px) {
+      .contact-cards-grid { grid-template-columns: 1fr !important; }
+      #contact-form > div[style*="grid-template-columns:1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* ─── HAMBURGER ─── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+      border: none;
+      background: none;
+      margin-right: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ─── MOBILE OVERLAY ─── */
+    #sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 90;
+    }
+
+    #sidebar-overlay.open { display: block; }
+
+    @media (max-width: 900px) {
+      .hamburger { display: flex; }
+
+      .nav-links { display: none; }
+
+      .search-trigger kbd { display: none; }
+
+      aside {
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        z-index: 95;
+        width: 280px;
+      }
+
+      aside.open { transform: translateX(0); }
+
+      main {
+        margin-left: 0;
+        padding: 32px 20px;
+      }
+
+      footer {
+        margin-left: 0;
+        padding: 24px 20px;
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .hero-title { font-size: 28px; }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .btn { width: 100%; justify-content: center; }
+
+      .domain-grid { grid-template-columns: 1fr 1fr; }
+
+      .cards { grid-template-columns: 1fr 1fr; }
+
+      .citation-row { gap: 8px; }
+
+      /* Make 2-col grids single column */
+      div[style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+      }
+
+      .tabs { overflow-x: auto; }
+      .tab { white-space: nowrap; }
+
+      h1 { font-size: 28px; }
+      h2 { font-size: 20px; }
+
+      .score-card { padding: 14px; }
+
+      pre { font-size: 12px; }
+    }
+
+    @media (max-width: 480px) {
+      main { padding: 24px 16px; }
+      .domain-grid { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: 1fr; }
+      .hero-title { font-size: 24px; }
+      .nav-right .github-btn span { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- MOBILE SIDEBAR OVERLAY -->
+<div id="sidebar-overlay"></div>
+
+<!-- SEARCH OVERLAY -->
+<div id="search-overlay" role="dialog" aria-modal="true">
+  <div class="search-modal">
+    <div class="search-input-wrap">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input id="search-input" type="text" placeholder="Search metrics, codes, domains..." autocomplete="off" />
+    </div>
+    <div id="search-results"></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a href="#about" class="nav-logo">
+    <span>SNOMI</span>
+    <span class="badge">v1.1</span>
+  </a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#metrics">Metrics</a>
+    <a href="#benchmarks">Benchmarks</a>
+    <a href="#regulatory">Regulatory</a>
+    <a href="#scores">Scores</a>
+    <a href="#integration">AI Integration</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="nav-right">
+    <button class="search-trigger" onclick="openSearch()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      Search specs
+      <kbd>⌘K</kbd>
+    </button>
+    <a href="https://github.com/rayanebenabs/SNOMI" target="_blank" class="github-btn">
+      <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+      </svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-label">Getting Started</div>
+    <a href="#about">What is SNOMI?</a>
+    <a href="#why">Why it exists</a>
+    <a href="#structure">Code structure</a>
+    <a href="#citation">Citation format</a>
+    <a href="#trust">Trust scores</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Metrics Catalog</div>
+    <a href="#metrics">Overview</a>
+    <a href="#aud">AUD — Audience</a>
+    <a href="#eng">ENG — Engagement</a>
+    <a href="#rea">REA — Reach</a>
+    <a href="#con">CON — Conversion</a>
+    <a href="#val">VAL — Value & ROI</a>
+    <a href="#qua">QUA — Quality</a>
+    <a href="#cre">CRE — Creator Health</a>
+    <a href="#regulatory">REG — Regulatory</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Composite Scores</div>
+    <a href="#cpi">CPI — Creator Performance</a>
+    <a href="#copi">CoPI — Collaboration</a>
+    <a href="#bfs">BFS — Brand Fit</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Benchmarks</div>
+    <a href="#bench-eng">Engagement rates</a>
+    <a href="#bench-cpm">CPM by market</a>
+    <a href="#bench-tiers">Tiers & complexity</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Reference</div>
+    <a href="#rules">Critical rules</a>
+    <a href="#modes">Operating modes</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">AI Integration</div>
+    <a href="#integration">Overview</a>
+    <a href="#int-claude">Claude</a>
+    <a href="#int-gpt">ChatGPT / GPT-4o</a>
+    <a href="#int-gemini">Gemini</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Contact</div>
+    <a href="#contact">Suggestions</a>
+    <a href="mailto:snomi.team@gmail.com">snomi.team@gmail.com</a>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main>
+
+  <!-- ── HERO ── -->
+  <section id="about">
+    <div class="hero-badge">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+        <circle cx="5" cy="5" r="5"/>
+      </svg>
+      Open International Standard · Version 1.1
+    </div>
+    <h1 class="hero-title">Standard Nomenclature<br>of Influence Metrics</h1>
+    <p class="lead">
+      SNOMI is an open, vendor-neutral standard that assigns unique codes, formulas, and trust levels to every metric used in influencer marketing — making reports comparable, auditable, and manipulation-resistant.
+    </p>
+    <div class="hero-actions">
+      <a href="#metrics" class="btn btn-primary">Browse metrics</a>
+      <a href="#integration" class="btn btn-secondary">AI integration</a>
+      <a href="https://github.com/rayanebenabs/SNOMI" target="_blank" class="btn btn-secondary">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+        </svg>
+        GitHub
+      </a>
+    </div>
+  </section>
+
+  <!-- ── WHY ── -->
+  <section id="why">
+    <h2>Why SNOMI exists</h2>
+    <p>Influencer marketing is a multi-billion dollar industry built on metrics that mean different things to different people. An "engagement rate" from one platform or agency is rarely the same as another's. EMV is cited without methodology. Benchmarks are decontextualised. Reports are not auditable.</p>
+    <p>SNOMI solves this by providing:</p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon" style="background:rgba(129,140,248,0.12)">📐</div>
+        <h3>Unique codes</h3>
+        <p>Every metric has a canonical code. <code>ENG.002.IG</code> means exactly one thing.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(52,211,153,0.12)">🔒</div>
+        <h3>Trust levels</h3>
+        <p>Five-tier system from native platform data (T5) to self-reported (T1).</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(251,191,36,0.12)">⚖️</div>
+        <h3>Comparability</h3>
+        <p>Benchmarks always include market, tier, and source — no decontextualised numbers.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(251,146,60,0.12)">🌍</div>
+        <h3>Open standard</h3>
+        <p>No vendor lock-in. Works with any tool, any agency, any market.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STRUCTURE ── -->
+  <section id="structure">
+    <h2>Code structure</h2>
+    <p>Every SNOMI code follows a consistent pattern:</p>
+    <div class="code-block">
+      <pre><code>[DOMAIN].[ID].[PLATFORM]          → universal metric
+[DOMAIN].[ID].[PLATFORM].[CC]     → market-specific benchmark or regulatory variant</code></pre>
+    </div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top:16px;">
+      <div>
+        <h4>Platforms</h4>
+        <div class="table-wrap">
+          <table>
+            <tbody>
+              <tr><td>IG</td><td>Instagram</td></tr>
+              <tr><td>TK</td><td>TikTok</td></tr>
+              <tr><td>YT</td><td>YouTube</td></tr>
+              <tr><td>FB</td><td>Facebook</td></tr>
+              <tr><td>TW</td><td>X / Twitter</td></tr>
+              <tr><td>LI</td><td>LinkedIn</td></tr>
+              <tr><td>PI</td><td>Pinterest</td></tr>
+              <tr><td>ALL</td><td>Cross-platform</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <h4>Country codes (benchmarks & REG only)</h4>
+        <div class="table-wrap">
+          <table>
+            <tbody>
+              <tr><td>.US</td><td>.UK</td><td>.FR</td><td>.DE</td></tr>
+              <tr><td>.AU</td><td>.BR</td><td>.IN</td><td>.EU</td></tr>
+              <tr><td>.GLOBAL</td><td colspan="3"></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CITATION FORMAT ── -->
+  <section id="citation">
+    <h2>Standard citation format</h2>
+    <p>Every metric cited in a SNOMI-compliant report must include five fields:</p>
+    <div class="citation-example">
+      <div style="color:var(--muted); font-size:12px; margin-bottom:12px;">CODE | VALUE | TIME WINDOW | SOURCE | TRUST</div>
+      <div class="citation-row">
+        <span class="cit-code">ENG.002.IG.US</span>
+        <span class="cit-val">4.8%</span>
+        <span class="cit-window">2026-03-01 → 2026-03-31</span>
+        <span class="cit-source">Instagram Insights</span>
+        <span class="tag t5">T5</span>
+      </div>
+      <div class="citation-row">
+        <span class="cit-code">AUD.003.IG</span>
+        <span class="cit-val">91%</span>
+        <span class="cit-window">2026-04-01</span>
+        <span class="cit-source">HypeAuditor</span>
+        <span class="tag t2">T2</span>
+      </div>
+      <div class="citation-row">
+        <span class="cit-code">VAL.001.ALL.FR</span>
+        <span class="cit-val">€42k EMV</span>
+        <span class="cit-window">Q1 2026</span>
+        <span class="cit-source">Launchmetrics method</span>
+        <span class="tag t3">T3</span>
+      </div>
+      <div class="citation-row">
+        <span class="cit-code">VAL.003.IG.US</span>
+        <span class="cit-val">$6.70 CPM ref</span>
+        <span class="cit-window">eMarketer 2024</span>
+        <span class="cit-source">—</span>
+        <span class="tag t3">T3</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TRUST SCORES ── -->
+  <section id="trust">
+    <h2>Trust scores</h2>
+    <p>Every SNOMI citation includes a trust score indicating data reliability:</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Score</th>
+            <th>Level</th>
+            <th>Meaning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag t5">T5</span></td>
+            <td>Gold</td>
+            <td>Native platform data, non-manipulable</td>
+          </tr>
+          <tr>
+            <td><span class="tag t4">T4</span></td>
+            <td>Silver</td>
+            <td>Calculated from native data using a standard formula</td>
+          </tr>
+          <tr>
+            <td><span class="tag t3">T3</span></td>
+            <td>Bronze</td>
+            <td>Calculated with assumptions (e.g. EMV)</td>
+          </tr>
+          <tr>
+            <td><span class="tag t2">T2</span></td>
+            <td>Copper</td>
+            <td>Estimated via third-party tool</td>
+          </tr>
+          <tr>
+            <td><span class="tag t1">T1</span></td>
+            <td>Iron</td>
+            <td>Self-reported or unverifiable</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-warn">
+      <strong>T1 / T2 metrics require a note</strong>
+      Low-trust metrics must be explicitly flagged when cited in reports. "AUD.003.IG | 72% | HypeAuditor | T2 — third-party estimate, tool uses proprietary model."
+    </div>
+  </section>
+
+  <hr />
+
+  <!-- ── METRICS CATALOG ── -->
+  <section id="metrics">
+    <h2>Metrics catalog</h2>
+    <p>SNOMI defines <strong>8 domains</strong> covering every dimension of influencer performance. Click any domain to jump to its specs.</p>
+    <div class="domain-grid">
+      <a href="#aud" class="domain-card"><div class="domain-code">AUD</div><div class="domain-name">Audience</div><div class="domain-desc">Size, quality, composition</div></a>
+      <a href="#eng" class="domain-card"><div class="domain-code">ENG</div><div class="domain-name">Engagement</div><div class="domain-desc">Interaction with content</div></a>
+      <a href="#rea" class="domain-card"><div class="domain-code">REA</div><div class="domain-name">Reach & Distribution</div><div class="domain-desc">Content spread</div></a>
+      <a href="#con" class="domain-card"><div class="domain-code">CON</div><div class="domain-name">Conversion</div><div class="domain-desc">Commercial actions</div></a>
+      <a href="#val" class="domain-card"><div class="domain-code">VAL</div><div class="domain-name">Value & ROI</div><div class="domain-desc">Financial metrics</div></a>
+      <a href="#qua" class="domain-card"><div class="domain-code">QUA</div><div class="domain-name">Content Quality</div><div class="domain-desc">Quality, compliance, sentiment</div></a>
+      <a href="#cre" class="domain-card"><div class="domain-code">CRE</div><div class="domain-name">Creator Health</div><div class="domain-desc">Vitality, consistency, credibility</div></a>
+      <a href="#regulatory" class="domain-card"><div class="domain-code">REG</div><div class="domain-name">Regulatory</div><div class="domain-desc">National compliance — requires [CC]</div></a>
+    </div>
+  </section>
+
+  <!-- ── AUD ── -->
+  <section id="aud">
+    <h2>AUD — Audience</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Name</th><th>Formula</th><th>Format</th><th>Trust</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>AUD.001</td><td>Total Followers</td><td>Native platform value</td><td>integer</td><td><span class="tag t5">T5</span></td></tr>
+          <tr><td>AUD.002</td><td>Audience Growth Rate</td><td>(end − start) / start × 100</td><td>%</td><td><span class="tag t5">T5</span></td></tr>
+          <tr><td>AUD.003</td><td>Audience Quality Score</td><td>% active accounts / total — via 3rd-party tool</td><td>%</td><td><span class="tag t2">T2</span></td></tr>
+          <tr><td>AUD.004</td><td>Target Audience Rate</td><td>% audience meeting target criteria</td><td>%</td><td><span class="tag t3">T3</span></td></tr>
+          <tr><td>AUD.005</td><td>Audience Overlap</td><td>(Shared followers / min(A,B)) × 100</td><td>%</td><td><span class="tag t2">T2</span></td></tr>
+          <tr><td>AUD.006</td><td>Demographic Score</td><td>% per demographic cohort</td><td>% breakdown</td><td><span class="tag t4">T4</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-info">
+      <strong>AUD.003 note</strong>
+      Values above 85% are generally considered strong. Tools vary significantly — HypeAuditor, Modash, Kolsquare, Upfluence each use proprietary models. Never present as native platform data.
+    </div>
+  </section>
+
+  <!-- ── ENG ── -->
+  <section id="eng">
+    <h2>ENG — Engagement</h2>
+    <div class="callout callout-warn">
+      <strong>ENG.001 ≠ ENG.002 — always specify</strong>
+      These metrics are not interchangeable. ENG.002 (on Reach) is the SNOMI preferred metric. ENG.001 (on Followers) is biased if the audience is unevenly active. Always declare which is used.
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Name</th><th>Formula</th><th>Format</th><th>Trust</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ENG.001</td><td>Engagement Rate (Followers)</td><td>(L+C+S+Sh) / Followers × 100</td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>ENG.002 <span class="star">⭐</span></td><td>Engagement Rate (Reach)</td><td>(L+C+S+Sh) / Reach × 100</td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>ENG.003</td><td>Comment Rate</td><td>Comments / Impressions × 100</td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>ENG.004</td><td>Save Rate</td><td>Saves / Impressions × 100</td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>ENG.005</td><td>Share Rate</td><td>Shares / Impressions × 100</td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>ENG.006</td><td>Video Completion Rate</td><td>Complete views / Total views × 100</td><td>%</td><td><span class="tag t5">T5</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:13px; color:var(--muted)"><strong style="color:var(--muted)">Interaction components (L+C+S+Sh):</strong> Likes + Comments + Saves + Shares. Platform variants: Instagram includes Saves; TikTok includes Duets/Stitches; YouTube uses Thumbs up + Comments (no saves native).</p>
+  </section>
+
+  <!-- ── REA ── -->
+  <section id="rea">
+    <h2>REA — Reach & Distribution</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Name</th><th>Formula</th><th>Format</th><th>Trust</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>REA.001</td><td>Organic Reach</td><td>Native platform value</td><td>integer</td><td><span class="tag t5">T5</span></td></tr>
+          <tr><td>REA.002</td><td>Total Impressions</td><td>Native platform value</td><td>integer</td><td><span class="tag t5">T5</span></td></tr>
+          <tr><td>REA.003</td><td>Reach Rate</td><td>Reach / Followers × 100</td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>REA.004</td><td>Frequency</td><td>Impressions / Reach</td><td>ratio (×)</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>REA.005</td><td>Video Views</td><td>Native — declare platform definition</td><td>integer</td><td><span class="tag t5">T5</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-info">
+      <strong>REA.005 — "View" definition varies by platform</strong>
+      Instagram: 3 seconds · TikTok: 2 seconds · YouTube: 30 seconds. Always declare the platform when citing video views.
+    </div>
+  </section>
+
+  <!-- ── CON ── -->
+  <section id="con">
+    <h2>CON — Conversion</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Name</th><th>Formula</th><th>Format</th><th>Trust</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>CON.001</td><td>Link Clicks</td><td>Native + tracking URL</td><td>integer</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>CON.002</td><td>Click-Through Rate</td><td>Clicks / Impressions × 100</td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>CON.003</td><td>Promo Code Usage Rate</td><td>Code uses / Reach × 100</td><td>%</td><td><span class="tag t3">T3</span></td></tr>
+          <tr><td>CON.004</td><td>Leads Generated</td><td>From tracking platform (requires UTM or unique code)</td><td>integer</td><td><span class="tag t3">T3</span></td></tr>
+          <tr><td>CON.005</td><td>Attributed Sales</td><td>Sales w/ creator code / Total sales</td><td>currency or %</td><td><span class="tag t3">T3</span> / <span class="tag t1">T1</span></td></tr>
+          <tr><td>CON.006</td><td>Conversion Rate</td><td>Conversions / Clicks × 100</td><td>%</td><td><span class="tag t3">T3</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── VAL ── -->
+  <section id="val">
+    <h2>VAL — Value & ROI</h2>
+    <div class="callout callout-error">
+      <strong>EMV ≠ Revenue</strong>
+      VAL.001 (EMV) is an estimated advertising equivalent. Never conflate it with actual sales or revenue generated.
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Name</th><th>Formula</th><th>Format</th><th>Trust</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>VAL.001</td><td>EMV</td><td>Impressions × reference CPM / 1000 — declare method</td><td>currency</td><td><span class="tag t3">T3</span></td></tr>
+          <tr><td>VAL.002</td><td>CPE</td><td>Total budget / Total engagements</td><td>currency/eng.</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>VAL.003</td><td>CPM</td><td>Budget / Impressions × 1000</td><td>currency/1k</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>VAL.004</td><td>CPC</td><td>Budget / Clicks</td><td>currency/click</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>VAL.005</td><td>ROAS</td><td>Attributed revenue / Budget</td><td>ratio (×)</td><td><span class="tag t2">T2</span></td></tr>
+          <tr><td>VAL.006</td><td>CPA</td><td>Budget / Conversions</td><td>currency/acq.</td><td><span class="tag t2">T2</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-warn">
+      <strong>EMV methodologies — always declare</strong>
+      <strong style="color:var(--text); font-weight:400">Launchmetrics:</strong> weighted by creator tier, vertical, territory &nbsp;·&nbsp; <strong style="color:var(--text); font-weight:400">Traackr:</strong> based on native advertising CPMs per platform &nbsp;·&nbsp; <strong style="color:var(--text); font-weight:400">Agency custom:</strong> document your formula explicitly.
+    </div>
+  </section>
+
+  <!-- ── QUA ── -->
+  <section id="qua">
+    <h2>QUA — Content Quality</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Name</th><th>Formula</th><th>Format</th><th>Trust</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>QUA.001</td><td>Brief Compliance Score</td><td>Elements met / Total elements × 100</td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>QUA.002</td><td>Brand Safety Score</td><td>Via moderation tool or manual audit</td><td>score 0–100</td><td><span class="tag t2">T2</span></td></tr>
+          <tr><td>QUA.003</td><td>Sentiment Score</td><td>NLP semantic analysis</td><td>% breakdown</td><td><span class="tag t3">T3</span></td></tr>
+          <tr><td>QUA.004</td><td>Perceived Authenticity</td><td>Jury score or audience survey</td><td>score 0–10</td><td><span class="tag t2">T2</span></td></tr>
+          <tr><td>QUA.005</td><td>Organic Mention Rate</td><td>Organic brand posts / Total posts × 100</td><td>%</td><td><span class="tag t3">T3</span></td></tr>
+          <tr><td>QUA.006</td><td>Native Partnership Label</td><td>Platform native branded content tool activated (Boolean)</td><td>0 / 1</td><td><span class="tag t5">T5</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-info">
+      <strong>QUA.006 — Distinct from REG.001</strong>
+      QUA.006 measures whether the native branded content tool was activated (unlocks Branded Content Insights). REG.001.[CC] measures legal disclosure compliance (hashtag). A post can have QUA.006 = 1 and still violate REG.001 if the required hashtag is absent. The two are independent.
+    </div>
+  </section>
+
+  <!-- ── CRE ── -->
+  <section id="cre">
+    <h2>CRE — Creator Health</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Name</th><th>Formula</th><th>Format</th><th>Trust</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>CRE.001</td><td>Publishing Frequency</td><td>Posts / Weeks</td><td>#/week</td><td><span class="tag t5">T5</span></td></tr>
+          <tr><td>CRE.002</td><td>Publishing Regularity</td><td>Std dev frequency / Mean frequency</td><td>coefficient</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>CRE.003</td><td>Collaboration Rate</td><td>Sponsored posts / Total posts × 100</td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>CRE.004</td><td>Compliance History</td><td>Qualitative agency score</td><td>score 0–10</td><td><span class="tag t2">T2</span></td></tr>
+          <tr><td>CRE.005</td><td>Niche Authority Score</td><td>Creator ENG.002 / Median ENG.002 for vertical</td><td>ratio (×)</td><td><span class="tag t3">T3</span></td></tr>
+          <tr><td>CRE.006 <span class="beta">BETA</span></td><td>Category Partnership History</td><td>Count paid partnerships in sector (rolling 12 months)</td><td>integer</td><td><span class="tag t3">T3</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-warn">
+      <strong>CRE.003 — Saturation thresholds</strong>
+      &lt;20% healthy &nbsp;·&nbsp; 20–40% monitor &nbsp;·&nbsp; &gt;40% saturation risk (audience may discount sponsored content)
+    </div>
+  </section>
+
+  <!-- ── REG ── -->
+  <section id="regulatory">
+    <h2>REG — Regulatory Compliance</h2>
+    <div class="callout callout-error">
+      <strong>Country code [CC] is mandatory on REG.001 and REG.002</strong>
+      Codes without [CC] are invalid. Exception: REG.003 uses [PLATFORM] suffix instead.
+    </div>
+    <p>REG metrics are compliance checks, not quantitative metrics. Output format: <code>compliant / non-compliant / not applicable</code></p>
+
+    <h3 style="margin-top:24px">REG.001 — Legal disclosure by country</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Authority</th><th>Key Requirement</th><th>Required format</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>REG.001.FR</td><td>ARPP</td><td>Mandatory disclosure of commercial partnership</td><td>#partenariat or #collaboration</td></tr>
+          <tr><td>REG.001.US</td><td>FTC</td><td>Clear & conspicuous disclosure of material connection</td><td>#ad or #sponsored</td></tr>
+          <tr><td>REG.001.UK</td><td>ASA / CAP Code</td><td>Disclosure required for all paid promotions</td><td>#ad mandatory (gifted content too)</td></tr>
+          <tr><td>REG.001.DE</td><td>Landesmedienanstalten</td><td>Disclosure required even for gifted products</td><td>#Werbung or #Anzeige</td></tr>
+          <tr><td>REG.001.AU</td><td>ACCC</td><td>Disclosure of material benefits</td><td>#ad or equivalent</td></tr>
+          <tr><td>REG.001.BR</td><td>CONAR</td><td>Paid partnership disclosure — Resolução 206/2021</td><td>#publi or #publicidade</td></tr>
+          <tr><td>REG.001.IN</td><td>ASCI</td><td>Influencer Advertising Guidelines 2021</td><td>#ad within first 3 lines</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:24px">REG.002 — Platform-level obligations</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Authority</th><th>Key Requirement</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>REG.002.EU</td><td>Digital Services Act</td><td>Platform transparency for commercial content</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:24px">REG.003 — Native platform branded content labels</h3>
+    <div class="callout callout-info">
+      <strong>REG.003 uses [PLATFORM] suffix, not [CC]</strong>
+      These obligations are global and imposed by the platform itself, independently of territory. REG.003 is complementary to REG.001 — not a substitute.
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Native tool</th><th>Obligation</th><th>Data benefit</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>REG.003.IG</td><td>"Paid Partnership" label</td><td>Required by Instagram ToS. Allows brand to boost.</td><td>Branded Content Insights (T5)</td></tr>
+          <tr><td>REG.003.TK</td><td>"Branded Content" toggle</td><td>Mandatory TikTok ToS — may be removed without activation.</td><td>Branded Content Analytics via TikTok Ads</td></tr>
+          <tr><td>REG.003.YT</td><td>"Includes paid promotion" checkbox</td><td>Required by YouTube ToS. Displays on-screen banner.</td><td>No additional data unlocked</td></tr>
+          <tr><td>REG.003.FB</td><td>Branded Content tag</td><td>Mandatory tagging of brand partner.</td><td>Reach and engagement shared with brand</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr />
+
+  <!-- ── SCORES ── -->
+  <section id="scores">
+    <h2>Composite scores</h2>
+    <p>SNOMI defines three standardised composite scores that aggregate multiple metrics into an auditable, reproducible index.</p>
+
+    <!-- CPI -->
+    <div class="score-card" id="cpi">
+      <div class="score-header">
+        <div>
+          <div class="score-abbr">CPI</div>
+          <div class="score-name">Creator Performance Index</div>
+          <div class="score-desc">Health check of a creator independent of any collaboration. Scale: 0–100</div>
+        </div>
+      </div>
+      <table class="score-components">
+        <tbody>
+          <tr><td>Engagement Quality</td><td>30%</td><td>ENG.002</td></tr>
+          <tr><td>Audience Quality</td><td>25%</td><td>AUD.003</td></tr>
+          <tr><td>Reach Efficiency</td><td>20%</td><td>REA.003</td></tr>
+          <tr><td>Content Regularity</td><td>15%</td><td>CRE.001 + CRE.002</td></tr>
+          <tr><td>Niche Authority</td><td>10%</td><td>CRE.005</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px; font-size:13px; color:var(--muted)">
+        Scale: <span style="color:var(--red)">0–40 Weak</span> · <span style="color:var(--yellow)">41–60 Average</span> · <span style="color:var(--blue)">61–80 Good</span> · <span style="color:var(--green)">81–100 Excellent</span>
+      </div>
+    </div>
+
+    <!-- CoPI -->
+    <div class="score-card" id="copi">
+      <div class="score-header">
+        <div>
+          <div class="score-abbr">CoPI</div>
+          <div class="score-name">Collaboration Performance Index</div>
+          <div class="score-desc">Performance of a specific collaboration. Scale: 0–100</div>
+        </div>
+      </div>
+      <table class="score-components">
+        <tbody>
+          <tr><td>Reach Efficiency</td><td>25%</td><td>REA.003 vs. benchmark</td></tr>
+          <tr><td>Sponsored Engagement</td><td>25%</td><td>ENG.002 (sponsored vs. organic baseline)</td></tr>
+          <tr><td>Conversion</td><td>25%</td><td>CON.002 + CON.003 if available</td></tr>
+          <tr><td>Brief Compliance</td><td>15%</td><td>QUA.001</td></tr>
+          <tr><td>Sentiment</td><td>10%</td><td>QUA.003</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BFS -->
+    <div class="score-card" id="bfs">
+      <div class="score-header">
+        <div>
+          <div class="score-abbr">BFS</div>
+          <div class="score-name">Brand Fit Score</div>
+          <div class="score-desc">Pre-collaboration casting tool. Scale: 0–100</div>
+        </div>
+      </div>
+      <table class="score-components">
+        <tbody>
+          <tr><td>Audience Match</td><td>30%</td><td>AUD.004</td></tr>
+          <tr><td>Niche Authority</td><td>25%</td><td>CRE.005</td></tr>
+          <tr><td>Brand Safety</td><td>20%</td><td>QUA.002</td></tr>
+          <tr><td>Category Partnership History <span class="beta">BETA</span></td><td>10%</td><td>CRE.006</td></tr>
+          <tr><td>Organic Mention Rate</td><td>8%</td><td>QUA.005</td></tr>
+          <tr><td>Compliance History</td><td>7%</td><td>CRE.004</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-warn" style="margin-top:12px">
+        <strong>CRE.006 is BETA — do not present BFS as definitive without documenting source</strong>
+        If CRE.006 is unavailable, redistribute the 10% across remaining components and flag the gap. A documented 5-component BFS is more credible than a 6-component BFS built on guesswork.
+      </div>
+    </div>
+  </section>
+
+  <hr />
+
+  <!-- ── BENCHMARKS ── -->
+  <section id="benchmarks">
+    <h2>Global benchmarks</h2>
+    <div class="callout callout-info">
+      <strong>Always cite benchmarks with country code, tier, and source.</strong>
+      These are 2024–2025 averages — use as directional references, not contractual thresholds.
+    </div>
+
+    <section id="bench-eng">
+      <h3>ENG.002.IG — Engagement Rate on Reach (Instagram)</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Vertical</th><th>Global</th><th>NA</th><th>EMEA</th><th>APAC</th><th>LATAM</th><th>Nano</th><th>Macro</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Fashion & Beauty</td><td>3.1%</td><td>3.2%</td><td>3.0%</td><td>3.8%</td><td>3.5%</td><td>5.1%</td><td>1.8%</td></tr>
+            <tr><td>Food & Lifestyle</td><td>4.0%</td><td>3.9%</td><td>3.8%</td><td>4.6%</td><td>4.2%</td><td>6.7%</td><td>2.2%</td></tr>
+            <tr><td>Sports & Fitness</td><td>4.7%</td><td>4.5%</td><td>4.3%</td><td>5.2%</td><td>5.1%</td><td>7.1%</td><td>2.4%</td></tr>
+            <tr><td>Tech & Gaming</td><td>2.8%</td><td>2.6%</td><td>2.5%</td><td>3.1%</td><td>3.3%</td><td>4.0%</td><td>1.5%</td></tr>
+            <tr><td>Travel</td><td>3.4%</td><td>3.3%</td><td>3.2%</td><td>3.8%</td><td>4.0%</td><td>5.7%</td><td>1.8%</td></tr>
+            <tr><td>Educational content</td><td>3.8%</td><td>3.7%</td><td>3.5%</td><td>4.2%</td><td>4.0%</td><td>6.2%</td><td>2.1%</td></tr>
+            <tr><td>Parenting</td><td>5.1%</td><td>4.9%</td><td>4.8%</td><td>5.6%</td><td>5.5%</td><td>8.0%</td><td>2.7%</td></tr>
+            <tr><td>Sustainability</td><td>4.5%</td><td>4.3%</td><td>4.4%</td><td>5.0%</td><td>4.8%</td><td>6.9%</td><td>2.3%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:12px; color:var(--muted); margin-top:8px">Sources: HypeAuditor State of Influencer Marketing 2024 · Rival IQ Benchmark Report 2024 · Influencer Marketing Hub 2025</p>
+    </section>
+
+    <section id="bench-cpm" style="margin-top:32px">
+      <h3>VAL.003 — CPM Reference Benchmarks by Market</h3>
+      <p style="font-size:13px; color:var(--muted); margin-bottom:12px">Base values: Mid-tier · Standard production (C2). Apply tier and complexity multipliers below.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Market</th><th>Instagram</th><th>TikTok</th><th>YouTube</th><th>Facebook</th><th>X/Twitter</th><th>LinkedIn</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>US .US</td><td>$6.70</td><td>$9.40</td><td>$7.80</td><td>$5.20</td><td>$3.10</td><td>$13.50</td></tr>
+            <tr><td>UK .UK</td><td>£5.20</td><td>£7.80</td><td>£6.10</td><td>£4.00</td><td>£2.40</td><td>£11.20</td></tr>
+            <tr><td>FR .FR</td><td>€4.80</td><td>€7.10</td><td>€5.60</td><td>€3.60</td><td>€2.10</td><td>€9.80</td></tr>
+            <tr><td>DE .DE</td><td>€5.40</td><td>€7.90</td><td>€6.20</td><td>€4.10</td><td>€2.30</td><td>€11.00</td></tr>
+            <tr><td>AU .AU</td><td>A$7.20</td><td>A$10.10</td><td>A$8.40</td><td>A$5.60</td><td>A$3.30</td><td>A$14.80</td></tr>
+            <tr><td>BR .BR</td><td>R$3.20</td><td>R$4.80</td><td>R$3.90</td><td>R$2.50</td><td>R$1.40</td><td>R$6.00</td></tr>
+            <tr><td>IN .IN</td><td>₹210</td><td>₹280</td><td>₹240</td><td>₹160</td><td>₹90</td><td>₹320</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4 style="margin-top:24px">Final CPM formula</h4>
+      <div class="code-block">
+        <pre><code>Final CPM = Base CPM × Tier multiplier × Complexity multiplier
+
+Example (FR, Instagram, Nano, Heavy production):
+€4.80 × 0.6 × 2.2 = ≈ €6.30</code></pre>
+      </div>
+    </section>
+
+    <section id="bench-tiers" style="margin-top:32px">
+      <h3>Creator tier multipliers</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Tier</th><th>Followers</th><th>CPM multiplier</th><th>Rationale</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Nano</td><td>1k–10k</td><td>× 0.5–0.7</td><td>High ENG, limited reach, negotiated below market rate</td></tr>
+            <tr><td>Micro</td><td>10k–100k</td><td>× 0.8–1.0</td><td>Optimal cost/engagement profile</td></tr>
+            <tr><td>Mid-tier</td><td>100k–500k</td><td>× 1.0 (base)</td><td>SNOMI standard reference</td></tr>
+            <tr><td>Macro</td><td>500k–1M</td><td>× 1.3–1.7</td><td>Premium for guaranteed reach + creator equity</td></tr>
+            <tr><td>Mega</td><td>&gt;1M</td><td>× 1.8–3.0</td><td>Celebrity premium, exclusivity</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 style="margin-top:24px">Production complexity multipliers</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Level</th><th>Label</th><th>Definition</th><th>Multiplier</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>C1</td><td>Light</td><td>Phone-shot, native format, solo creator (Stories, selfie-style TikTok)</td><td>× 0.6–0.8</td></tr>
+            <tr><td>C2</td><td>Standard (base)</td><td>Planned shoot, curated editing, solo or small team — most Reels and feed posts</td><td>× 1.0</td></tr>
+            <tr><td>C3</td><td>Heavy</td><td>Professional crew, significant post-production, long-form YouTube with full edit</td><td>× 1.8–3.0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </section>
+
+  <hr />
+
+  <!-- ── CRITICAL RULES ── -->
+  <section id="rules">
+    <h2>Critical rules</h2>
+    <p>These rules are non-negotiable in SNOMI-compliant reports:</p>
+    <ul class="rules-list">
+      <li><div class="rule-num">1</div><div class="rule-text"><strong>EMV ≠ Revenue.</strong> Never conflate VAL.001 with sales generated.</div></li>
+      <li><div class="rule-num">2</div><div class="rule-text"><strong>ENG.001 ≠ ENG.002.</strong> Always specify which engagement rate is used. When in doubt, ask.</div></li>
+      <li><div class="rule-num">3</div><div class="rule-text"><strong>REG.001/REG.002 require [CC].</strong> REG.001 alone is invalid. Exception: REG.003 uses [PLATFORM].</div></li>
+      <li><div class="rule-num">4</div><div class="rule-text"><strong>Benchmarks require [CC].</strong> "CPM: $5.20" is not SNOMI-compliant. "VAL.003.IG.US | $5.20 | eMarketer 2024" is.</div></li>
+      <li><div class="rule-num">5</div><div class="rule-text"><strong>T1/T2 metrics need a note.</strong> Low-trust metrics must be explicitly flagged when cited.</div></li>
+      <li><div class="rule-num">6</div><div class="rule-text"><strong>Cross-platform ≠ comparable by default.</strong> ENG.002.IG ≠ ENG.001.TK.</div></li>
+      <li><div class="rule-num">7</div><div class="rule-text"><strong>CPM without tier or complexity = incomplete value.</strong> Apply multipliers or explicitly document assumptions.</div></li>
+      <li><div class="rule-num">8</div><div class="rule-text"><strong>REG.003 ≠ REG.001.</strong> Native label (QUA.006 = 1) does not replace the legal hashtag. The two are independent.</div></li>
+      <li><div class="rule-num">9</div><div class="rule-text"><strong>CRE.006 is BETA.</strong> Do not present a BFS incorporating CRE.006 as definitive without documenting source and method.</div></li>
+    </ul>
+  </section>
+
+  <!-- ── MODES ── -->
+  <section id="modes">
+    <h2>Operating modes</h2>
+    <p>When working with a SNOMI-enabled AI model, you can explicitly request a mode:</p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon" style="background:rgba(96,165,250,0.12)">🔁</div>
+        <h3>ENCODE</h3>
+        <p>Convert raw data or plain-language reports into SNOMI citation format.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(52,211,153,0.12)">🔍</div>
+        <h3>DECODE</h3>
+        <p>Explain a SNOMI code in plain language including formula and pitfalls.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(251,191,36,0.12)">🧮</div>
+        <h3>CALCULATE</h3>
+        <p>Compute a metric or composite score step by step with working shown.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(167,139,250,0.12)">✅</div>
+        <h3>VALIDATE</h3>
+        <p>Audit a report for SNOMI compliance — outputs ✅ passing / ⚠ warning / ❌ error.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(251,146,60,0.12)">📊</div>
+        <h3>BENCHMARK</h3>
+        <p>Compare a metric value against regional benchmarks with interpretation.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(248,113,113,0.12)">🔬</div>
+        <h3>AUDIT</h3>
+        <p>Full report audit = VALIDATE + BENCHMARK + strategic risk flagging.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr />
+
+  <!-- ── AI INTEGRATION ── -->
+  <section id="integration">
+    <h2>AI integration</h2>
+    <p>SNOMI can be integrated into any major AI model as a system prompt or skill. Once loaded, the model becomes a SNOMI-fluent analyst capable of encoding, decoding, calculating, validating, and auditing influencer metrics.</p>
+
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab(event, 'tab-claude')">Claude</div>
+      <div class="tab" onclick="switchTab(event, 'tab-gpt')">ChatGPT / GPT-4o</div>
+      <div class="tab" onclick="switchTab(event, 'tab-gemini')">Gemini</div>
+      <div class="tab" onclick="switchTab(event, 'tab-raw')">Raw SKILL.md</div>
+    </div>
+
+    <!-- CLAUDE -->
+    <div class="tab-panel active" id="tab-claude">
+    <span id="int-claude" style="display:block; scroll-margin-top:calc(var(--nav-h) + 24px)"></span>
+      <span class="model-badge model-claude">Claude (Anthropic)</span>
+      <p>SNOMI is natively supported as a Claude Code skill. If you use Claude Code, the skill can be activated automatically whenever influencer metrics are discussed.</p>
+
+      <h4 style="margin-top:20px">Option A — Claude Code skill (recommended)</h4>
+      <p>If you use Claude Code (CLI or desktop app), copy the <code>SKILL.md</code> file into your skills directory. Claude will automatically detect and apply SNOMI when relevant.</p>
+      <div class="callout callout-success">
+        <strong>Automatic activation</strong>
+        The skill triggers on keywords: "engagement rate", "CPM", "ROAS", "EMV", "analyze this creator", "validate this report", etc.
+      </div>
+
+      <h4 style="margin-top:20px">Option B — System prompt (Claude.ai / API)</h4>
+      <p>Paste the SKILL.md content as a system prompt in Claude.ai Projects or via the Anthropic API <code>system</code> parameter:</p>
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this, 'api-claude-code')">Copy</button>
+        <pre id="api-claude-code"><code>import anthropic
+
+client = anthropic.Anthropic()
+
+with open("SKILL.md", "r") as f:
+    snomi_skill = f.read()
+
+response = client.messages.create(
+    model="claude-opus-4-6",
+    max_tokens=2048,
+    system=snomi_skill,
+    messages=[
+        {
+            "role": "user",
+            "content": "Analyze this creator: 4.2% engagement, 850k followers, 72% audience quality from HypeAuditor"
+        }
+    ]
+)
+print(response.content[0].text)</code></pre>
+      </div>
+    </div>
+
+    <!-- GPT -->
+    <div class="tab-panel" id="tab-gpt">
+      <span class="model-badge model-gpt">ChatGPT / GPT-4o (OpenAI)</span>
+      <p>Use the SKILL.md content as a custom GPT system prompt or paste it as the first message in any conversation.</p>
+
+      <h4 style="margin-top:20px">Option A — Custom GPT</h4>
+      <ol style="padding-left:20px; color:#c4c4cc; font-size:14px; line-height:2">
+        <li>Go to ChatGPT → Explore GPTs → Create a GPT</li>
+        <li>In "Instructions", paste the full SKILL.md content</li>
+        <li>Name it "SNOMI Analyst" and save</li>
+      </ol>
+
+      <h4 style="margin-top:20px">Option B — OpenAI API</h4>
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this, 'api-gpt-code')">Copy</button>
+        <pre id="api-gpt-code"><code>from openai import OpenAI
+
+client = OpenAI()
+
+with open("SKILL.md", "r") as f:
+    snomi_skill = f.read()
+
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[
+        {"role": "system", "content": snomi_skill},
+        {"role": "user", "content": "Validate this report: ENG.001 | 4.8% | March 2026 | Instagram"}
+    ]
+)
+print(response.choices[0].message.content)</code></pre>
+      </div>
+
+      <h4 style="margin-top:20px">Option C — ChatGPT conversation</h4>
+      <p>Start any conversation by pasting:</p>
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this, 'gpt-paste-code')">Copy</button>
+        <pre id="gpt-paste-code"><code>From now on, use the following SNOMI standard for all influencer marketing analysis:
+
+[paste SKILL.md content here]
+
+Confirm that you understand SNOMI and are ready to work in ENCODE/DECODE/CALCULATE/VALIDATE/BENCHMARK/AUDIT modes.</code></pre>
+      </div>
+    </div>
+
+    <!-- GEMINI -->
+    <div class="tab-panel" id="tab-gemini">
+      <span class="model-badge model-gemini">Gemini (Google DeepMind)</span>
+      <p>Load SNOMI as system instructions in Gemini's API or paste into a Gemini Gem (custom AI).</p>
+
+      <h4 style="margin-top:20px">Option A — Gemini Gem</h4>
+      <ol style="padding-left:20px; color:#c4c4cc; font-size:14px; line-height:2">
+        <li>Go to gemini.google.com → Gems → Create Gem</li>
+        <li>In "Instructions", paste the full SKILL.md content</li>
+        <li>Name it "SNOMI Analyst" and save</li>
+      </ol>
+
+      <h4 style="margin-top:20px">Option B — Gemini API</h4>
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this, 'api-gemini-code')">Copy</button>
+        <pre id="api-gemini-code"><code>import google.generativeai as genai
+
+genai.configure(api_key="YOUR_API_KEY")
+
+with open("SKILL.md", "r") as f:
+    snomi_skill = f.read()
+
+model = genai.GenerativeModel(
+    model_name="gemini-2.0-flash-exp",
+    system_instruction=snomi_skill
+)
+
+chat = model.start_chat()
+response = chat.send_message(
+    "Calculate the CPI for a creator with ENG.002=4.8%, AUD.003=91%, REA.003=32%, publishing 5x/week"
+)
+print(response.text)</code></pre>
+      </div>
+
+      <h4 style="margin-top:20px">Option C — Gemini CLI (if using GSD / Superpowers)</h4>
+      <p>If you use the Gemini CLI with skills support, add the SKILL.md to your skills directory. It will activate automatically via the <code>activate_skill</code> tool.</p>
+    </div>
+
+    <!-- RAW SKILL.MD -->
+    <div class="tab-panel" id="tab-raw">
+      <p>Copy the full SKILL.md content to integrate SNOMI into any AI model:</p>
+      <div class="code-block" style="position:relative">
+        <button class="copy-btn" onclick="copyCode(this, 'raw-skill-code')">Copy all</button>
+        <pre id="raw-skill-code" style="max-height:500px; overflow-y:auto"><code>---
+name: snomi
+description: >
+  SNOMI (Standard Nomenclature of Influence Metrics) is an open international
+  standard for influencer marketing metrics. Use this skill for ANY task
+  involving influencer performance measurement: coding raw metrics into SNOMI
+  format, decoding SNOMI codes, calculating composite scores (CPI, CoPI, BFS),
+  validating campaign reports for compliance, comparing creator performance
+  against regional benchmarks, auditing EMV methodology, or flagging
+  non-standard metric usage. Triggers include: "analyze this creator",
+  "calculate engagement rate", "is this report correct", "what's the CPI",
+  "validate this report", "compare these creators", "what does ENG.002 mean",
+  "audit this campaign", "calculate EMV", "benchmark this against the market",
+  "flag non-compliant metrics", or any mention of influencer KPIs, reach,
+  engagement, CPM, ROAS, EMV in a marketing context.
+---
+
+# SNOMI — Standard Nomenclature of Influence Metrics
+**Version 1.1 · Open International Standard**
+
+You are a SNOMI-fluent analyst. Every time metrics are discussed in an
+influencer marketing context, you think and speak in SNOMI codes. Your goal
+is to bring precision and comparability to a field that historically suffers
+from ambiguity.
+
+---
+
+## Code Structure
+
+[DOMAIN].[ID].[PLATFORM]          → universal metric
+[DOMAIN].[ID].[PLATFORM].[CC]     → market-specific benchmark or regulatory variant
+
+Platforms: IG Instagram · TK TikTok · YT YouTube · FB Facebook ·
+TW X/Twitter · LI LinkedIn · PI Pinterest · ALL cross-platform
+
+Country codes (benchmarks or REG domain only):
+.US .UK .FR .DE .AU .BR .IN .EU .GLOBAL
+
+Trust Score — always cite alongside a metric:
+T5 Gold   — Native platform data, non-manipulable
+T4 Silver — Calculated from native data, standard formula
+T3 Bronze — Calculated with assumptions (e.g. EMV)
+T2 Copper — Estimated via third-party tool
+T1 Iron   — Self-reported or unverifiable
+
+---
+
+## The 8 Domains
+
+AUD  Audience           — Size, quality, composition
+ENG  Engagement         — Interaction with content
+REA  Reach &amp; Distribution — Content spread
+CON  Conversion         — Commercial actions
+VAL  Value &amp; ROI        — Financial metrics
+QUA  Content Quality    — Quality, compliance, sentiment
+CRE  Creator Health     — Vitality, consistency, credibility
+REG  Regulatory         — National compliance (always requires [CC])
+
+---
+
+## Core Metrics Quick Reference
+
+AUD.001 Total Followers           — Native value — T5
+AUD.002 Audience Growth Rate      — (end−start)/start × 100 — T5
+AUD.003 Audience Quality Score    — % real active followers (3rd party) — T2
+ENG.001 Engagement Rate Followers — (L+C+S+Sh) / Followers × 100 — T4
+ENG.002 Engagement Rate Reach ⭐  — (L+C+S+Sh) / Reach × 100 — T4 [PREFERRED]
+ENG.006 Video Completion Rate     — Complete views / Total views × 100 — T5
+REA.001 Organic Reach             — Native value — T5
+REA.003 Reach Rate                — Reach / Followers × 100 — T4
+CON.002 CTR                       — Clicks / Impressions × 100 — T4
+VAL.001 EMV                       — Impressions × ref CPM / 1000 (declare method) — T3
+VAL.002 CPE                       — Budget / Total engagements — T4
+VAL.003 CPM                       — Budget / Impressions × 1000 — T4
+QUA.001 Brief Compliance Score    — Brief elements met / Total × 100 — T4
+QUA.006 Native Partnership Label  — Boolean (0/1) — T5
+CRE.005 Niche Authority Score     — Creator ENG.002 / Median ENG.002 in vertical — T3
+CRE.006 Category Partnership Hist — Count paid partnerships in sector (12 months) — T3 [BETA]
+
+⭐ ENG.002 is the SNOMI preferred engagement metric.
+ENG.001 and ENG.002 are NOT interchangeable — always specify which.
+
+---
+
+## Creator Tier Definitions
+
+Nano     1,000–10,000      High ENG, limited reach, low CPM
+Micro    10,000–100,000    Optimal cost/efficiency profile
+Mid-tier 100,000–500,000   SNOMI base CPM reference
+Macro    500,000–1,000,000 Premium reach + creator brand equity
+Mega     &gt;1,000,000        Celebrity premium / exclusivity
+
+---
+
+## Composite Scores
+
+CPI — Creator Performance Index (0–100)
+  Engagement Quality  30%  ENG.002
+  Audience Quality    25%  AUD.003
+  Reach Efficiency    20%  REA.003
+  Content Regularity  15%  CRE.001 + CRE.002
+  Niche Authority     10%  CRE.005
+  Scale: 0–40 Weak · 41–60 Average · 61–80 Good · 81–100 Excellent
+
+CoPI — Collaboration Performance Index (0–100)
+  Reach Efficiency     25%  REA.003 vs. benchmark
+  Sponsored Engagement 25%  ENG.002 (sponsored vs. organic baseline)
+  Conversion           25%  CON.002 + CON.003 if available
+  Brief Compliance     15%  QUA.001
+  Sentiment            10%  QUA.003
+
+BFS — Brand Fit Score (0–100)
+  Audience Match               30%  AUD.004
+  Niche Authority              25%  CRE.005
+  Brand Safety                 20%  QUA.002
+  Category Partnership History 10%  CRE.006 [BETA]
+  Organic Mention Rate          8%  QUA.005
+  Compliance History            7%  CRE.004
+
+---
+
+## Standard Citation Format
+
+CODE | VALUE | TIME WINDOW | SOURCE | TRUST SCORE
+
+Example:
+ENG.002.IG.US | 4.8% | 2026-03-01 → 2026-03-31 | Instagram Insights | T5
+AUD.003.IG    | 91%  | 2026-04-01               | HypeAuditor        | T2
+VAL.001.ALL.FR| €42k EMV | Q1 2026             | Launchmetrics      | T3
+
+---
+
+## Operating Modes
+
+ENCODE   — Convert raw data into SNOMI citation format
+DECODE   — Explain a SNOMI code (formula, trust, pitfalls)
+CALCULATE — Compute metric or composite score step by step
+VALIDATE  — Audit report for compliance (✅ / ⚠ / ❌)
+BENCHMARK — Compare against regional benchmarks
+AUDIT     — VALIDATE + BENCHMARK + strategic risk flagging
+
+---
+
+## Critical Rules (non-negotiable)
+
+1. EMV ≠ Revenue. Never conflate VAL.001 with sales generated.
+2. ENG.001 ≠ ENG.002. Always specify. When in doubt, ask.
+3. REG.001/REG.002 require [CC]. REG.001 alone is invalid.
+4. Benchmarks require [CC]. "CPM: $5.20" is not SNOMI-compliant.
+5. T1/T2 metrics need a note. Flag low-trust metrics when cited.
+6. Cross-platform ≠ comparable by default.
+7. CPM without tier or complexity = incomplete value.
+8. REG.003 ≠ REG.001. Native label ≠ legal hashtag. Both are required.
+9. CRE.006 is BETA. Document source and method when using in BFS.
+
+---
+
+## Tone
+
+- Precise but not pedantic. Clarity, not bureaucracy.
+- When flagging an issue, suggest the fix.
+- Show math in composite score calculations.
+- Compare benchmarks with vertical, tier, and region context.</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <hr />
+
+  <!-- ── CONTACT ── -->
+  <section id="contact">
+    <h2>Contact & suggestions</h2>
+    <p class="lead" style="font-size:15px; margin-bottom:28px">SNOMI is an open standard. Any suggestion, bug report, or contribution is welcome.</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:32px">
+      <a href="mailto:snomi.team@gmail.com" class="contact-card">
+        <div class="contact-card-icon" style="background:rgba(129,140,248,0.12)">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="m2 7 10 7 10-7"/>
+          </svg>
+        </div>
+        <div>
+          <div class="contact-card-title">Email</div>
+          <div class="contact-card-sub">snomi.team@gmail.com</div>
+          <div class="contact-card-desc">Questions, suggestions, or error reports about the standard.</div>
+        </div>
+      </a>
+
+      <a href="https://github.com/rayanebenabs/SNOMI/issues" target="_blank" class="contact-card">
+        <div class="contact-card-icon" style="background:rgba(52,211,153,0.12)">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="contact-card-title">GitHub Issues</div>
+          <div class="contact-card-sub">rayanebenabs/SNOMI</div>
+          <div class="contact-card-desc">Propose a new metric, fix a formula, or open a public discussion.</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="callout callout-info" style="margin-bottom:28px">
+      <strong>What to suggest?</strong>
+      Missing metric · Incorrect or ambiguous formula · Benchmark update · New national regulation · Improvement to the citation standard
+    </div>
+
+    <h3 style="margin-bottom:16px">Send a suggestion</h3>
+    <form id="contact-form" onsubmit="handleContactForm(event)">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px">
+        <div class="form-group">
+          <label class="form-label">Name <span style="color:var(--muted)">(optional)</span></label>
+          <input type="text" id="f-name" class="form-input" placeholder="Your name" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email <span style="color:var(--muted)">(to receive a reply)</span></label>
+          <input type="email" id="f-email" class="form-input" placeholder="you@example.com" />
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:12px">
+        <label class="form-label">Type of suggestion</label>
+        <select id="f-type" class="form-input">
+          <option value="">— Select —</option>
+          <option value="new-metric">New metric</option>
+          <option value="formula">Formula correction</option>
+          <option value="benchmark">Benchmark update</option>
+          <option value="regulatory">National regulation</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:20px">
+        <label class="form-label">Message <span style="color:var(--red)">*</span></label>
+        <textarea id="f-message" class="form-input form-textarea" placeholder="Describe your suggestion or question..." required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:auto">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4 20-7z"/>
+        </svg>
+        Send via email
+      </button>
+      <p style="font-size:12px; color:var(--muted); margin-top:10px">This opens your email client with the message pre-filled.</p>
+      <div class="form-success" id="form-success">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20,6 9,17 4,12"/></svg>
+        Email client opened — thank you for your contribution!
+      </div>
+    </form>
+  </section>
+
+</main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>SNOMI v1.1 · Open International Standard · 2026</span>
+  <div style="display:flex; gap:16px">
+    <a href="https://github.com/rayanebenabs/SNOMI" target="_blank">GitHub</a>
+    <a href="#about">Back to top</a>
+  </div>
+</footer>
+
+<!-- SCROLL TOP -->
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">
+  <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+    <polyline points="18,15 12,9 6,15"/>
+  </svg>
+</button>
+
+<script>
+// ─── SEARCH DATA ───
+const METRICS = [
+  // AUD
+  { code: "AUD.001", name: "Total Followers", domain: "AUD", desc: "Total subscribers/followers at a given date. Native platform value. T5", anchor: "#aud" },
+  { code: "AUD.002", name: "Audience Growth Rate", domain: "AUD", desc: "(end − start) / start × 100. T5", anchor: "#aud" },
+  { code: "AUD.003", name: "Audience Quality Score", domain: "AUD", desc: "% genuine active followers via 3rd-party tool. T2", anchor: "#aud" },
+  { code: "AUD.004", name: "Target Audience Rate", domain: "AUD", desc: "% audience matching brand's target persona. T3", anchor: "#aud" },
+  { code: "AUD.005", name: "Audience Overlap", domain: "AUD", desc: "Shared audience between two creators. T2", anchor: "#aud" },
+  { code: "AUD.006", name: "Demographic Score", domain: "AUD", desc: "Distribution by age, gender, geography. T4", anchor: "#aud" },
+  // ENG
+  { code: "ENG.001", name: "Engagement Rate (Followers)", domain: "ENG", desc: "(L+C+S+Sh) / Followers × 100. T4. Not interchangeable with ENG.002.", anchor: "#eng" },
+  { code: "ENG.002", name: "Engagement Rate (Reach) ⭐", domain: "ENG", desc: "SNOMI preferred. (L+C+S+Sh) / Reach × 100. T4.", anchor: "#eng" },
+  { code: "ENG.003", name: "Comment Rate", domain: "ENG", desc: "Comments / Impressions × 100. T4", anchor: "#eng" },
+  { code: "ENG.004", name: "Save Rate", domain: "ENG", desc: "Saves / Impressions × 100. Perceived content value indicator. T4", anchor: "#eng" },
+  { code: "ENG.005", name: "Share Rate", domain: "ENG", desc: "Shares / Impressions × 100. Virality indicator. T4", anchor: "#eng" },
+  { code: "ENG.006", name: "Video Completion Rate", domain: "ENG", desc: "Complete views / Total views × 100. T5", anchor: "#eng" },
+  // REA
+  { code: "REA.001", name: "Organic Reach", domain: "REA", desc: "Unique accounts seeing content organically. Native value. T5", anchor: "#rea" },
+  { code: "REA.002", name: "Total Impressions", domain: "REA", desc: "Total displays (one account may generate multiple). T5", anchor: "#rea" },
+  { code: "REA.003", name: "Reach Rate", domain: "REA", desc: "Reach / Followers × 100. T4", anchor: "#rea" },
+  { code: "REA.004", name: "Frequency", domain: "REA", desc: "Impressions / Reach. Average exposures per unique account. T4", anchor: "#rea" },
+  { code: "REA.005", name: "Video Views", domain: "REA", desc: "Total view count. Definition varies: IG 3s, TK 2s, YT 30s. T5", anchor: "#rea" },
+  // CON
+  { code: "CON.001", name: "Link Clicks", domain: "CON", desc: "Clicks on bio link, swipe-up, or description link. T4", anchor: "#con" },
+  { code: "CON.002", name: "CTR", domain: "CON", desc: "Click-Through Rate. Clicks / Impressions × 100. T4", anchor: "#con" },
+  { code: "CON.003", name: "Promo Code Usage Rate", domain: "CON", desc: "Code uses / Reach × 100. T3", anchor: "#con" },
+  { code: "CON.004", name: "Leads Generated", domain: "CON", desc: "Requires UTM or unique tracking code. T3", anchor: "#con" },
+  { code: "CON.005", name: "Attributed Sales", domain: "CON", desc: "Revenue via tracking. T1 without dedicated tracking. T3/T1", anchor: "#con" },
+  { code: "CON.006", name: "Conversion Rate", domain: "CON", desc: "Conversions / Clicks × 100. T3", anchor: "#con" },
+  // VAL
+  { code: "VAL.001", name: "EMV", domain: "VAL", desc: "Estimated Media Value. Impressions × ref CPM / 1000. Always declare method. T3", anchor: "#val" },
+  { code: "VAL.002", name: "CPE", domain: "VAL", desc: "Cost Per Engagement. Budget / Total engagements. T4", anchor: "#val" },
+  { code: "VAL.003", name: "CPM", domain: "VAL", desc: "Cost Per Mille. Budget / Impressions × 1000. Requires [CC] + tier + complexity. T4", anchor: "#val" },
+  { code: "VAL.004", name: "CPC", domain: "VAL", desc: "Cost Per Click. Budget / Clicks. T4", anchor: "#val" },
+  { code: "VAL.005", name: "ROAS", domain: "VAL", desc: "Return On Ad Spend. Attributed revenue / Budget. T2", anchor: "#val" },
+  { code: "VAL.006", name: "CPA", domain: "VAL", desc: "Cost Per Acquisition. Budget / Conversions. T2", anchor: "#val" },
+  // QUA
+  { code: "QUA.001", name: "Brief Compliance Score", domain: "QUA", desc: "Elements met / Total elements × 100. T4", anchor: "#qua" },
+  { code: "QUA.002", name: "Brand Safety Score", domain: "QUA", desc: "Via moderation tool or manual audit. T2", anchor: "#qua" },
+  { code: "QUA.003", name: "Sentiment Score", domain: "QUA", desc: "NLP semantic analysis. % breakdown positive/neutral/negative. T3", anchor: "#qua" },
+  { code: "QUA.004", name: "Perceived Authenticity", domain: "QUA", desc: "Jury score or audience survey. T2", anchor: "#qua" },
+  { code: "QUA.005", name: "Organic Mention Rate", domain: "QUA", desc: "Organic brand posts / Total posts × 100. Brand affinity indicator. T3", anchor: "#qua" },
+  { code: "QUA.006", name: "Native Partnership Label", domain: "QUA", desc: "Native branded content tool activated. Boolean. T5", anchor: "#qua" },
+  // CRE
+  { code: "CRE.001", name: "Publishing Frequency", domain: "CRE", desc: "Posts / Weeks. T5", anchor: "#cre" },
+  { code: "CRE.002", name: "Publishing Regularity", domain: "CRE", desc: "Std dev / Mean frequency. T4", anchor: "#cre" },
+  { code: "CRE.003", name: "Collaboration Rate", domain: "CRE", desc: "Sponsored posts / Total posts × 100. >40% = saturation risk. T4", anchor: "#cre" },
+  { code: "CRE.004", name: "Compliance History", domain: "CRE", desc: "Track record: deadlines, brief adherence. T2", anchor: "#cre" },
+  { code: "CRE.005", name: "Niche Authority Score", domain: "CRE", desc: "Creator ENG.002 / Median ENG.002 in vertical. T3", anchor: "#cre" },
+  { code: "CRE.006", name: "Category Partnership History [BETA]", domain: "CRE", desc: "Count paid partnerships in sector (12 months). T3. BETA.", anchor: "#cre" },
+  // REG
+  { code: "REG.001.FR", name: "Legal Disclosure — France", domain: "REG", desc: "ARPP. #partenariat or #collaboration required.", anchor: "#regulatory" },
+  { code: "REG.001.US", name: "Legal Disclosure — USA", domain: "REG", desc: "FTC. #ad or #sponsored required.", anchor: "#regulatory" },
+  { code: "REG.001.UK", name: "Legal Disclosure — UK", domain: "REG", desc: "ASA/CAP. #ad mandatory including gifted content.", anchor: "#regulatory" },
+  { code: "REG.001.DE", name: "Legal Disclosure — Germany", domain: "REG", desc: "Landesmedienanstalten. #Werbung or #Anzeige.", anchor: "#regulatory" },
+  { code: "REG.001.AU", name: "Legal Disclosure — Australia", domain: "REG", desc: "ACCC. #ad or equivalent.", anchor: "#regulatory" },
+  { code: "REG.001.BR", name: "Legal Disclosure — Brazil", domain: "REG", desc: "CONAR. #publi or #publicidade.", anchor: "#regulatory" },
+  { code: "REG.001.IN", name: "Legal Disclosure — India", domain: "REG", desc: "ASCI. #ad within first 3 lines.", anchor: "#regulatory" },
+  { code: "REG.002.EU", name: "DSA — EU", domain: "REG", desc: "Digital Services Act. Platform transparency for commercial content.", anchor: "#regulatory" },
+  { code: "REG.003.IG", name: "Native Label — Instagram", domain: "REG", desc: '"Paid Partnership" label. Required by Instagram ToS.', anchor: "#regulatory" },
+  { code: "REG.003.TK", name: "Native Label — TikTok", domain: "REG", desc: '"Branded Content" toggle. Mandatory TikTok ToS.', anchor: "#regulatory" },
+  { code: "REG.003.YT", name: "Native Label — YouTube", domain: "REG", desc: '"Includes paid promotion" checkbox. Required by YouTube ToS.', anchor: "#regulatory" },
+  { code: "REG.003.FB", name: "Native Label — Facebook", domain: "REG", desc: "Branded Content tag. Mandatory for monetized creators.", anchor: "#regulatory" },
+  // Composite
+  { code: "CPI", name: "Creator Performance Index", domain: "Score", desc: "Health check 0–100. Engagement Quality 30%, Audience Quality 25%, Reach Efficiency 20%, Regularity 15%, Niche Authority 10%.", anchor: "#cpi" },
+  { code: "CoPI", name: "Collaboration Performance Index", domain: "Score", desc: "Collaboration performance 0–100.", anchor: "#copi" },
+  { code: "BFS", name: "Brand Fit Score", domain: "Score", desc: "Pre-collaboration casting tool 0–100.", anchor: "#bfs" },
+];
+
+// ─── SEARCH LOGIC ───
+function openSearch() {
+  document.getElementById('search-overlay').classList.add('open');
+  document.getElementById('search-input').focus();
+  renderResults('');
+}
+
+function closeSearch() {
+  document.getElementById('search-overlay').classList.remove('open');
+  document.getElementById('search-input').value = '';
+}
+
+document.getElementById('search-overlay').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('search-overlay')) closeSearch();
+});
+
+document.getElementById('search-input').addEventListener('input', (e) => {
+  renderResults(e.target.value);
+});
+
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    e.preventDefault();
+    openSearch();
+  }
+  if (e.key === 'Escape') closeSearch();
+});
+
+function renderResults(query) {
+  const container = document.getElementById('search-results');
+  const q = query.toLowerCase().trim();
+
+  if (!q) {
+    container.innerHTML = '<div class="search-empty">Type to search metrics, codes, or domains…</div>';
+    return;
+  }
+
+  const results = METRICS.filter(m =>
+    m.code.toLowerCase().includes(q) ||
+    m.name.toLowerCase().includes(q) ||
+    m.domain.toLowerCase().includes(q) ||
+    m.desc.toLowerCase().includes(q)
+  ).slice(0, 12);
+
+  if (!results.length) {
+    container.innerHTML = '<div class="search-empty">No results for "' + escapeHtml(query) + '"</div>';
+    return;
+  }
+
+  container.innerHTML = results.map(r => `
+    <a class="search-result" href="${r.anchor}" onclick="closeSearch()">
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:2px">
+        <span class="search-result-code">${escapeHtml(r.code)}</span>
+        <span style="font-size:11px; color:var(--muted-2); background:var(--surface-2); border:1px solid var(--border); padding:1px 6px; border-radius:3px">${escapeHtml(r.domain)}</span>
+      </div>
+      <div class="search-result-name">${escapeHtml(r.name)}</div>
+      <div class="search-result-desc">${escapeHtml(r.desc)}</div>
+    </a>
+  `).join('');
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── CONTACT FORM ───
+function handleContactForm(e) {
+  e.preventDefault();
+  const name    = document.getElementById('f-name').value.trim();
+  const email   = document.getElementById('f-email').value.trim();
+  const type    = document.getElementById('f-type').value;
+  const message = document.getElementById('f-message').value.trim();
+
+  if (!message) return;
+
+  const typeLabels = {
+    'new-metric': 'New metric',
+    'formula':    'Formula correction',
+    'benchmark':  'Benchmark update',
+    'regulatory': 'National regulation',
+    'other':      'Other',
+  };
+
+  const subject = encodeURIComponent(
+    '[SNOMI] ' + (typeLabels[type] || 'Suggestion') + (name ? ' — ' + name : '')
+  );
+
+  const body = encodeURIComponent(
+    (name  ? 'Name: '  + name  + '\n' : '') +
+    (email ? 'Email: ' + email + '\n' : '') +
+    (type  ? 'Type: '  + (typeLabels[type] || type) + '\n' : '') +
+    '\nMessage:\n' + message
+  );
+
+  window.location.href = 'mailto:snomi.team@gmail.com?subject=' + subject + '&body=' + body;
+
+  document.getElementById('form-success').classList.add('visible');
+  setTimeout(() => document.getElementById('form-success').classList.remove('visible'), 5000);
+}
+
+// ─── SMOOTH SCROLL (intercepts ALL anchor clicks) ───
+const NAV_H = () => document.querySelector('nav').offsetHeight + 16;
+
+function scrollToId(id) {
+  const el = document.getElementById(id);
+  if (!el) return false;
+  const top = el.getBoundingClientRect().top + window.scrollY - NAV_H();
+  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  return true;
+}
+
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a) return;
+  const href = a.getAttribute('href');
+  if (href === '#') return;
+  const id = href.slice(1);
+  if (!id) return;
+  // Handle tab activation from sidebar links
+  const tabMap = { 'int-claude': 'tab-claude', 'int-gpt': 'tab-gpt', 'int-gemini': 'tab-gemini' };
+  if (tabMap[id]) {
+    e.preventDefault();
+    activateIntTab(tabMap[id]);
+    scrollToId('integration');
+    closeMobileMenu();
+    return;
+  }
+  const found = scrollToId(id);
+  if (found) {
+    e.preventDefault();
+    closeMobileMenu();
+  }
+});
+
+// ─── TABS ───
+function switchTab(e, id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+function activateIntTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx = { 'tab-claude': 0, 'tab-gpt': 1, 'tab-gemini': 2, 'tab-raw': 3 }[id] ?? 0;
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+}
+
+// ─── MOBILE MENU ───
+const hamburger = document.getElementById('hamburger');
+const sidebar = document.getElementById('sidebar');
+const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+function openMobileMenu() {
+  hamburger.classList.add('open');
+  sidebar.classList.add('open');
+  sidebarOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMobileMenu() {
+  hamburger.classList.remove('open');
+  sidebar.classList.remove('open');
+  sidebarOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+hamburger.addEventListener('click', () => {
+  sidebar.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
+});
+
+sidebarOverlay.addEventListener('click', closeMobileMenu);
+
+// ─── COPY BUTTONS ───
+function copyCode(btn, id) {
+  const el = document.getElementById(id);
+  const text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ─── SCROLL TOP ───
+const scrollBtn = document.getElementById('scroll-top');
+window.addEventListener('scroll', () => {
+  scrollBtn.classList.toggle('visible', window.scrollY > 400);
+});
+
+// ─── ACTIVE SIDEBAR ───
+const sidebarLinks = document.querySelectorAll('aside a');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      sidebarLinks.forEach(l => {
+        const href = l.getAttribute('href');
+        l.classList.toggle('active', href === '#' + e.target.id);
+      });
+    }
+  });
+}, { rootMargin: '-10% 0px -80% 0px' });
+
+document.querySelectorAll('section[id]').forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
