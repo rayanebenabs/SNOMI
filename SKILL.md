@@ -43,10 +43,43 @@ from ambiguity.
 | Score | Level  | Meaning |
 |-------|--------|---------|
 | T5    | Gold   | Native platform data, non-manipulable |
-| T4    | Silver | Calculated from native data, standard formula |
-| T3    | Bronze | Calculated with assumptions (e.g. EMV) |
+| T4    | Silver | Calculated from T5 inputs, standard formula, no assumptions |
+| T3    | Bronze | Calculated with methodology assumptions (e.g. EMV reference CPM) |
 | T2    | Copper | Estimated via third-party tool |
-| T1    | Iron   | Self-reported or unverifiable |
+| T1    | Iron   | Self-reported, unverifiable, or propagation floor |
+
+### Trust Propagation Rule
+
+The trust score of a **calculated metric** is not fixed — it depends on the trust
+scores of its input metrics.
+
+```
+T_result = max(T1,  min(T_inputs) − Δ)
+```
+
+**Δ (calculation penalty):**
+| Δ | When to apply |
+|---|---------------|
+| 0 | Direct platform read — no calculation |
+| 1 | Standard formula, no assumptions (ratio, sum, rate) |
+| 2 | Formula introduces methodology assumptions — result capped at T3 regardless of inputs |
+
+**Composite scores (CPI, CoPI, BFS):** Δ = 0. They inherit `min(component T scores)` directly — the weighted sum itself does not degrade trust.
+
+**Practical examples:**
+
+| Metric | Inputs | min(T) | Δ | T_result |
+|--------|--------|--------|---|----------|
+| ENG.002.IG — native IG data | REA.001 T5 + engagements T5 | T5 | −1 | **T4** |
+| ENG.002.IG — 3rd-party reach | AUD.003 T2 + engagements T5 | T2 | −1 | **T1** |
+| REA.003 — native data | AUD.001 T5 + REA.001 T5 | T5 | −1 | **T4** |
+| VAL.001 EMV | REA.002 T5 + ref CPM assumption | any | cap | **T3** |
+| CPI — all native inputs | ENG.002 T4 + REA.003 T4 + AUD.003 T2 | T2 | 0 | **T2** |
+| CPI — full native, no T2 | ENG.002 T4 + REA.003 T4 + AUD.003 T4 | T4 | 0 | **T4** |
+
+**Key consequence:** a report citing `CPI | 74 | T4` is only valid if all 5 CPI
+components were sourced at T4 or above. If AUD.003 came from a third-party tool
+(T2), the CPI must be cited as T2 — not T4.
 
 ---
 

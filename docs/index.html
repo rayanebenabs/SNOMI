@@ -1284,44 +1284,58 @@
     <div class="table-wrap">
       <table>
         <thead>
-          <tr>
-            <th>Score</th>
-            <th>Level</th>
-            <th>Meaning</th>
-          </tr>
+          <tr><th>Score</th><th>Level</th><th>Meaning</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td><span class="tag t5">T5</span></td>
-            <td>Gold</td>
-            <td>Native platform data, non-manipulable</td>
-          </tr>
-          <tr>
-            <td><span class="tag t4">T4</span></td>
-            <td>Silver</td>
-            <td>Calculated from native data using a standard formula</td>
-          </tr>
-          <tr>
-            <td><span class="tag t3">T3</span></td>
-            <td>Bronze</td>
-            <td>Calculated with assumptions (e.g. EMV)</td>
-          </tr>
-          <tr>
-            <td><span class="tag t2">T2</span></td>
-            <td>Copper</td>
-            <td>Estimated via third-party tool</td>
-          </tr>
-          <tr>
-            <td><span class="tag t1">T1</span></td>
-            <td>Iron</td>
-            <td>Self-reported or unverifiable</td>
-          </tr>
+          <tr><td><span class="tag t5">T5</span></td><td>Gold</td><td>Native platform data, non-manipulable</td></tr>
+          <tr><td><span class="tag t4">T4</span></td><td>Silver</td><td>Calculated from T5 inputs, standard formula, no assumptions</td></tr>
+          <tr><td><span class="tag t3">T3</span></td><td>Bronze</td><td>Calculated with methodology assumptions — or EMV cap</td></tr>
+          <tr><td><span class="tag t2">T2</span></td><td>Copper</td><td>Estimated via third-party tool</td></tr>
+          <tr><td><span class="tag t1">T1</span></td><td>Iron</td><td>Self-reported, unverifiable, or propagation floor</td></tr>
         </tbody>
       </table>
     </div>
+
+    <h3 style="margin-top:28px; margin-bottom:12px">Trust propagation rule</h3>
+    <p>The trust score of a <strong>calculated metric is not fixed</strong> — it propagates from the trust of its inputs:</p>
+
+    <div class="code-block">
+      <pre><code>T_result = max(T1,  min(T_inputs) − Δ)
+
+Δ = 0  →  direct native read (no calculation)
+Δ = 1  →  standard formula, no assumptions
+Δ = 2  →  formula with methodology assumptions → capped at T3</code></pre>
+    </div>
+
+    <p style="margin-top:4px; margin-bottom:16px">Composite scores (CPI, CoPI, BFS) use <strong>Δ = 0</strong> — they inherit <code>min(component T scores)</code> directly.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Scenario</th><th>Inputs</th><th>min(T)</th><th>Δ</th><th>T_result</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ENG.002 — native IG data</td><td>Engagements T5 + Reach T5</td><td>T5</td><td>−1</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>ENG.002 — 3rd-party reach</td><td>Engagements T5 + Reach T2</td><td>T2</td><td>−1</td><td><span class="tag t1">T1</span> ⚠</td></tr>
+          <tr><td>REA.003 — native data</td><td>REA.001 T5 + AUD.001 T5</td><td>T5</td><td>−1</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>VAL.001 EMV — any source</td><td>Impressions + ref CPM assumption</td><td>any</td><td>cap</td><td><span class="tag t3">T3</span> max</td></tr>
+          <tr><td>CPI — includes AUD.003 T2</td><td>ENG.002 T4 + AUD.003 T2 + …</td><td>T2</td><td>0</td><td><span class="tag t2">T2</span></td></tr>
+          <tr><td>CPI — all native inputs</td><td>ENG.002 T4 + REA.003 T4 + …</td><td>T4</td><td>0</td><td><span class="tag t4">T4</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
     <div class="callout callout-warn">
+      <strong>Consequence for composite scores</strong>
+      A CPI cited as T4 is only valid if every component was sourced at T4 or above. If AUD.003 came from a third-party tool (T2), the entire CPI must be cited as T2.
+    </div>
+    <div class="callout callout-error">
+      <strong>EMV is always T3 maximum</strong>
+      A T5 impression count does not elevate VAL.001 above T3 — the reference CPM is inherently an assumption, making EMV T3 by definition.
+    </div>
+    <div class="callout callout-info">
       <strong>T1 / T2 metrics require a note</strong>
-      Low-trust metrics must be explicitly flagged when cited in reports. "AUD.003.IG | 72% | HypeAuditor | T2 — third-party estimate, tool uses proprietary model."
+      Low-trust metrics must be explicitly flagged when cited. "AUD.003.IG | 72% | HypeAuditor | T2 — third-party estimate, proprietary model."
     </div>
   </section>
 

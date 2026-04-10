@@ -3,6 +3,25 @@
 > **Format column** — how the metric value is expressed when cited in a report.
 > All metrics must be accompanied by a Trust Score and a time window (ISO dates).
 
+## Trust Propagation
+
+The **Trust** column shows the default score when all inputs are native (T5).
+For calculated metrics, apply the propagation rule:
+
+```
+T_result = max(T1,  min(T_inputs) − Δ)
+```
+
+| Δ | Condition |
+|---|-----------|
+| 0 | Direct native read |
+| 1 | Standard formula, no assumptions |
+| 2 | Formula with methodology assumptions — capped at T3 |
+
+Composite scores (CPI, CoPI, BFS) use Δ = 0 and inherit `min(component T scores)`.
+The Trust column in each table below reflects the **ideal case** (all T5 inputs).
+Always recalculate when inputs are not native.
+
 ---
 
 ## AUD — Audience
@@ -33,6 +52,12 @@
 
 **Interaction components (L+C+S+Sh):** Likes + Comments + Saves + Shares
 Platform variants: Instagram includes Saves; TikTok includes Duets/Stitches; YouTube includes Thumbs up + Comments (no saves native)
+
+**Trust propagation for ENG metrics (Δ = 1):**
+- ENG.001: min(engagement T5, AUD.001 T5) − 1 = **T4** default. If audience inflated by fake followers → downgrade to T3.
+- ENG.002: min(engagement T5, REA.001 T5) − 1 = **T4** default. If reach sourced from a third-party tool (T2) → T2−1 = **T1** — flag explicitly.
+- ENG.003 / ENG.004 / ENG.005: same logic as ENG.002 — check the denominator's trust level.
+- ENG.006: direct native read, Δ = 0 → **T5** regardless of platform.
 
 ---
 
@@ -77,6 +102,15 @@ Platform variants: Instagram includes Saves; TikTok includes Duets/Stitches; You
 - **Traackr**: based on native advertising CPMs per platform
 - **Agency custom**: document your formula explicitly
 
+**Trust propagation for VAL metrics:**
+- VAL.001 (EMV): introduces a reference CPM assumption → Δ = 2, capped at **T3** regardless of how good REA.002 is.
+- VAL.002 (CPE): budget (T1 self-reported) + engagements (T5 native) → min = T1, Δ=1 → floor **T1**. If budget is verified (contract) → T4.
+- VAL.003 (CPM): budget / impressions → same as CPE. Trust depends entirely on budget source reliability.
+- VAL.005 (ROAS) / VAL.006 (CPA): require conversion tracking (T2–T3 at best) → propagated trust rarely exceeds **T2**.
+
+**Key rule — VAL.001:** EMV is always T3 maximum. A T5 impression count does not
+elevate EMV above T3 because the reference CPM is inherently an assumption.
+
 ---
 
 ## QUA — Content Quality
@@ -113,6 +147,12 @@ REG.001.[CC] measures legal compliance (visible hashtag, mandatory text). QUA.00
 | CRE.006 | Category Partnership History | Count and recency of paid partnerships in the same sector as the target brand                     | Count of paid partnerships in sector (rolling 12 months) + recency weighting | integer (count)  | T3    |
 
 **CRE.003 risk thresholds:** <20% healthy · 20–40% monitor · >40% saturation risk
+
+**Trust propagation for CRE metrics:**
+- CRE.001 / CRE.002: derived from post counts (T5 native) → Δ=1 → **T4** default.
+- CRE.003: sponsored posts / total posts — both T5 counts → Δ=1 → **T4** default.
+- CRE.005 (Niche Authority Score): ratio of ENG.002 values. Trust = min(creator ENG.002 T, median ENG.002 T) − 1. If median is estimated (T3) → T3−1 = **T2**.
+- CRE.006: counted from public data or agency records → **T3** default, cannot exceed T3.
 
 **CRE.006 — Dual-signal interpretation ⚠ [BETA — to be validated against campaign data]**
 
