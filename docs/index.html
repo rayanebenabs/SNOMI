@@ -716,6 +716,117 @@
       font-size: 13px;
     }
 
+    /* ─── DEPENDENCY TREE ─── */
+    .dep-tree { margin: 24px 0; }
+
+    .dep-root { margin-bottom: 28px; }
+    .dep-root-badge {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted-2);
+      margin-bottom: 12px; font-family: var(--mono);
+    }
+    .dep-root-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .dep-entity {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+    .dep-entity--actor  { border-left: 3px solid var(--green); }
+    .dep-entity--content { border-left: 3px solid var(--primary); }
+    .dep-entity--campaign { border-left: 3px solid var(--yellow); }
+    .dep-entity--financial { border-left: 3px solid var(--orange); }
+    .dep-entity-icon { font-size: 18px; margin-bottom: 6px; }
+    .dep-entity-name { font-size: 13px; font-weight: 600; font-family: var(--mono); margin-bottom: 3px; }
+    .dep-entity-desc { font-size: 12px; color: var(--muted); }
+
+    .dep-chain-wrap { display: flex; flex-direction: column; gap: 24px; }
+
+    .dep-chain {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .dep-chain-root {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; font-family: var(--mono);
+      padding: 8px 16px;
+    }
+    .dep-chain-root--actor    { background: rgba(52,211,153,0.1);  color: var(--green); }
+    .dep-chain-root--content  { background: rgba(129,140,248,0.1); color: var(--primary); }
+    .dep-chain-root--financial{ background: rgba(251,146,60,0.1);  color: var(--orange); }
+    .dep-chain-root--composite{ background: rgba(167,139,250,0.1); color: var(--accent); }
+
+    .dep-row {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      padding: 12px 16px;
+      border-top: 1px solid var(--border-soft);
+    }
+    .dep-row--indent { padding-left: 32px; background: var(--surface-2); }
+
+    .dep-metric {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+    .dep-metric.dep-base { border-color: var(--muted-2); }
+    .dep-metric--highlight { border-color: var(--primary); }
+    .dep-metric--star { border-color: var(--primary); background: rgba(129,140,248,0.06); }
+    .dep-metric--cap { border-color: var(--yellow); background: rgba(251,191,36,0.04); }
+    .dep-metric--composite { flex: 1; min-width: 200px; }
+
+    .dep-code { font-family: var(--mono); font-weight: 600; color: var(--primary); font-size: 12px; }
+    .dep-name { color: var(--text); font-size: 12px; }
+    .dep-formula { color: var(--muted); font-size: 11px; font-family: var(--mono); }
+    .dep-note { color: var(--muted-2); font-size: 11px; }
+
+    /* ─── CHAIN EXAMPLE (citation HIGH layer) ─── */
+    .chain-example {
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .chain-col { }
+    .chain-col-label {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--muted-2);
+      font-family: var(--mono); margin-bottom: 8px;
+    }
+    .chain-arrow-v {
+      font-size: 12px; color: var(--muted);
+      font-family: var(--mono); padding: 8px 0 8px 12px;
+      border-left: 2px solid var(--border);
+      margin: 4px 0;
+    }
+    .chain-metric-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 0;
+    }
+    .chain-metric-card--primary { border-color: var(--primary); background: rgba(129,140,248,0.05); }
+    .chain-metric-card--muted   { opacity: 0.65; }
+    .chain-metric-card--cap     { border-color: var(--yellow); background: rgba(251,191,36,0.04); }
+    .cmc-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .cmc-name code { font-size: 11px; }
+    .cmc-value { font-size: 28px; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 6px; }
+    .cmc-meta  { font-size: 12px; color: var(--muted); }
+    .cmc-formula { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+    .chain-split-cards { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .chain-split-vs { font-size: 20px; font-weight: 700; color: var(--red); flex-shrink: 0; }
+    .chain-split-cards .chain-metric-card { flex: 1; min-width: 200px; }
+    .constraint-warn { font-size: 11px; font-weight: 600; color: var(--yellow); background: rgba(251,191,36,0.1); padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
+    .constraint-cap  { font-size: 11px; font-weight: 600; color: var(--orange); background: rgba(251,146,60,0.1); padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
+    .preferred-tag   { font-size: 10px; font-weight: 700; color: var(--green); background: rgba(52,211,153,0.1); padding: 2px 6px; border-radius: 4px; margin-left: 4px; }
+
     .citation-row {
       display: flex;
       align-items: baseline;
@@ -1160,15 +1271,24 @@
     <a href="#trust">Trust scores</a>
   </div>
   <div class="sidebar-section">
-    <div class="sidebar-label">Metrics Catalog</div>
-    <a href="#metrics">Overview</a>
+    <div class="sidebar-label">Data model</div>
+    <a href="#data-model">Dependency graph</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Actor-level</div>
     <a href="#aud">AUD — Audience</a>
-    <a href="#eng">ENG — Engagement</a>
-    <a href="#rea">REA — Reach</a>
-    <a href="#con">CON — Conversion</a>
-    <a href="#val">VAL — Value & ROI</a>
-    <a href="#qua">QUA — Quality</a>
     <a href="#cre">CRE — Creator Health</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Content-level</div>
+    <a href="#rea">REA — Reach</a>
+    <a href="#eng">ENG — Engagement</a>
+    <a href="#con">CON — Conversion</a>
+    <a href="#qua">QUA — Quality</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Campaign-level</div>
+    <a href="#val">VAL — Value & ROI</a>
     <a href="#regulatory">REG — Regulatory</a>
   </div>
   <div class="sidebar-section">
@@ -1184,11 +1304,6 @@
     <a href="#bench-tiers">Tiers & complexity</a>
   </div>
   <div class="sidebar-section">
-    <div class="sidebar-label">Reference</div>
-    <a href="#rules">Critical rules</a>
-    <a href="#modes">Operating modes</a>
-  </div>
-  <div class="sidebar-section">
     <div class="sidebar-label">Resources (v2)</div>
     <a href="#resource-model">Resource model</a>
     <a href="#content-profiles">Content profiles</a>
@@ -1201,6 +1316,11 @@
     <a href="#int-claude">Claude</a>
     <a href="#int-gpt">ChatGPT / GPT-4o</a>
     <a href="#int-gemini">Gemini</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Reference</div>
+    <a href="#rules">Critical rules</a>
+    <a href="#modes">Operating modes</a>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-label">Contact</div>
@@ -1218,14 +1338,14 @@
       <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
         <circle cx="5" cy="5" r="5"/>
       </svg>
-      Open International Standard · Version 1.1
+      Open International Standard · v2.0
     </div>
     <h1 class="hero-title">Standard Nomenclature<br>of Influence Metrics</h1>
     <p class="lead">
       SNOMI is an open, vendor-neutral standard that assigns unique codes, formulas, and trust levels to every metric used in influencer marketing — making reports comparable, auditable, and manipulation-resistant.
     </p>
     <div class="hero-actions">
-      <a href="#metrics" class="btn btn-primary">Browse metrics</a>
+      <a href="#data-model" class="btn btn-primary">Browse metrics</a>
       <a href="#integration" class="btn btn-secondary">AI integration</a>
       <a href="https://github.com/rayanebenabs/SNOMI" target="_blank" class="btn btn-secondary">
         <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
@@ -1309,53 +1429,160 @@
   <!-- ── CITATION FORMAT ── -->
   <section id="citation">
     <h2>Standard citation format</h2>
-    <p>Every SNOMI data point exists at <strong>three levels of visibility</strong>. The same metric is expressed differently depending on the audience — from a human-readable summary to a fully machine-readable object.</p>
+    <p>Every SNOMI data point exists at <strong>three levels of visibility</strong>. The example below shows a complete dependency chain — four linked metrics from a single ig-reel — and the constraints that propagate through them.</p>
 
     <div class="layer-stack">
 
-      <!-- ▲ HAUTE — lecture humaine -->
+      <!-- ▲ HIGH -->
       <div class="layer layer-high">
         <div class="layer-badge">▲ High — human-readable</div>
-        <div style="display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:6px">
-          <div style="font-size:20px; font-weight:700; color:var(--text)">Engagement Rate</div>
-          <div style="font-size:14px; color:var(--muted)">Instagram · United States · March 2026</div>
-        </div>
-        <div style="font-size:44px; font-weight:800; color:var(--primary); letter-spacing:-0.03em; line-height:1.1; margin-bottom:14px">4.8%</div>
-        <div style="display:flex; gap:20px; flex-wrap:wrap; font-size:13px; color:var(--muted)">
-          <span>Source &nbsp;<span style="color:var(--text)">Instagram Insights</span></span>
-          <span>Trust &nbsp;<span class="tag t5">T5</span></span>
-          <span>Extracted &nbsp;<span style="color:var(--text)">April 2, 2026</span></span>
+        <div class="chain-example">
+
+          <div class="chain-col">
+            <div class="chain-col-label">Actor.creator</div>
+            <div class="chain-metric-card">
+              <div class="cmc-name">Followers</div>
+              <div class="cmc-value">245,000</div>
+              <div class="cmc-meta">Instagram · April 2026 · <span class="tag t5">T5</span> · native platform</div>
+            </div>
+          </div>
+
+          <div class="chain-arrow-v">↓ base for ER(followers) &amp; reach rate</div>
+
+          <div class="chain-col">
+            <div class="chain-col-label">ContentUnit — ig-reel · March 2026</div>
+            <div class="chain-metric-card">
+              <div class="cmc-name">Organic Reach</div>
+              <div class="cmc-value">180,000</div>
+              <div class="cmc-meta">Instagram · March 2026 · <span class="tag t5">T5</span> · native platform</div>
+            </div>
+          </div>
+
+          <div class="chain-arrow-v">↓ engagements (14,400) ÷ reach or followers</div>
+
+          <div class="chain-col">
+            <div class="chain-col-label">Engagement Rate — two valid reads <span class="constraint-warn">⚠ not interchangeable</span></div>
+            <div class="chain-split-cards">
+              <div class="chain-metric-card chain-metric-card--muted">
+                <div class="cmc-name">ER (followers) <code>ENG.001</code></div>
+                <div class="cmc-value">5.9%</div>
+                <div class="cmc-formula">14,400 ÷ 245,000 · Δ1 → <span class="tag t4">T4</span></div>
+              </div>
+              <div class="chain-split-vs">≠</div>
+              <div class="chain-metric-card chain-metric-card--primary">
+                <div class="cmc-name">ER (reach) <code>ENG.002</code> <span class="preferred-tag">★ preferred</span></div>
+                <div class="cmc-value">8.0%</div>
+                <div class="cmc-formula">14,400 ÷ 180,000 · Δ1 → <span class="tag t4">T4</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chain-arrow-v">↓ REA.001 × ref CPM ÷ 1000 · Launchmetrics · Δ2</div>
+
+          <div class="chain-col">
+            <div class="chain-col-label">Estimated Media Value <span class="constraint-cap">⚑ T3 ceiling — CPM is always an assumption</span></div>
+            <div class="chain-metric-card chain-metric-card--cap">
+              <div class="cmc-name">EMV <code>VAL.001[base: REA.001]</code></div>
+              <div class="cmc-value">€8,640</div>
+              <div class="cmc-formula">180,000 × €48 CPM / 1,000 → <span class="tag t3">T3 max</span> · regardless of input quality</div>
+            </div>
+          </div>
+
         </div>
       </div>
 
-      <!-- ◆ MID — SNOMI format -->
+      <!-- ◆ MID -->
       <div class="layer layer-mid">
         <div class="layer-badge">◆ Mid — SNOMI format</div>
-        <div style="color:var(--muted-2); font-size:10.5px; letter-spacing:0.07em; text-transform:uppercase; margin-bottom:12px; font-family:var(--mono)">Code &nbsp;·&nbsp; Value &nbsp;·&nbsp; Time window &nbsp;·&nbsp; Produced &nbsp;·&nbsp; Source &nbsp;·&nbsp; Trust</div>
-        <div class="citation-row" style="padding:0">
-          <span class="cit-code">ENG.002.IG.US</span>
-          <span class="cit-val">4.8%</span>
+        <div style="color:var(--muted-2); font-size:10.5px; letter-spacing:0.07em; text-transform:uppercase; margin-bottom:14px; font-family:var(--mono)">Code · Value · Time window · Produced · Source · Trust</div>
+        <div class="citation-row" style="padding:0; margin-bottom:8px">
+          <span class="cit-code">AUD.001.IG</span>
+          <span class="cit-val">245,000</span>
+          <span class="cit-window">2026-04-01</span>
+          <span class="cit-produced">⬥ 2026-04-01</span>
+          <span class="cit-source">Instagram Insights</span>
+          <span class="tag t5">T5</span>
+        </div>
+        <div class="citation-row" style="padding:0; margin-bottom:8px">
+          <span class="cit-code">REA.001.IG.US</span>
+          <span class="cit-val">180,000</span>
           <span class="cit-window">2026-03-01 → 2026-03-31</span>
           <span class="cit-produced">⬥ 2026-04-02</span>
           <span class="cit-source">Instagram Insights</span>
           <span class="tag t5">T5</span>
         </div>
+        <div class="citation-row" style="padding:0; margin-bottom:8px">
+          <span class="cit-code">ENG.002.IG.US</span>
+          <span class="cit-val">8.0%</span>
+          <span class="cit-window">2026-03-01 → 2026-03-31</span>
+          <span class="cit-produced">⬥ 2026-04-02</span>
+          <span class="cit-source" style="color:var(--primary); font-size:11px">= engagements ÷ REA.001 · Δ1</span>
+          <span class="tag t4">T4</span>
+        </div>
+        <div class="citation-row" style="padding:0">
+          <span class="cit-code">VAL.001[base:REA.001].IG.US</span>
+          <span class="cit-val">€8,640</span>
+          <span class="cit-window">2026-03-01 → 2026-03-31</span>
+          <span class="cit-produced">⬥ 2026-04-02</span>
+          <span class="cit-source" style="color:var(--yellow); font-size:11px">= REA.001 × €48 CPM · Δ2 · T3 cap</span>
+          <span class="tag t3">T3</span>
+        </div>
       </div>
 
-      <!-- ▼ LOW — JSON -->
+      <!-- ▼ LOW -->
       <div class="layer layer-low">
         <div class="layer-badge">▼ Low — JSON</div>
         <div class="code-block" style="margin:0">
-          <pre><code>{
-  "snomi":    "ENG.002.IG.US",
-  "label":    "Engagement Rate",
-  "value":    4.8,
-  "unit":     "%",
-  "window":   { "start": "2026-03-01", "end": "2026-03-31" },
-  "produced": "2026-04-02",
-  "source":   "Instagram Insights",
-  "trust":    "T5"
-}</code></pre>
+          <pre><code>[
+  {
+    "snomi":    "AUD.001.IG",
+    "label":    "Followers",
+    "value":    245000,
+    "unit":     "count",
+    "produced": "2026-04-01",
+    "source":   "Instagram Insights",
+    "trust":    "T5"
+  },
+  {
+    "snomi":    "REA.001.IG.US",
+    "label":    "Organic Reach",
+    "value":    180000,
+    "unit":     "count",
+    "window":   { "start": "2026-03-01", "end": "2026-03-31" },
+    "produced": "2026-04-02",
+    "source":   "Instagram Insights",
+    "trust":    "T5"
+  },
+  {
+    "snomi":      "ENG.002.IG.US",
+    "label":      "Engagement Rate (reach)",
+    "value":      8.0,
+    "unit":       "%",
+    "depends_on": ["REA.001.IG.US"],
+    "formula":    "engagements / REA.001",
+    "delta":      1,
+    "window":     { "start": "2026-03-01", "end": "2026-03-31" },
+    "produced":   "2026-04-02",
+    "source":     "Instagram Insights",
+    "trust":      "T4"
+  },
+  {
+    "snomi":      "VAL.001[base:REA.001].IG.US",
+    "label":      "EMV",
+    "value":      8640,
+    "unit":       "EUR",
+    "depends_on": ["REA.001.IG.US"],
+    "formula":    "REA.001 × ref_CPM / 1000",
+    "ref_cpm":    48,
+    "method":     "Launchmetrics",
+    "delta":      2,
+    "window":     { "start": "2026-03-01", "end": "2026-03-31" },
+    "produced":   "2026-04-02",
+    "source":     "Launchmetrics",
+    "trust":      "T3",
+    "trust_note": "T3 max — ref_CPM is inherently an assumption"
+  }
+]</code></pre>
           <button class="copy-btn" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent).then(()=>{this.textContent='copied';this.classList.add('copied');setTimeout(()=>{this.textContent='copy';this.classList.remove('copied')},1500)})">copy</button>
         </div>
       </div>
@@ -1364,8 +1591,8 @@
 
     <div class="callout callout-info" style="margin-top:20px">
       <strong>TIME WINDOW vs PRODUCED</strong>
-      <p style="margin:6px 0 0"><strong>TIME WINDOW</strong> is the period the metric covers (when the campaign ran or the data window). <strong>PRODUCED</strong> is the ISO date when the data was extracted or calculated. Platform data can be revised retroactively — knowing when it was pulled is essential for auditability.</p>
-      <p style="margin:6px 0 0; color:var(--muted); font-size:12px">Format: <code>YYYY-MM-DD</code> (date) or <code>YYYY-MM-DDTHH:MMZ</code> (datetime if precision matters)</p>
+      <p style="margin:6px 0 0"><strong>TIME WINDOW</strong> is the period the metric covers. <strong>PRODUCED</strong> is the ISO date when the data was extracted or calculated. Platform data can be revised retroactively — knowing when it was pulled is essential for auditability.</p>
+      <p style="margin:6px 0 0; color:var(--muted); font-size:12px">Format: <code>YYYY-MM-DD</code> or <code>YYYY-MM-DDTHH:MMZ</code></p>
     </div>
   </section>
 
@@ -1433,14 +1660,298 @@
 
   <hr />
 
+  <!-- ── DATA MODEL ── -->
+<section id="data-model">
+  <h2>Data dependency graph</h2>
+  <p>Every SNOMI metric has a <strong>root entity</strong> it belongs to and zero or more <strong>upstream metrics</strong> it depends on. A derived metric inherits the trust constraints of all its inputs — understanding this graph is essential for valid citation.</p>
+
+  <div class="dep-tree">
+
+    <div class="dep-root">
+      <div class="dep-root-badge">Root entities</div>
+      <div class="dep-root-grid">
+        <div class="dep-entity dep-entity--actor">
+          <div class="dep-entity-icon">👤</div>
+          <div class="dep-entity-name">Actor.creator</div>
+          <div class="dep-entity-desc">The creator account — exists independently</div>
+        </div>
+        <div class="dep-entity dep-entity--content">
+          <div class="dep-entity-icon">📄</div>
+          <div class="dep-entity-name">ContentUnit</div>
+          <div class="dep-entity-desc">A published piece of content — requires Actor.creator</div>
+        </div>
+        <div class="dep-entity dep-entity--campaign">
+          <div class="dep-entity-icon">🎯</div>
+          <div class="dep-entity-name">Campaign</div>
+          <div class="dep-entity-desc">Groups content units — requires Actor.advertiser</div>
+        </div>
+        <div class="dep-entity dep-entity--financial">
+          <div class="dep-entity-icon">💰</div>
+          <div class="dep-entity-name">Financial.Budget</div>
+          <div class="dep-entity-desc">Spend data — requires Campaign</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dep-chain-wrap">
+
+      <!-- CHAIN: Actor.creator -->
+      <div class="dep-chain">
+        <div class="dep-chain-root dep-chain-root--actor">Actor.creator</div>
+        <div class="dep-row">
+          <div class="dep-metric dep-base">
+            <span class="dep-code">AUD.001</span>
+            <span class="dep-name">Followers</span>
+            <span class="tag t5">T5</span>
+            <span class="dep-note">base — native platform</span>
+          </div>
+        </div>
+        <div class="dep-row dep-row--indent">
+          <div class="dep-metric">
+            <span class="dep-code">AUD.002</span>
+            <span class="dep-name">Growth Rate</span>
+            <span class="tag t5">T5</span>
+            <span class="dep-formula">AUD.001 × 2 dates</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">AUD.003</span>
+            <span class="dep-name">Quality Score</span>
+            <span class="tag t2">T2</span>
+            <span class="dep-formula">3rd-party tool</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">AUD.004</span>
+            <span class="dep-name">Target Audience Rate</span>
+            <span class="tag t3">T3</span>
+            <span class="dep-formula">audit on AUD.001</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">AUD.005</span>
+            <span class="dep-name">Audience Overlap</span>
+            <span class="tag t2">T2</span>
+            <span class="dep-formula">AUD.001 × 2 creators</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">AUD.006</span>
+            <span class="dep-name">Demographics</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">native on AUD.001</span>
+          </div>
+          <div class="dep-metric dep-metric--highlight">
+            <span class="dep-code">ENG.001</span>
+            <span class="dep-name">ER (followers)</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">engagements ÷ AUD.001</span>
+          </div>
+          <div class="dep-metric dep-metric--highlight">
+            <span class="dep-code">REA.003</span>
+            <span class="dep-name">Reach Rate</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">REA.001 ÷ AUD.001</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHAIN: ContentUnit -->
+      <div class="dep-chain">
+        <div class="dep-chain-root dep-chain-root--content">ContentUnit</div>
+
+        <div class="dep-row">
+          <div class="dep-metric dep-base">
+            <span class="dep-code">REA.001</span>
+            <span class="dep-name">Organic Reach</span>
+            <span class="tag t5">T5</span>
+            <span class="dep-note">base — native platform</span>
+          </div>
+          <div class="dep-metric dep-base">
+            <span class="dep-code">REA.002</span>
+            <span class="dep-name">Impressions</span>
+            <span class="tag t5">T5</span>
+            <span class="dep-note">base — native platform</span>
+          </div>
+          <div class="dep-metric dep-base">
+            <span class="dep-code">REA.005</span>
+            <span class="dep-name">Video Views</span>
+            <span class="tag t5">T5</span>
+            <span class="dep-note">base — native platform</span>
+          </div>
+          <div class="dep-metric dep-base">
+            <span class="dep-code">CON.001</span>
+            <span class="dep-name">Link Clicks</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-note">base — native + UTM</span>
+          </div>
+        </div>
+
+        <div class="dep-row dep-row--indent">
+          <div class="dep-metric">
+            <span class="dep-code">REA.003</span>
+            <span class="dep-name">Reach Rate</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">REA.001 ÷ AUD.001</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">REA.004</span>
+            <span class="dep-name">Frequency</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">REA.002 ÷ REA.001</span>
+          </div>
+          <div class="dep-metric dep-metric--star">
+            <span class="dep-code">ENG.002 ★</span>
+            <span class="dep-name">ER (reach)</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">engagements ÷ REA.001</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">ENG.003</span>
+            <span class="dep-name">Comment Rate</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">comments ÷ REA.002</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">ENG.004</span>
+            <span class="dep-name">Save Rate</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">saves ÷ REA.002</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">ENG.005</span>
+            <span class="dep-name">Share Rate</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">shares ÷ REA.002</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">ENG.006</span>
+            <span class="dep-name">Completion Rate</span>
+            <span class="tag t5">T5</span>
+            <span class="dep-formula">native — video only</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">REA.006</span>
+            <span class="dep-name">Qualified Views</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">ENG.006 × REA.005</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">CON.002</span>
+            <span class="dep-name">CTR</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">CON.001 ÷ REA.001</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">CON.003</span>
+            <span class="dep-name">Promo Code Rate</span>
+            <span class="tag t3">T3</span>
+            <span class="dep-formula">code uses ÷ REA.001</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">CON.004</span>
+            <span class="dep-name">Leads</span>
+            <span class="tag t3">T3</span>
+            <span class="dep-formula">tracking platform</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">CON.005</span>
+            <span class="dep-name">Attributed Sales</span>
+            <span class="tag t3">T3</span>
+            <span class="dep-formula">sales tracking</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">CON.006</span>
+            <span class="dep-name">CVR</span>
+            <span class="tag t3">T3</span>
+            <span class="dep-formula">CON.004÷CON.001</span>
+          </div>
+          <div class="dep-metric dep-metric--cap">
+            <span class="dep-code">VAL.001</span>
+            <span class="dep-name">EMV</span>
+            <span class="tag t3">T3 max</span>
+            <span class="dep-formula">REA.001 × ref_CPM</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHAIN: Financial.Budget -->
+      <div class="dep-chain">
+        <div class="dep-chain-root dep-chain-root--financial">Financial.Budget</div>
+        <div class="dep-row dep-row--indent">
+          <div class="dep-metric">
+            <span class="dep-code">VAL.002</span>
+            <span class="dep-name">CPE</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">Budget ÷ engagements</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">VAL.003</span>
+            <span class="dep-name">CPM</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">Budget ÷ REA.002 × 1000</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">VAL.004</span>
+            <span class="dep-name">CPC</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">Budget ÷ CON.001</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">VAL.005</span>
+            <span class="dep-name">ROAS</span>
+            <span class="tag t2">T2</span>
+            <span class="dep-formula">CON.005 ÷ Budget</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">VAL.006</span>
+            <span class="dep-name">CPA</span>
+            <span class="tag t2">T2</span>
+            <span class="dep-formula">Budget ÷ CON.004</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHAIN: Composite scores -->
+      <div class="dep-chain">
+        <div class="dep-chain-root dep-chain-root--composite">Composite scores</div>
+        <div class="dep-row dep-row--indent">
+          <div class="dep-metric dep-metric--composite">
+            <span class="dep-code">CPI</span>
+            <span class="dep-name">Creator Performance Index</span>
+            <span class="tag t2">≤T2</span>
+            <span class="dep-formula">ENG.002 · AUD.003 · REA.003 · CRE.001 · CRE.005</span>
+          </div>
+          <div class="dep-metric dep-metric--composite">
+            <span class="dep-code">CoPI</span>
+            <span class="dep-name">Collaboration Performance Index</span>
+            <span class="tag t3">≤T3</span>
+            <span class="dep-formula">REA.003 · ENG.002 · CON.002 · QUA.001 · QUA.003</span>
+          </div>
+          <div class="dep-metric dep-metric--composite">
+            <span class="dep-code">BFS</span>
+            <span class="dep-name">Brand Fit Score</span>
+            <span class="tag t2">≤T2</span>
+            <span class="dep-formula">AUD.004 · CRE.005 · QUA.002 · CRE.006 · QUA.005</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /dep-chain-wrap -->
+
+    <div class="callout callout-warn" style="margin-top:20px">
+      <strong>Trust propagation applies across the chain</strong>
+      A derived metric's trust score is <code>max(T1, min(T_inputs) − Δ)</code>. If any upstream metric is low-trust, it degrades every downstream metric that depends on it. EMV (VAL.001) is capped at T3 regardless of input quality — the reference CPM assumption always introduces Δ=2.
+    </div>
+  </div>
+</section>
+
+  <hr />
+
   <!-- ── METRICS CATALOG ── -->
   <section id="metrics">
     <h2>Metrics catalog</h2>
     <p>SNOMI defines <strong>8 domains</strong> covering every dimension of influencer performance. Click any domain to jump to its specs.</p>
     <div class="domain-grid">
       <a href="#aud" class="domain-card"><div class="domain-code">AUD</div><div class="domain-name">Audience</div><div class="domain-desc">Size, quality, composition</div></a>
-      <a href="#eng" class="domain-card"><div class="domain-code">ENG</div><div class="domain-name">Engagement</div><div class="domain-desc">Interaction with content</div></a>
       <a href="#rea" class="domain-card"><div class="domain-code">REA</div><div class="domain-name">Reach & Distribution</div><div class="domain-desc">Content spread</div></a>
+      <a href="#eng" class="domain-card"><div class="domain-code">ENG</div><div class="domain-name">Engagement</div><div class="domain-desc">Interaction with content</div></a>
       <a href="#con" class="domain-card"><div class="domain-code">CON</div><div class="domain-name">Conversion</div><div class="domain-desc">Commercial actions</div></a>
       <a href="#val" class="domain-card"><div class="domain-code">VAL</div><div class="domain-name">Value & ROI</div><div class="domain-desc">Financial metrics</div></a>
       <a href="#qua" class="domain-card"><div class="domain-code">QUA</div><div class="domain-name">Content Quality</div><div class="domain-desc">Quality, compliance, sentiment</div></a>
@@ -1471,31 +1982,6 @@
       <strong>AUD.003 note</strong>
       Values above 85% are generally considered strong. Tools vary significantly — HypeAuditor, Modash, Kolsquare, Upfluence each use proprietary models. Never present as native platform data.
     </div>
-  </section>
-
-  <!-- ── ENG ── -->
-  <section id="eng">
-    <h2>ENG — Engagement</h2>
-    <div class="callout callout-warn">
-      <strong>ENG.001 ≠ ENG.002 — always specify</strong>
-      These metrics are not interchangeable. ENG.002 (on Reach) is the SNOMI preferred metric. ENG.001 (on Followers) is biased if the audience is unevenly active. Always declare which is used.
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Code</th><th>Name</th><th>Formula</th><th>Format</th><th>Trust</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>ENG.001</td><td>Engagement Rate (Followers)</td><td><code>(L+C+S+Sh) / [AUD.001] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>ENG.002 <span class="star">⭐</span></td><td>Engagement Rate (Reach)</td><td><code>(L+C+S+Sh) / [REA.001] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>ENG.003</td><td>Comment Rate</td><td><code>Comments / [REA.002] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>ENG.004</td><td>Save Rate</td><td><code>Saves / [REA.002] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>ENG.005</td><td>Share Rate</td><td><code>Shares / [REA.002] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>ENG.006</td><td>Video Completion Rate</td><td><code>Complete views / [REA.005] × 100</code></td><td>%</td><td><span class="tag t5">T5</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="font-size:13px; color:var(--muted)"><strong style="color:var(--muted)">Interaction components (L+C+S+Sh):</strong> Likes + Comments + Saves + Shares. Platform variants: Instagram includes Saves; TikTok includes Duets/Stitches; YouTube uses Thumbs up + Comments (no saves native).</p>
   </section>
 
   <!-- ── REA ── -->
@@ -1557,6 +2043,31 @@
       <strong>REA.006 — Qualified Views</strong>
       Native on YouTube. On Instagram and TikTok, derive from <code>[ENG.006] × [REA.005] / 100</code> → T4. Always flag if derived vs native.
     </div>
+  </section>
+
+  <!-- ── ENG ── -->
+  <section id="eng">
+    <h2>ENG — Engagement</h2>
+    <div class="callout callout-warn">
+      <strong>ENG.001 ≠ ENG.002 — always specify</strong>
+      These metrics are not interchangeable. ENG.002 (on Reach) is the SNOMI preferred metric. ENG.001 (on Followers) is biased if the audience is unevenly active. Always declare which is used.
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Name</th><th>Formula</th><th>Format</th><th>Trust</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ENG.001</td><td>Engagement Rate (Followers)</td><td><code>(L+C+S+Sh) / [AUD.001] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>ENG.002 <span class="star">⭐</span></td><td>Engagement Rate (Reach)</td><td><code>(L+C+S+Sh) / [REA.001] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>ENG.003</td><td>Comment Rate</td><td><code>Comments / [REA.002] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>ENG.004</td><td>Save Rate</td><td><code>Saves / [REA.002] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>ENG.005</td><td>Share Rate</td><td><code>Shares / [REA.002] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>ENG.006</td><td>Video Completion Rate</td><td><code>Complete views / [REA.005] × 100</code></td><td>%</td><td><span class="tag t5">T5</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:13px; color:var(--muted)"><strong style="color:var(--muted)">Interaction components (L+C+S+Sh):</strong> Likes + Comments + Saves + Shares. Platform variants: Instagram includes Saves; TikTok includes Duets/Stitches; YouTube uses Thumbs up + Comments (no saves native).</p>
   </section>
 
   <!-- ── CON ── -->
