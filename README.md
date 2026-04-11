@@ -1,6 +1,6 @@
 # SNOMI — Standard Nomenclature of Influence Metrics
 
-**Version 1.1 · Open International Standard**
+**Version 2.0 · Open International Standard**
 
 SNOMI is an open, vendor-neutral standard that assigns unique codes, formulas, and trust levels to every metric used in influencer marketing — making reports comparable, auditable, and manipulation-resistant.
 
@@ -12,16 +12,44 @@ The full documentation is available at: **https://rayanebenabs.github.io/SNOMI**
 
 ---
 
-## Repository structure
+## Repository Structure
 
 ```
-snomi/
-├── SKILL.md                  # AI skill — load into Claude, GPT, or Gemini
+SNOMI/
+├── SKILL.md                          # AI integration skill (v2.0)
 ├── references/
-│   ├── metrics.md            # Full metrics catalog (all 8 domains, 40+ codes)
-│   └── benchmarks.md         # Regional benchmarks (ENG, CPM by market & tier)
+│   ├── foundation/
+│   │   ├── resource-model.md         # Base types, cardinality, type system
+│   │   └── valuesets.md              # All controlled vocabularies
+│   ├── resources/
+│   │   ├── content-unit.md           # Base ContentUnit resource
+│   │   ├── actor.md                  # Base Actor resource
+│   │   ├── campaign.md               # Campaign resource
+│   │   └── financial.md              # Financial resources (Budget/Contract/Invoice/Payment/Bonus)
+│   ├── profiles/
+│   │   ├── content/
+│   │   │   ├── ig-reel.md            # Instagram Reel
+│   │   │   ├── ig-story.md           # Instagram Story
+│   │   │   ├── ig-post.md            # Instagram Post/Carousel
+│   │   │   ├── tk-video.md           # TikTok Video
+│   │   │   ├── tk-story.md           # TikTok Story
+│   │   │   ├── yt-short.md           # YouTube Short
+│   │   │   ├── yt-video.md           # YouTube Video
+│   │   │   ├── fb-reel.md            # Facebook Reel
+│   │   │   ├── fb-post.md            # Facebook Post
+│   │   │   ├── li-post.md            # LinkedIn Post
+│   │   │   ├── tw-post.md            # X/Twitter Post
+│   │   │   └── pin-pin.md            # Pinterest Pin
+│   │   └── actors/
+│   │       ├── creator.md            # Creator/Influencer
+│   │       ├── advertiser.md         # Brand/Advertiser
+│   │       ├── agency.md             # Agency
+│   │       ├── platform.md           # Social platform
+│   │       └── tool.md               # Analytics tool
+│   ├── metrics.md                    # Full metrics catalog (AUD/ENG/REA/CON/VAL/QUA/CRE/REG)
+│   └── benchmarks.md                 # Regional CPM and engagement benchmarks
 └── docs/
-    └── index.html            # Documentation website (auto-deployed via GitHub Pages)
+    └── index.html                    # Documentation website (GitHub Pages)
 ```
 
 ---
@@ -98,4 +126,4 @@ SNOMI is released as an open standard. You are free to use, cite, and build upon
 
 ---
 
-*SNOMI v1.1 · 2026*
+*SNOMI v2.0 · 2026*
