@@ -2110,26 +2110,132 @@ Domain   ID   Platform  Market (optional)</code></pre>
   <!-- ── ENG ── -->
   <section id="eng">
     <h2>ENG — Engagement</h2>
+
     <div class="callout callout-warn">
       <strong>ENG.001 ≠ ENG.002 — always specify</strong>
-      These metrics are not interchangeable. ENG.002 (on Reach) is the SNOMI preferred metric. ENG.001 (on Followers) is biased if the audience is unevenly active. Always declare which is used.
+      These metrics are not interchangeable. ENG.002 (on Reach) is the SNOMI preferred metric. ENG.001 (on Followers) is biased if the audience is unevenly active. Always declare which denominator was used.
     </div>
+
+    <h3 style="margin-top:28px; margin-bottom:10px">Interaction signal weights</h3>
+    <p>Not all interactions carry the same signal. A like is passive. A comment requires intent. A save means "I want this later." A share explicitly recommends the content. SNOMI formalises this with standard weights — applied in the weighted variant (<code>ENG.001w</code> / <code>ENG.002w</code>).</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Interaction</th><th>Symbol</th><th>Weight</th><th>Signal</th><th>Platforms</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Like / Heart / Thumbs Up</td><td><code>L</code></td><td>×1</td><td>Passive acknowledgement</td><td>All</td></tr>
+          <tr><td>Comment</td><td><code>C</code></td><td>×3</td><td>Active — requires intent and effort</td><td>All</td></tr>
+          <tr><td>Save / Bookmark</td><td><code>S</code></td><td>×4</td><td>High intent — strong retention signal</td><td>IG, TK, YT (playlists), LI</td></tr>
+          <tr><td>Share / Repost / Retweet</td><td><code>Sh</code></td><td>×5</td><td>Amplification — explicit recommendation</td><td>All</td></tr>
+          <tr><td>Duet</td><td><code>Du</code></td><td>×6</td><td>Creates derivative content</td><td>TK only</td></tr>
+          <tr><td>Stitch</td><td><code>St</code></td><td>×6</td><td>Creates derivative content</td><td>TK only</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:28px; margin-bottom:10px">Input declaration — three levels</h3>
+    <p>You don't always have access to every interaction type. SNOMI requires declaring exactly which inputs were available using the <code>[inputs:…]</code> syntax. Missing interactions are treated as zero — which must be explicit. The completeness of your inputs directly affects the trust score.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Declaration</th><th>Data available</th><th>Trust</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>[inputs:L]</code></td>
+            <td>Likes only</td>
+            <td><span class="tag t3">T3</span></td>
+            <td>Minimum floor — always accessible. Comments, saves, shares assumed zero and must be declared missing.</td>
+          </tr>
+          <tr>
+            <td><code>[inputs:L+C]</code></td>
+            <td>Likes + Comments</td>
+            <td><span class="tag t3">T3</span></td>
+            <td>Available on most native dashboards without deep API access. Saves and shares assumed zero.</td>
+          </tr>
+          <tr>
+            <td><code>[inputs:L+C+S+Sh]</code></td>
+            <td>Full standard signal</td>
+            <td><span class="tag t4">T4</span></td>
+            <td>Requires native platform Insights / Analytics access. <strong>Recommended minimum for agency reports.</strong></td>
+          </tr>
+          <tr>
+            <td><code>[inputs:L+C+S+Sh+Du+St]</code></td>
+            <td>Full extended signal</td>
+            <td><span class="tag t4">T4</span></td>
+            <td>TikTok only. Duets and Stitches are high-signal and should always be included when available.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:28px; margin-bottom:10px">Metrics</h3>
     <div class="table-wrap">
       <table>
         <thead>
           <tr><th>Code</th><th>Name</th><th>Formula</th><th>Format</th><th>Trust</th></tr>
         </thead>
         <tbody>
-          <tr><td>ENG.001</td><td>Engagement Rate (Followers)</td><td><code>(L+C+S+Sh) / [AUD.001] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>ENG.002 <span class="star">⭐</span></td><td>Engagement Rate (Reach)</td><td><code>(L+C+S+Sh) / [REA.001] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>ENG.003</td><td>Comment Rate</td><td><code>Comments / [REA.002] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>ENG.004</td><td>Save Rate</td><td><code>Saves / [REA.002] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>ENG.005</td><td>Share Rate</td><td><code>Shares / [REA.002] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>ENG.006</td><td>Video Completion Rate</td><td><code>Complete views / [REA.005] × 100</code></td><td>%</td><td><span class="tag t5">T5</span></td></tr>
+          <tr>
+            <td><code>ENG.001[inputs:…]</code></td>
+            <td>Engagement Rate (Followers)</td>
+            <td><code>Σ(interactions) / AUD.001 × 100</code></td>
+            <td>%</td>
+            <td>see input tier</td>
+          </tr>
+          <tr>
+            <td><code>ENG.001w[inputs:…]</code></td>
+            <td>Weighted ER (Followers)</td>
+            <td><code>(1·L + 3·C + 4·S + 5·Sh) / AUD.001 × 100</code></td>
+            <td>%</td>
+            <td>see input tier</td>
+          </tr>
+          <tr>
+            <td><code>ENG.002[inputs:…] ⭐</code></td>
+            <td>Engagement Rate (Reach)</td>
+            <td><code>Σ(interactions) / REA.001 × 100</code></td>
+            <td>%</td>
+            <td>see input tier</td>
+          </tr>
+          <tr>
+            <td><code>ENG.002w[inputs:…]</code></td>
+            <td>Weighted ER (Reach)</td>
+            <td><code>(1·L + 3·C + 4·S + 5·Sh) / REA.001 × 100</code></td>
+            <td>%</td>
+            <td>see input tier</td>
+          </tr>
+          <tr><td><code>ENG.003</code></td><td>Comment Rate</td><td><code>C / REA.002 × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td><code>ENG.004</code></td><td>Save Rate</td><td><code>S / REA.002 × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td><code>ENG.005</code></td><td>Share Rate</td><td><code>Sh / REA.002 × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td><code>ENG.006</code></td><td>Video Completion Rate</td><td><code>Complete views / REA.005 × 100</code></td><td>%</td><td><span class="tag t5">T5</span></td></tr>
         </tbody>
       </table>
     </div>
-    <p style="font-size:13px; color:var(--muted)"><strong style="color:var(--muted)">Interaction components (L+C+S+Sh):</strong> Likes + Comments + Saves + Shares. Platform variants: Instagram includes Saves; TikTok includes Duets/Stitches; YouTube uses Thumbs up + Comments (no saves native).</p>
+
+    <h3 style="margin-top:28px; margin-bottom:10px">Example — same post, four calculations</h3>
+    <div class="code-block">
+      <pre><code>Post data:  12,000 likes · 840 comments · 2,100 saves · 560 shares
+Reach:      180,000
+
+ENG.002[inputs:L].IG            =  12,000 / 180,000 × 100
+                                 =  6.67%   T3  ← likes only
+
+ENG.002[inputs:L+C].IG          =  (12,000 + 840) / 180,000 × 100
+                                 =  7.13%   T3  ← likes + comments
+
+ENG.002[inputs:L+C+S+Sh].IG     =  (12,000 + 840 + 2,100 + 560) / 180,000 × 100
+                                 =  8.61%   T4  ← full signal
+
+ENG.002w[inputs:L+C+S+Sh].IG    =  (12,000×1 + 840×3 + 2,100×4 + 560×5) / 180,000 × 100
+                                 =  (12,000 + 2,520 + 8,400 + 2,800) / 180,000 × 100
+                                 =  25,720 / 180,000 × 100
+                                 =  14.29%  T4  ← weighted full signal</code></pre>
+    </div>
+    <div class="callout callout-info" style="margin-top:12px">
+      <strong>Which variant should you use?</strong>
+      <p style="margin:6px 0 0">Use <code>ENG.002w[inputs:L+C+S+Sh]</code> when you have full native access — it gives the most complete picture of engagement quality. Use the unweighted variant when comparing across different SNOMI reports. <strong>Never compare a <code>[inputs:L]</code> figure against a <code>[inputs:L+C+S+Sh]</code> figure</strong> — they measure different things.</p>
+    </div>
   </section>
 
   <!-- ── CON ── -->
