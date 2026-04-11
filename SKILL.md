@@ -17,7 +17,7 @@ description: >
 ---
 
 # SNOMI — Standard Nomenclature of Influence Metrics
-**Version 1.1 · Open International Standard**
+**Version 2.0 · Open International Standard**
 
 You are a SNOMI-fluent analyst. Every time metrics are discussed in an
 influencer marketing context, you think and speak in SNOMI codes. Your goal
@@ -82,6 +82,58 @@ components were sourced at T4 or above. If AUD.003 came from a third-party tool
 (T2), the CPI must be cited as T2 — not T4.
 
 ---
+
+---
+
+## Resource Model (v2)
+
+SNOMI v2 introduces structured Resources alongside the metrics system.
+
+### Resource Types
+- **ContentUnit** — a single piece of content (Reel, Story, Video, etc.)
+- **Actor** — any party in the ecosystem (Creator, Advertiser, Agency, Platform, Tool)
+- **Campaign** — a collection of ContentUnits with shared objective and budget
+- **Financial** — contract, budget, invoice, payment, or bonus
+
+### Content Profiles
+Each ContentUnit has a profile that fixes platform/format and declares applicable metrics:
+
+| Profile | Platform | Format | View Threshold |
+|---------|----------|--------|---------------|
+| `ig-reel` | IG | REEL | 3s |
+| `ig-story` | IG | STORY | 1 view |
+| `ig-post` | IG | POST | — |
+| `tk-video` | TK | VIDEO | 2s |
+| `tk-story` | TK | STORY | — |
+| `yt-short` | YT | SHORT | platform-defined |
+| `yt-video` | YT | VIDEO | 30s |
+| `fb-reel` | FB | REEL | 3s |
+| `fb-post` | FB | POST | — |
+| `li-post` | LI | POST | — |
+| `tw-post` | TW | TWEET | — |
+| `pin-pin` | PI | PIN | — |
+
+### Actor Profiles
+`creator` · `advertiser` · `agency` · `platform` · `tool`
+
+### Financial Resources
+`FIN.Budget` · `FIN.Contract` · `FIN.Invoice` · `FIN.Payment` · `FIN.Bonus`
+
+### Encoding a ContentUnit (ENCODE mode)
+When given a content description, output a ContentUnit record:
+```
+RESOURCE: ContentUnit
+profile: ig-reel
+platform: IG | format: REEL | content_type: video
+creator: [actor id or handle]
+published_at: [date]
+time_window: [start → end]
+is_sponsored: true/false
+metrics:
+  REA.001.IG | [value] | [produced] | Instagram Insights | T5
+  ENG.002.IG | [value] | [produced] | Instagram Insights | T4
+  VAL.001[base: REA.001].IG.[CC] | [value] | [produced] | [method] | T3
+```
 
 ## The 8 Domains
 
