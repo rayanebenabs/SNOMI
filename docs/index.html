@@ -817,9 +817,10 @@
     .chain-metric-card--cap     { border-color: var(--yellow); background: rgba(251,191,36,0.04); }
     .cmc-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
     .cmc-name code { font-size: 11px; }
-    .cmc-value { font-size: 28px; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 6px; }
+    .cmc-value { font-size: 28px; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 4px; }
+    .cmc-window { font-size: 11px; font-family: var(--mono); color: #a78bfa; margin-bottom: 4px; }
     .cmc-meta  { font-size: 12px; color: var(--muted); }
-    .cmc-formula { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+    .cmc-formula { font-size: 12px; color: var(--muted); font-family: var(--mono); margin-top: 4px; }
     .chain-split-cards { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
     .chain-split-vs { font-size: 20px; font-weight: 700; color: var(--red); flex-shrink: 0; }
     .chain-split-cards .chain-metric-card { flex: 1; min-width: 200px; }
@@ -1443,22 +1444,24 @@
             <div class="chain-metric-card">
               <div class="cmc-name">Followers</div>
               <div class="cmc-value">245,000</div>
-              <div class="cmc-meta">Instagram · April 2026 · <span class="tag t5">T5</span> · native platform</div>
+              <div class="cmc-window">Snapshot: April 1, 2026</div>
+              <div class="cmc-meta">Instagram · <span class="tag t5">T5</span> · native platform</div>
             </div>
           </div>
 
           <div class="chain-arrow-v">↓ base for ER(followers) &amp; reach rate</div>
 
           <div class="chain-col">
-            <div class="chain-col-label">ContentUnit — ig-reel · March 2026</div>
+            <div class="chain-col-label">ContentUnit — ig-reel</div>
             <div class="chain-metric-card">
               <div class="cmc-name">Organic Reach</div>
               <div class="cmc-value">180,000</div>
-              <div class="cmc-meta">Instagram · March 2026 · <span class="tag t5">T5</span> · native platform</div>
+              <div class="cmc-window">Mar 1 → Mar 31, 2026</div>
+              <div class="cmc-meta">Instagram · United States · <span class="tag t5">T5</span> · native platform</div>
             </div>
           </div>
 
-          <div class="chain-arrow-v">↓ engagements (14,400) ÷ reach or followers</div>
+          <div class="chain-arrow-v">↓ engagements (14,400) ÷ reach or followers · same window</div>
 
           <div class="chain-col">
             <div class="chain-col-label">Engagement Rate — two valid reads <span class="constraint-warn">⚠ not interchangeable</span></div>
@@ -1466,12 +1469,14 @@
               <div class="chain-metric-card chain-metric-card--muted">
                 <div class="cmc-name">ER (followers) <code>ENG.001</code></div>
                 <div class="cmc-value">5.9%</div>
+                <div class="cmc-window">Mar 1 → Mar 31, 2026</div>
                 <div class="cmc-formula">14,400 ÷ 245,000 · Δ1 → <span class="tag t4">T4</span></div>
               </div>
               <div class="chain-split-vs">≠</div>
               <div class="chain-metric-card chain-metric-card--primary">
                 <div class="cmc-name">ER (reach) <code>ENG.002</code> <span class="preferred-tag">★ preferred</span></div>
                 <div class="cmc-value">8.0%</div>
+                <div class="cmc-window">Mar 1 → Mar 31, 2026</div>
                 <div class="cmc-formula">14,400 ÷ 180,000 · Δ1 → <span class="tag t4">T4</span></div>
               </div>
             </div>
@@ -1484,6 +1489,7 @@
             <div class="chain-metric-card chain-metric-card--cap">
               <div class="cmc-name">EMV <code>VAL.001[base: REA.001]</code></div>
               <div class="cmc-value">€8,640</div>
+              <div class="cmc-window">Mar 1 → Mar 31, 2026</div>
               <div class="cmc-formula">180,000 × €48 CPM / 1,000 → <span class="tag t3">T3 max</span> · regardless of input quality</div>
             </div>
           </div>
@@ -1533,56 +1539,77 @@
       <div class="layer layer-low">
         <div class="layer-badge">▼ Low — JSON</div>
         <div class="code-block" style="margin:0">
-          <pre><code>[
-  {
-    "snomi":    "AUD.001.IG",
-    "label":    "Followers",
-    "value":    245000,
-    "unit":     "count",
-    "produced": "2026-04-01",
-    "source":   "Instagram Insights",
-    "trust":    "T5"
+          <pre><code>{
+  "context": {
+    "actor":        { "id": "actor_001", "handle": "@example", "platform": "IG" },
+    "content_unit": { "id": "cu_001", "profile": "ig-reel", "published_at": "2026-03-15" }
   },
-  {
-    "snomi":    "REA.001.IG.US",
-    "label":    "Organic Reach",
-    "value":    180000,
-    "unit":     "count",
-    "window":   { "start": "2026-03-01", "end": "2026-03-31" },
-    "produced": "2026-04-02",
-    "source":   "Instagram Insights",
-    "trust":    "T5"
-  },
-  {
-    "snomi":      "ENG.002.IG.US",
-    "label":      "Engagement Rate (reach)",
-    "value":      8.0,
-    "unit":       "%",
-    "depends_on": ["REA.001.IG.US"],
-    "formula":    "engagements / REA.001",
-    "delta":      1,
-    "window":     { "start": "2026-03-01", "end": "2026-03-31" },
-    "produced":   "2026-04-02",
-    "source":     "Instagram Insights",
-    "trust":      "T4"
-  },
-  {
-    "snomi":      "VAL.001[base:REA.001].IG.US",
-    "label":      "EMV",
-    "value":      8640,
-    "unit":       "EUR",
-    "depends_on": ["REA.001.IG.US"],
-    "formula":    "REA.001 × ref_CPM / 1000",
-    "ref_cpm":    48,
-    "method":     "Launchmetrics",
-    "delta":      2,
-    "window":     { "start": "2026-03-01", "end": "2026-03-31" },
-    "produced":   "2026-04-02",
-    "source":     "Launchmetrics",
-    "trust":      "T3",
-    "trust_note": "T3 max — ref_CPM is inherently an assumption"
-  }
-]</code></pre>
+  "metrics": [
+    {
+      "id":       "m1",
+      "snomi":    "AUD.001.IG",
+      "label":    "Followers",
+      "subject":  "actor_001",
+      "value":    245000,
+      "unit":     "count",
+      "produced": "2026-04-01",
+      "source":   "Instagram Insights",
+      "trust":    "T5"
+    },
+    {
+      "id":       "m2",
+      "snomi":    "REA.001.IG.US",
+      "label":    "Organic Reach",
+      "subject":  "cu_001",
+      "value":    180000,
+      "unit":     "count",
+      "window":   { "start": "2026-03-01", "end": "2026-03-31" },
+      "produced": "2026-04-02",
+      "source":   "Instagram Insights",
+      "trust":    "T5"
+    },
+    {
+      "id":         "m3",
+      "snomi":      "ENG.002.IG.US",
+      "label":      "Engagement Rate (reach)",
+      "subject":    "cu_001",
+      "value":      8.0,
+      "unit":       "%",
+      "inputs": {
+        "engagements": 14400,
+        "reach":       { "$ref": "m2" }
+      },
+      "formula":    "inputs.engagements / inputs.reach.value * 100",
+      "delta":      1,
+      "depends_on": ["m2"],
+      "window":     { "start": "2026-03-01", "end": "2026-03-31" },
+      "produced":   "2026-04-02",
+      "source":     "Instagram Insights",
+      "trust":      "T4"
+    },
+    {
+      "id":         "m4",
+      "snomi":      "VAL.001[base:REA.001].IG.US",
+      "label":      "EMV",
+      "subject":    "cu_001",
+      "value":      8640,
+      "unit":       "EUR",
+      "inputs": {
+        "reach":   { "$ref": "m2" },
+        "ref_cpm": 48
+      },
+      "formula":    "inputs.reach.value * inputs.ref_cpm / 1000",
+      "method":     "Launchmetrics",
+      "delta":      2,
+      "depends_on": ["m2"],
+      "window":     { "start": "2026-03-01", "end": "2026-03-31" },
+      "produced":   "2026-04-02",
+      "source":     "Launchmetrics",
+      "trust":      "T3",
+      "trust_note": "T3 max — ref_CPM is inherently an assumption"
+    }
+  ]
+}</code></pre>
           <button class="copy-btn" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent).then(()=>{this.textContent='copied';this.classList.add('copied');setTimeout(()=>{this.textContent='copy';this.classList.remove('copied')},1500)})">copy</button>
         </div>
       </div>
