@@ -656,14 +656,63 @@
       border-radius: 5px;
     }
 
-    /* ─── CITATION FORMAT ─── */
-    .citation-example {
-      background: var(--surface);
-      border: 1px solid var(--border);
+    /* ─── CITATION FORMAT — LAYER STACK ─── */
+    .layer-stack {
+      margin: 24px 0;
       border-radius: var(--radius);
-      padding: 20px;
-      margin: 16px 0;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .layer {
+      padding: 22px 26px;
+    }
+
+    .layer + .layer {
+      border-top: 1px solid var(--border);
+    }
+
+    .layer-high  { background: var(--surface); }
+    .layer-mid   { background: var(--surface-2); }
+    .layer-low   { background: #0c0c0e; }
+
+    .layer-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 4px;
+      margin-bottom: 16px;
       font-family: var(--mono);
+    }
+
+    .layer-high .layer-badge {
+      background: rgba(52,211,153,0.1);
+      color: var(--green);
+      border: 1px solid rgba(52,211,153,0.2);
+    }
+
+    .layer-mid .layer-badge {
+      background: rgba(129,140,248,0.1);
+      color: var(--primary);
+      border: 1px solid rgba(129,140,248,0.2);
+    }
+
+    .layer-low .layer-badge {
+      background: rgba(113,113,122,0.1);
+      color: var(--muted);
+      border: 1px solid rgba(113,113,122,0.2);
+    }
+
+    .layer-low pre {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
       font-size: 13px;
     }
 
@@ -673,6 +722,8 @@
       gap: 16px;
       padding: 4px 0;
       flex-wrap: wrap;
+      font-family: var(--mono);
+      font-size: 13px;
     }
 
     .cit-code { color: var(--primary); font-weight: 600; min-width: 120px; }
@@ -965,15 +1016,9 @@
       pre { padding: 14px; font-size: 12px; line-height: 1.6; }
       .code-block .copy-btn { font-size: 10px; padding: 3px 8px; }
 
-      /* Citation rows — stack vertically */
-      .citation-example { padding: 14px; font-size: 12px; }
-      .citation-row {
-        flex-direction: column;
-        gap: 2px;
-        padding: 10px 0;
-        border-bottom: 1px solid var(--border-soft);
-      }
-      .citation-row:last-child { border-bottom: none; }
+      /* Citation layers — mobile */
+      .layer { padding: 16px 18px; }
+      .citation-row { flex-direction: column; gap: 4px; }
       .cit-code { min-width: unset; font-size: 12px; }
 
       /* Composite score cards */
@@ -1264,43 +1309,60 @@
   <!-- ── CITATION FORMAT ── -->
   <section id="citation">
     <h2>Standard citation format</h2>
-    <p>Every metric cited in a SNOMI-compliant report must include six fields:</p>
-    <div class="citation-example">
-      <div style="color:var(--muted); font-size:12px; margin-bottom:12px;">CODE | VALUE | TIME WINDOW | PRODUCED | SOURCE | TRUST</div>
-      <div class="citation-row">
-        <span class="cit-code">ENG.002.IG.US</span>
-        <span class="cit-val">4.8%</span>
-        <span class="cit-window">2026-03-01 → 2026-03-31</span>
-        <span class="cit-produced">⬥ 2026-04-02</span>
-        <span class="cit-source">Instagram Insights</span>
-        <span class="tag t5">T5</span>
+    <p>Every SNOMI data point exists at <strong>three levels of visibility</strong>. The same metric is expressed differently depending on the audience — from a human-readable summary to a fully machine-readable object.</p>
+
+    <div class="layer-stack">
+
+      <!-- ▲ HAUTE — lecture humaine -->
+      <div class="layer layer-high">
+        <div class="layer-badge">▲ Haute — lecture humaine</div>
+        <div style="display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:6px">
+          <div style="font-size:20px; font-weight:700; color:var(--text)">Engagement Rate</div>
+          <div style="font-size:14px; color:var(--muted)">Instagram · États-Unis · mars 2026</div>
+        </div>
+        <div style="font-size:44px; font-weight:800; color:var(--primary); letter-spacing:-0.03em; line-height:1.1; margin-bottom:14px">4,8%</div>
+        <div style="display:flex; gap:20px; flex-wrap:wrap; font-size:13px; color:var(--muted)">
+          <span>Source &nbsp;<span style="color:var(--text)">Instagram Insights</span></span>
+          <span>Fiabilité &nbsp;<span class="tag t5">T5</span></span>
+          <span>Extrait le &nbsp;<span style="color:var(--text)">2 avril 2026</span></span>
+        </div>
       </div>
-      <div class="citation-row">
-        <span class="cit-code">AUD.003.IG</span>
-        <span class="cit-val">91%</span>
-        <span class="cit-window">2026-04-01</span>
-        <span class="cit-produced">⬥ 2026-04-01</span>
-        <span class="cit-source">HypeAuditor</span>
-        <span class="tag t2">T2</span>
+
+      <!-- ◆ MOYENNE — format SNOMI -->
+      <div class="layer layer-mid">
+        <div class="layer-badge">◆ Moyenne — format SNOMI</div>
+        <div style="color:var(--muted-2); font-size:10.5px; letter-spacing:0.07em; text-transform:uppercase; margin-bottom:12px; font-family:var(--mono)">Code &nbsp;·&nbsp; Valeur &nbsp;·&nbsp; Fenêtre temporelle &nbsp;·&nbsp; Produit le &nbsp;·&nbsp; Source &nbsp;·&nbsp; Trust</div>
+        <div class="citation-row" style="padding:0">
+          <span class="cit-code">ENG.002.IG.US</span>
+          <span class="cit-val">4.8%</span>
+          <span class="cit-window">2026-03-01 → 2026-03-31</span>
+          <span class="cit-produced">⬥ 2026-04-02</span>
+          <span class="cit-source">Instagram Insights</span>
+          <span class="tag t5">T5</span>
+        </div>
       </div>
-      <div class="citation-row">
-        <span class="cit-code">VAL.001[base: REA.001].ALL.FR</span>
-        <span class="cit-val">€42k EMV</span>
-        <span class="cit-window">Q1 2026</span>
-        <span class="cit-produced">⬥ 2026-04-05</span>
-        <span class="cit-source">Launchmetrics method</span>
-        <span class="tag t3">T3</span>
+
+      <!-- ▼ BASSE — JSON -->
+      <div class="layer layer-low">
+        <div class="layer-badge">▼ Basse — JSON</div>
+        <div class="code-block" style="margin:0">
+          <pre><code>{
+  "snomi":    "ENG.002.IG.US",
+  "label":    "Engagement Rate",
+  "value":    4.8,
+  "unit":     "%",
+  "window":   { "start": "2026-03-01", "end": "2026-03-31" },
+  "produced": "2026-04-02",
+  "source":   "Instagram Insights",
+  "trust":    "T5"
+}</code></pre>
+          <button class="copy-btn" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent).then(()=>{this.textContent='copied';this.classList.add('copied');setTimeout(()=>{this.textContent='copy';this.classList.remove('copied')},1500)})">copy</button>
+        </div>
       </div>
-      <div class="citation-row">
-        <span class="cit-code">VAL.003.IG.US</span>
-        <span class="cit-val">$6.70 CPM ref</span>
-        <span class="cit-window">eMarketer 2024</span>
-        <span class="cit-produced">⬥ 2026-04-05</span>
-        <span class="cit-source">—</span>
-        <span class="tag t3">T3</span>
-      </div>
+
     </div>
-    <div class="callout callout-info" style="margin-top:16px">
+
+    <div class="callout callout-info" style="margin-top:20px">
       <strong>TIME WINDOW vs PRODUCED</strong>
       <p style="margin:6px 0 0"><strong>TIME WINDOW</strong> is the period the metric covers (when the campaign ran or the data window). <strong>PRODUCED</strong> is the ISO date when the data was extracted or calculated. Platform data can be revised retroactively — knowing when it was pulled is essential for auditability.</p>
       <p style="margin:6px 0 0; color:var(--muted); font-size:12px">Format: <code>YYYY-MM-DD</code> (date) or <code>YYYY-MM-DDTHH:MMZ</code> (datetime if precision matters)</p>
