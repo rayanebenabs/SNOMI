@@ -808,13 +808,26 @@
     .chain-metric-card {
       background: var(--surface-2);
       border: 1px solid var(--border);
+      border-left: 3px solid var(--border);
       border-radius: var(--radius);
       padding: 14px 16px;
       margin-bottom: 0;
     }
-    .chain-metric-card--primary { border-color: var(--primary); background: rgba(129,140,248,0.05); }
+    .chain-metric-card--primary { border-color: var(--primary); }
     .chain-metric-card--muted   { opacity: 0.65; }
-    .chain-metric-card--cap     { border-color: var(--yellow); background: rgba(251,191,36,0.04); }
+    .chain-metric-card--cap     { background: rgba(251,191,36,0.04); }
+    /* Trust color coding — left border only, no label */
+    .cmc--t5, .cmc--t4, .cmc--t3 { border-left-color: var(--green); }
+    .cmc--t2 { border-left-color: var(--orange); }
+    .cmc--t1 { border-left-color: var(--red); }
+    .cmc-disclaimer {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 600;
+      margin-top: 8px; padding-top: 8px;
+      border-top: 1px solid var(--border-soft);
+    }
+    .cmc--t2 .cmc-disclaimer { color: var(--orange); }
+    .cmc--t1 .cmc-disclaimer { color: var(--red); }
     .cmc-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
     .cmc-name code { font-size: 11px; }
     .cmc-value { font-size: 28px; font-weight: 800; color: var(--primary); letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 4px; }
@@ -1441,7 +1454,7 @@
 
           <div class="chain-col">
             <div class="chain-col-label">Actor.creator</div>
-            <div class="chain-metric-card">
+            <div class="chain-metric-card cmc--t5">
               <div class="cmc-name">Followers</div>
               <div class="cmc-value">245,000</div>
               <div class="cmc-window">Snapshot: April 1, 2026</div>
@@ -1453,7 +1466,7 @@
 
           <div class="chain-col">
             <div class="chain-col-label">ContentUnit — ig-reel</div>
-            <div class="chain-metric-card">
+            <div class="chain-metric-card cmc--t5">
               <div class="cmc-name">Organic Reach</div>
               <div class="cmc-value">180,000</div>
               <div class="cmc-window">Mar 1 → Mar 31, 2026</div>
@@ -1466,14 +1479,14 @@
           <div class="chain-col">
             <div class="chain-col-label">Engagement Rate — two valid reads <span class="constraint-warn">⚠ not interchangeable</span></div>
             <div class="chain-split-cards">
-              <div class="chain-metric-card chain-metric-card--muted">
+              <div class="chain-metric-card chain-metric-card--muted cmc--t4">
                 <div class="cmc-name">ER (followers) <code>ENG.001</code></div>
                 <div class="cmc-value">5.9%</div>
                 <div class="cmc-window">Mar 1 → Mar 31, 2026</div>
                 <div class="cmc-formula">14,400 ÷ 245,000</div>
               </div>
               <div class="chain-split-vs">≠</div>
-              <div class="chain-metric-card chain-metric-card--primary">
+              <div class="chain-metric-card chain-metric-card--primary cmc--t4">
                 <div class="cmc-name">ER (reach) <code>ENG.002</code> <span class="preferred-tag">★ preferred</span></div>
                 <div class="cmc-value">8.0%</div>
                 <div class="cmc-window">Mar 1 → Mar 31, 2026</div>
@@ -1486,7 +1499,7 @@
 
           <div class="chain-col">
             <div class="chain-col-label">Estimated Media Value <span class="constraint-cap">⚑ T3 ceiling — CPM is always an assumption</span></div>
-            <div class="chain-metric-card chain-metric-card--cap">
+            <div class="chain-metric-card chain-metric-card--cap cmc--t3">
               <div class="cmc-name">EMV <code>VAL.001[base: REA.001]</code></div>
               <div class="cmc-value">€8,640</div>
               <div class="cmc-window">Mar 1 → Mar 31, 2026</div>
