@@ -1394,12 +1394,12 @@
           <tr><th>Code</th><th>Name</th><th>Formula</th><th>Format</th><th>Trust</th></tr>
         </thead>
         <tbody>
-          <tr><td>ENG.001</td><td>Engagement Rate (Followers)</td><td>(L+C+S+Sh) / Followers × 100</td><td>%</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>ENG.002 <span class="star">⭐</span></td><td>Engagement Rate (Reach)</td><td>(L+C+S+Sh) / Reach × 100</td><td>%</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>ENG.003</td><td>Comment Rate</td><td>Comments / Impressions × 100</td><td>%</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>ENG.004</td><td>Save Rate</td><td>Saves / Impressions × 100</td><td>%</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>ENG.005</td><td>Share Rate</td><td>Shares / Impressions × 100</td><td>%</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>ENG.006</td><td>Video Completion Rate</td><td>Complete views / Total views × 100</td><td>%</td><td><span class="tag t5">T5</span></td></tr>
+          <tr><td>ENG.001</td><td>Engagement Rate (Followers)</td><td><code>(L+C+S+Sh) / [AUD.001] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>ENG.002 <span class="star">⭐</span></td><td>Engagement Rate (Reach)</td><td><code>(L+C+S+Sh) / [REA.001] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>ENG.003</td><td>Comment Rate</td><td><code>Comments / [REA.002] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>ENG.004</td><td>Save Rate</td><td><code>Saves / [REA.002] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>ENG.005</td><td>Share Rate</td><td><code>Shares / [REA.002] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>ENG.006</td><td>Video Completion Rate</td><td><code>Complete views / [REA.005] × 100</code></td><td>%</td><td><span class="tag t5">T5</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -1409,23 +1409,61 @@
   <!-- ── REA ── -->
   <section id="rea">
     <h2>REA — Reach & Distribution</h2>
+
+    <div class="callout callout-error">
+      <strong>REA.001 ≠ REA.002 ≠ REA.005 ≠ REA.006 — never substitute without declaration</strong>
+      These four metrics measure fundamentally different things. Using the wrong one as a base for EMV or CTR can inflate results by 2×–5× or more.
+    </div>
+
+    <h3 style="margin-bottom:12px">The Reach / Impressions / Views triad</h3>
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>Code</th><th>Name</th><th>Formula</th><th>Format</th><th>Trust</th></tr>
+          <tr><th>Code</th><th>Concept</th><th>Deduplicated?</th><th>Includes repeats?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>REA.001</td><td>Organic Reach — unique accounts</td><td>✅ Yes</td><td>✗ No</td></tr>
+          <tr><td>REA.002</td><td>Total Impressions — total displays</td><td>✗ No</td><td>✅ Yes</td></tr>
+          <tr><td>REA.005</td><td>Video Views — platform threshold</td><td>Partial*</td><td>Partial*</td></tr>
+          <tr><td>REA.006</td><td>Qualified Views — ≥ 50% completion</td><td>✅ Yes (native)</td><td>✗ No</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:13px; color:var(--muted); margin-bottom:20px">Relationship: <code>[REA.002] = [REA.001] × [REA.004]</code> (Impressions = Reach × Frequency). If two values are known, the third can be derived.</p>
+
+    <h3 style="margin-bottom:12px">Full metrics table</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Name</th><th>Formula (codified)</th><th>Format</th><th>Trust</th></tr>
         </thead>
         <tbody>
           <tr><td>REA.001</td><td>Organic Reach</td><td>Native platform value</td><td>integer</td><td><span class="tag t5">T5</span></td></tr>
           <tr><td>REA.002</td><td>Total Impressions</td><td>Native platform value</td><td>integer</td><td><span class="tag t5">T5</span></td></tr>
-          <tr><td>REA.003</td><td>Reach Rate</td><td>Reach / Followers × 100</td><td>%</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>REA.004</td><td>Frequency</td><td>Impressions / Reach</td><td>ratio (×)</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>REA.005</td><td>Video Views</td><td>Native — declare platform definition</td><td>integer</td><td><span class="tag t5">T5</span></td></tr>
+          <tr><td>REA.003</td><td>Reach Rate</td><td><code>[REA.001] / [AUD.001] × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>REA.004</td><td>Frequency</td><td><code>[REA.002] / [REA.001]</code></td><td>ratio (×)</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>REA.005</td><td>Video Views</td><td>Native — declare platform threshold</td><td>integer</td><td><span class="tag t5">T5</span></td></tr>
+          <tr><td>REA.006</td><td>Qualified Views</td><td>Native or <code>[ENG.006] × [REA.005] / 100</code></td><td>integer</td><td><span class="tag t5">T5</span> / <span class="tag t4">T4</span></td></tr>
         </tbody>
       </table>
     </div>
-    <div class="callout callout-info">
-      <strong>REA.005 — "View" definition varies by platform</strong>
-      Instagram: 3 seconds · TikTok: 2 seconds · YouTube: 30 seconds. Always declare the platform when citing video views.
+
+    <h3 style="margin-top:24px; margin-bottom:8px">REA.005 — Platform view thresholds</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Platform</th><th>View counted after</th><th>Deduplicated?</th></tr></thead>
+        <tbody>
+          <tr><td>Instagram</td><td>3 seconds</td><td>No — same account counts multiple times</td></tr>
+          <tr><td>TikTok</td><td>2 seconds (auto-play)</td><td>No</td></tr>
+          <tr><td>YouTube</td><td>30 seconds</td><td>Yes — unique viewer</td></tr>
+          <tr><td>Facebook</td><td>3 seconds</td><td>No</td></tr>
+          <tr><td>LinkedIn</td><td>2 seconds</td><td>No</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-info" style="margin-top:16px">
+      <strong>REA.006 — Qualified Views</strong>
+      Native on YouTube. On Instagram and TikTok, derive from <code>[ENG.006] × [REA.005] / 100</code> → T4. Always flag if derived vs native.
     </div>
   </section>
 
@@ -1459,19 +1497,38 @@
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>Code</th><th>Name</th><th>Formula</th><th>Format</th><th>Trust</th></tr>
+          <tr><th>Code</th><th>Name</th><th>Formula (codified)</th><th>Format</th><th>Trust</th></tr>
         </thead>
         <tbody>
-          <tr><td>VAL.001</td><td>EMV</td><td>Impressions × reference CPM / 1000 — declare method</td><td>currency</td><td><span class="tag t3">T3</span></td></tr>
-          <tr><td>VAL.002</td><td>CPE</td><td>Total budget / Total engagements</td><td>currency/eng.</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>VAL.003</td><td>CPM</td><td>Budget / Impressions × 1000</td><td>currency/1k</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>VAL.004</td><td>CPC</td><td>Budget / Clicks</td><td>currency/click</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>VAL.005</td><td>ROAS</td><td>Attributed revenue / Budget</td><td>ratio (×)</td><td><span class="tag t2">T2</span></td></tr>
-          <tr><td>VAL.006</td><td>CPA</td><td>Budget / Conversions</td><td>currency/acq.</td><td><span class="tag t2">T2</span></td></tr>
+          <tr><td>VAL.001</td><td>EMV</td><td><code>[REA.001|REA.002|REA.005|REA.006] × ref_CPM / 1000</code> — declare base + method</td><td>currency</td><td><span class="tag t3">T3</span> max</td></tr>
+          <tr><td>VAL.002</td><td>CPE</td><td><code>Budget / (L+C+S+Sh)</code></td><td>currency/eng.</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>VAL.003</td><td>CPM</td><td><code>Budget / [REA.002] × 1000</code></td><td>currency/1k</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>VAL.004</td><td>CPC</td><td><code>Budget / [CON.001]</code></td><td>currency/click</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>VAL.005</td><td>ROAS</td><td><code>[CON.005] / Budget</code></td><td>ratio (×)</td><td><span class="tag t2">T2</span></td></tr>
+          <tr><td>VAL.006</td><td>CPA</td><td><code>Budget / [CON.004]</code></td><td>currency/acq.</td><td><span class="tag t2">T2</span></td></tr>
         </tbody>
       </table>
     </div>
-    <div class="callout callout-warn">
+
+    <h3 style="margin-top:24px; margin-bottom:10px">VAL.001 — EMV base metric declaration</h3>
+    <p>EMV must declare which exposure metric it uses as base. The choice is not neutral — using REA.002 instead of REA.001 inflates the result by a factor equal to frequency (<code>[REA.004]</code>).</p>
+    <div class="table-wrap" style="margin-top:12px">
+      <table>
+        <thead><tr><th>Syntax</th><th>Base</th><th>Effect</th><th>When to use</th></tr></thead>
+        <tbody>
+          <tr><td><code>VAL.001[base: REA.001]</code></td><td>Organic Reach</td><td>Most conservative — deduplicated</td><td>Standard recommendation</td></tr>
+          <tr><td><code>VAL.001[base: REA.002]</code></td><td>Impressions</td><td>Inflated by frequency</td><td>Comparable to display advertising</td></tr>
+          <tr><td><code>VAL.001[base: REA.005]</code></td><td>Video Views</td><td>Platform threshold varies — declare</td><td>Video campaigns only</td></tr>
+          <tr><td><code>VAL.001[base: REA.006]</code></td><td>Qualified Views ≥50%</td><td>Most rigorous</td><td>Premium / quality-first campaigns</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="code-block" style="margin-top:12px">
+      <pre><code>VAL.001[base: REA.001].IG.FR | €28,400 | Q1 2026 | Launchmetrics method | T3
+VAL.001[base: REA.002].IG.FR | €61,000 | Q1 2026 | Launchmetrics method | T3
+↑ Same campaign — difference = REA.004 (frequency = 2.15×)</code></pre>
+    </div>
+    <div class="callout callout-warn" style="margin-top:16px">
       <strong>EMV methodologies — always declare</strong>
       <strong style="color:var(--text); font-weight:400">Launchmetrics:</strong> weighted by creator tier, vertical, territory &nbsp;·&nbsp; <strong style="color:var(--text); font-weight:400">Traackr:</strong> based on native advertising CPMs per platform &nbsp;·&nbsp; <strong style="color:var(--text); font-weight:400">Agency custom:</strong> document your formula explicitly.
     </div>
@@ -1769,6 +1826,10 @@ Example (FR, Instagram, Nano, Heavy production):
       <li><div class="rule-num">7</div><div class="rule-text"><strong>CPM without tier or complexity = incomplete value.</strong> Apply multipliers or explicitly document assumptions.</div></li>
       <li><div class="rule-num">8</div><div class="rule-text"><strong>REG.003 ≠ REG.001.</strong> Native label (QUA.006 = 1) does not replace the legal hashtag. The two are independent.</div></li>
       <li><div class="rule-num">9</div><div class="rule-text"><strong>CRE.006 is BETA.</strong> Do not present a BFS incorporating CRE.006 as definitive without documenting source and method.</div></li>
+      <li><div class="rule-num">10</div><div class="rule-text"><strong>Reach ≠ Impressions ≠ Views.</strong> REA.001 (unique accounts, deduplicated), REA.002 (total displays, includes repeats), REA.005 (platform-threshold video views), and REA.006 (qualified views ≥ 50% completion) are distinct metrics. Never substitute one for another without declaration.</div></li>
+      <li><div class="rule-num">11</div><div class="rule-text"><strong>VAL.001 (EMV) must declare its base metric.</strong> <code>VAL.001</code> alone is non-compliant. Use <code>VAL.001[base: REA.001]</code>, <code>VAL.001[base: REA.002]</code>, <code>VAL.001[base: REA.005]</code>, or <code>VAL.001[base: REA.006]</code>. Using REA.002 instead of REA.001 inflates the result by a factor equal to frequency — which can be 2×–5× on high-performing content.</div></li>
+      <li><div class="rule-num">12</div><div class="rule-text"><strong>Calculated metric formulas must reference SNOMI codes.</strong> In any SNOMI-compliant report or analysis, the formula of a derived metric must cite its input metrics by code (e.g. <code>[REA.001]</code>, <code>[AUD.001]</code>), not generic terms like "reach" or "followers".</div></li>
+      <li><div class="rule-num">13</div><div class="rule-text"><strong>Trust propagates through formulas.</strong> <code>T_result = max(T1, min(T_inputs) − Δ)</code>. A calculated metric is never more trustworthy than its weakest input. A report citing CPI at T4 is only valid if all 5 component metrics were sourced at T4 or above.</div></li>
     </ul>
   </section>
 
@@ -2241,6 +2302,7 @@ const METRICS = [
   { code: "REA.003", name: "Reach Rate", domain: "REA", desc: "Reach / Followers × 100. T4", anchor: "#rea" },
   { code: "REA.004", name: "Frequency", domain: "REA", desc: "Impressions / Reach. Average exposures per unique account. T4", anchor: "#rea" },
   { code: "REA.005", name: "Video Views", domain: "REA", desc: "Total view count. Definition varies: IG 3s, TK 2s, YT 30s. T5", anchor: "#rea" },
+  { code: "REA.006", name: "Qualified Views", domain: "REA", desc: "Views ≥ 50% completion. Native on YT. Derived on IG/TK: [ENG.006] × [REA.005] / 100. T5 native / T4 derived.", anchor: "#rea" },
   // CON
   { code: "CON.001", name: "Link Clicks", domain: "CON", desc: "Clicks on bio link, swipe-up, or description link. T4", anchor: "#con" },
   { code: "CON.002", name: "CTR", domain: "CON", desc: "Click-Through Rate. Clicks / Impressions × 100. T4", anchor: "#con" },
