@@ -1287,23 +1287,23 @@
     <a href="#trust">Trust scores</a>
   </div>
   <div class="sidebar-section">
-    <div class="sidebar-label">Data model</div>
+    <div class="sidebar-label">How data connects</div>
     <a href="#data-model">Dependency graph</a>
   </div>
   <div class="sidebar-section">
-    <div class="sidebar-label">Actor-level</div>
+    <div class="sidebar-label">Creator &amp; Audience</div>
     <a href="#aud">AUD — Audience</a>
     <a href="#cre">CRE — Creator Health</a>
   </div>
   <div class="sidebar-section">
-    <div class="sidebar-label">Content-level</div>
+    <div class="sidebar-label">Content Performance</div>
     <a href="#rea">REA — Reach</a>
     <a href="#eng">ENG — Engagement</a>
     <a href="#con">CON — Conversion</a>
     <a href="#qua">QUA — Quality</a>
   </div>
   <div class="sidebar-section">
-    <div class="sidebar-label">Campaign-level</div>
+    <div class="sidebar-label">Value &amp; Compliance</div>
     <a href="#val">VAL — Value & ROI</a>
     <a href="#regulatory">REG — Regulatory</a>
   </div>
@@ -1358,7 +1358,9 @@
     </div>
     <h1 class="hero-title">Standard Nomenclature<br>of Influence Metrics</h1>
     <p class="lead">
-      SNOMI is an open, vendor-neutral standard that assigns unique codes, formulas, and trust levels to every metric used in influencer marketing — making reports comparable, auditable, and manipulation-resistant.
+      Every week, brands spend millions on influencer campaigns — then receive reports where "engagement rate" means something different depending on who wrote them. One agency calculates it on followers, another on reach. One tool counts views at 2 seconds, another at 30.
+
+      SNOMI is a shared language for influencer marketing data. It gives every metric a unique code, a precise formula, and a reliability score — so any two people reading a SNOMI report are always talking about exactly the same thing.
     </p>
     <div class="hero-actions">
       <a href="#data-model" class="btn btn-primary">Browse metrics</a>
@@ -1375,28 +1377,34 @@
   <!-- ── WHY ── -->
   <section id="why">
     <h2>Why SNOMI exists</h2>
-    <p>Influencer marketing is a multi-billion dollar industry built on metrics that mean different things to different people. An "engagement rate" from one platform or agency is rarely the same as another's. EMV is cited without methodology. Benchmarks are decontextualised. Reports are not auditable.</p>
-    <p>SNOMI solves this by providing:</p>
+    <p>Influencer marketing is a multi-billion dollar industry with no shared language. The same campaign can produce wildly different reports depending on who runs the numbers.</p>
+
+    <div class="callout callout-warn" style="margin-bottom:24px">
+      <strong>A typical scenario without SNOMI</strong>
+      <p style="margin:6px 0 0">An advertiser asks three agencies for an engagement rate on the same creator. They get back: <strong>3.2%</strong>, <strong>8.0%</strong>, and <strong>5.9%</strong>. All three are mathematically correct — they just used different denominators (impressions, reach, followers). Nobody flags this. The client picks the highest number.</p>
+    </div>
+
+    <p>SNOMI solves this by requiring every metric to declare exactly how it was calculated, where the data came from, and how much to trust it. With SNOMI:</p>
     <div class="cards">
       <div class="card">
         <div class="card-icon" style="background:rgba(129,140,248,0.12)">📐</div>
-        <h3>Unique codes</h3>
-        <p>Every metric has a canonical code. <code>ENG.002.IG</code> means exactly one thing.</p>
+        <h3>One code, one definition</h3>
+        <p><code>ENG.002.IG</code> always means engagement rate calculated on reach, on Instagram. No ambiguity, ever.</p>
       </div>
       <div class="card">
         <div class="card-icon" style="background:rgba(52,211,153,0.12)">🔒</div>
-        <h3>Trust levels</h3>
-        <p>Five-tier system from native platform data (T5) to self-reported (T1).</p>
+        <h3>Built-in reliability score</h3>
+        <p>Every data point carries a trust level — from native platform data (most reliable) to self-reported numbers (least reliable).</p>
       </div>
       <div class="card">
         <div class="card-icon" style="background:rgba(251,191,36,0.12)">⚖️</div>
-        <h3>Comparability</h3>
-        <p>Benchmarks always include market, tier, and source — no decontextualised numbers.</p>
+        <h3>Comparable benchmarks</h3>
+        <p>Benchmarks always specify the market, tier, and source. "4% ER" alone is meaningless — "4% ENG.002.IG.FR for micro-creators" is actionable.</p>
       </div>
       <div class="card">
         <div class="card-icon" style="background:rgba(251,146,60,0.12)">🌍</div>
-        <h3>Open standard</h3>
-        <p>No vendor lock-in. Works with any tool, any agency, any market.</p>
+        <h3>No vendor lock-in</h3>
+        <p>Open standard. Works with any tool, any agency, any market. No subscription required to read or write SNOMI reports.</p>
       </div>
     </div>
   </section>
@@ -1404,12 +1412,17 @@
   <!-- ── STRUCTURE ── -->
   <section id="structure">
     <h2>Code structure</h2>
-    <p>Every SNOMI code follows a consistent pattern:</p>
+    <p>Instead of writing "engagement rate on Instagram in the US", SNOMI compresses it into a short, unambiguous code. Once you know the pattern, any code is instantly readable.</p>
+
     <div class="code-block">
-      <pre><code>[DOMAIN].[ID].[PLATFORM]          → universal metric
-[DOMAIN].[ID].[PLATFORM].[CC]     → market-specific benchmark or regulatory variant</code></pre>
+      <pre><code>ENG  .  002  .  IG  .  US
+ ↑        ↑      ↑      ↑
+Domain   ID   Platform  Market (optional)</code></pre>
     </div>
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top:16px;">
+
+    <p style="margin-top:16px">The <strong>domain</strong> tells you what kind of metric it is (engagement, reach, value…). The <strong>ID</strong> is the specific metric within that domain. The <strong>platform</strong> specifies where the data comes from. The <strong>market</strong> is only added for benchmarks and regulatory variants.</p>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top:20px;">
       <div>
         <h4>Platforms</h4>
         <div class="table-wrap">
@@ -1428,7 +1441,7 @@
         </div>
       </div>
       <div>
-        <h4>Country codes (benchmarks & REG only)</h4>
+        <h4>Market codes (benchmarks &amp; regulatory only)</h4>
         <div class="table-wrap">
           <table>
             <tbody>
@@ -1440,12 +1453,17 @@
         </div>
       </div>
     </div>
+
+    <div class="callout callout-info" style="margin-top:20px">
+      <strong>Reading any SNOMI code at a glance</strong>
+      <p style="margin:6px 0 0"><code>VAL.001[base:REA.001].IG.FR</code> → Value domain · EMV metric · calculated on organic reach · Instagram · France. The <code>[base:...]</code> part declares which metric was used as input — essential for EMV, which can be inflated or deflated depending on the base.</p>
+    </div>
   </section>
 
   <!-- ── CITATION FORMAT ── -->
   <section id="citation">
     <h2>Standard citation format</h2>
-    <p>Every SNOMI data point exists at <strong>three levels of visibility</strong>. The example below shows a complete dependency chain — four linked metrics from a single ig-reel — and the constraints that propagate through them.</p>
+    <p>A SNOMI-compliant report can express any data point at <strong>three levels of detail</strong> — from a plain summary a client can read, to a machine-readable object a system can validate. The example below traces a real chain: a creator's follower count feeds into an engagement rate, which feeds into an estimated media value. Each level shows exactly the same data, at different depths.</p>
 
     <div class="layer-stack">
 
@@ -1455,7 +1473,7 @@
         <div class="chain-example">
 
           <div class="chain-col">
-            <div class="chain-col-label">Actor.creator</div>
+            <div class="chain-col-label">Creator — @example</div>
             <div class="chain-metric-card cmc--t5">
               <div class="cmc-name">Followers</div>
               <div class="cmc-value">245,000</div>
@@ -1467,7 +1485,7 @@
           <div class="chain-arrow-v">↓ base for ER(followers) &amp; reach rate</div>
 
           <div class="chain-col">
-            <div class="chain-col-label">ContentUnit — ig-reel</div>
+            <div class="chain-col-label">Published content — Instagram Reel</div>
             <div class="chain-metric-card cmc--t5">
               <div class="cmc-name">Organic Reach</div>
               <div class="cmc-value">180,000</div>
@@ -1641,7 +1659,8 @@
   <!-- ── TRUST SCORES ── -->
   <section id="trust">
     <h2>Trust scores</h2>
-    <p>Every SNOMI citation includes a trust score indicating data reliability:</p>
+    <p>Not all influencer data is equally reliable. A follower count pulled directly from Instagram is a hard fact. An audience quality score estimated by a third-party tool is an educated guess. A creator's claimed reach with no source is unverifiable.</p>
+    <p>SNOMI makes this explicit with a five-tier trust score attached to every data point. The score isn't a judgment — it's information. A T2 metric isn't "bad", it's just estimated, and you should weight it accordingly.</p>
     <div class="table-wrap">
       <table>
         <thead>
@@ -1658,7 +1677,7 @@
     </div>
 
     <h3 style="margin-top:28px; margin-bottom:12px">Trust propagation rule</h3>
-    <p>The trust score of a <strong>calculated metric is not fixed</strong> — it propagates from the trust of its inputs:</p>
+    <p>When you calculate a metric from other metrics, its reliability is constrained by the least reliable input. SNOMI formalises this with a propagation rule — a derived metric can never be more trustworthy than what it was built from:</p>
 
     <div class="code-block">
       <pre><code>T_result = max(T1,  min(T_inputs) − Δ)
@@ -1705,7 +1724,8 @@
   <!-- ── DATA MODEL ── -->
 <section id="data-model">
   <h2>Data dependency graph</h2>
-  <p>Every SNOMI metric has a <strong>root entity</strong> it belongs to and zero or more <strong>upstream metrics</strong> it depends on. A derived metric inherits the trust constraints of all its inputs — understanding this graph is essential for valid citation.</p>
+  <p>Some metrics are direct measurements — you read them off the platform. Others are calculated from those measurements. And some aggregate calculations on top of other calculations.</p>
+  <p>This graph shows exactly what depends on what. Start from the left: a <strong>creator account</strong> has a follower count. A <strong>published piece of content</strong> has reach. From reach you can calculate an engagement rate. From engagement rate and a reference price, you can estimate a media value. Each step introduces a new constraint — which is why an EMV figure can never be as reliable as the raw reach number it was built from.</p>
 
   <div class="dep-tree">
 
@@ -1714,23 +1734,23 @@
       <div class="dep-root-grid">
         <div class="dep-entity dep-entity--actor">
           <div class="dep-entity-icon">👤</div>
-          <div class="dep-entity-name">Actor.creator</div>
-          <div class="dep-entity-desc">The creator account — exists independently</div>
+          <div class="dep-entity-name">Creator account</div>
+          <div class="dep-entity-desc">A creator, advertiser, agency or tool — exists independently of any campaign</div>
         </div>
         <div class="dep-entity dep-entity--content">
           <div class="dep-entity-icon">📄</div>
-          <div class="dep-entity-name">ContentUnit</div>
-          <div class="dep-entity-desc">A published piece of content — requires Actor.creator</div>
+          <div class="dep-entity-name">Published content</div>
+          <div class="dep-entity-desc">A reel, post, video or story — always linked to a creator</div>
         </div>
         <div class="dep-entity dep-entity--campaign">
           <div class="dep-entity-icon">🎯</div>
           <div class="dep-entity-name">Campaign</div>
-          <div class="dep-entity-desc">Groups content units — requires Actor.advertiser</div>
+          <div class="dep-entity-desc">Groups content and creators around a shared objective</div>
         </div>
         <div class="dep-entity dep-entity--financial">
           <div class="dep-entity-icon">💰</div>
-          <div class="dep-entity-name">Financial.Budget</div>
-          <div class="dep-entity-desc">Spend data — requires Campaign</div>
+          <div class="dep-entity-name">Budget / Contract</div>
+          <div class="dep-entity-desc">Spend and contract data — always linked to a campaign</div>
         </div>
       </div>
     </div>
@@ -1739,7 +1759,7 @@
 
       <!-- CHAIN: Actor.creator -->
       <div class="dep-chain">
-        <div class="dep-chain-root dep-chain-root--actor">Actor.creator</div>
+        <div class="dep-chain-root dep-chain-root--actor">Creator account</div>
         <div class="dep-row">
           <div class="dep-metric dep-base">
             <span class="dep-code">AUD.001</span>
@@ -1796,7 +1816,7 @@
 
       <!-- CHAIN: ContentUnit -->
       <div class="dep-chain">
-        <div class="dep-chain-root dep-chain-root--content">ContentUnit</div>
+        <div class="dep-chain-root dep-chain-root--content">Published content</div>
 
         <div class="dep-row">
           <div class="dep-metric dep-base">
@@ -1915,7 +1935,7 @@
 
       <!-- CHAIN: Financial.Budget -->
       <div class="dep-chain">
-        <div class="dep-chain-root dep-chain-root--financial">Financial.Budget</div>
+        <div class="dep-chain-root dep-chain-root--financial">Budget</div>
         <div class="dep-row dep-row--indent">
           <div class="dep-metric">
             <span class="dep-code">VAL.002</span>
@@ -1989,7 +2009,7 @@
   <!-- ── METRICS CATALOG ── -->
   <section id="metrics">
     <h2>Metrics catalog</h2>
-    <p>SNOMI defines <strong>8 domains</strong> covering every dimension of influencer performance. Click any domain to jump to its specs.</p>
+    <p>SNOMI organises every influencer metric into <strong>8 domains</strong>. The order below follows the data chain: audience metrics belong to the creator, reach and engagement metrics belong to the content, value metrics require budget data. Click any domain to jump to its full specification.</p>
     <div class="domain-grid">
       <a href="#aud" class="domain-card"><div class="domain-code">AUD</div><div class="domain-name">Audience</div><div class="domain-desc">Size, quality, composition</div></a>
       <a href="#rea" class="domain-card"><div class="domain-code">REA</div><div class="domain-name">Reach & Distribution</div><div class="domain-desc">Content spread</div></a>
