@@ -612,6 +612,19 @@
 
     .rules-list li:last-child { border-bottom: none; }
 
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      background: rgba(96,165,250,0.15);
+      color: var(--primary);
+      vertical-align: middle;
+      margin-left: 6px;
+      letter-spacing: 0.05em;
+    }
+
     .rule-num {
       flex-shrink: 0;
       width: 24px; height: 24px;
@@ -1128,6 +1141,11 @@
   <div class="sidebar-section">
     <div class="sidebar-label">Reference</div>
     <a href="#rules">Critical rules</a>
+    <li class="nav-section">Resources (v2)</li>
+    <a href="#resource-model">Resource model</a>
+    <a href="#content-profiles">Content profiles</a>
+    <a href="#actor-profiles">Actor profiles</a>
+    <a href="#financial-resources">Financial resources</a>
     <a href="#modes">Operating modes</a>
   </div>
   <div class="sidebar-section">
@@ -1842,6 +1860,123 @@ Example (FR, Instagram, Nano, Heavy production):
       <li><div class="rule-num">13</div><div class="rule-text"><strong>Trust propagates through formulas.</strong> <code>T_result = max(T1, min(T_inputs) − Δ)</code>. A calculated metric is never more trustworthy than its weakest input. A report citing CPI at T4 is only valid if all 5 component metrics were sourced at T4 or above.</div></li>
     </ul>
   </section>
+
+  <!-- ── RESOURCE MODEL ── -->
+  <section id="resource-model">
+    <h2>Resource model <span class="badge">v2</span></h2>
+    <p>SNOMI v2 extends the standard beyond metrics to cover the full data landscape of influencer marketing. Inspired by <a href="https://www.hl7.org/fhir/" target="_blank" rel="noopener">HL7 FHIR</a>'s resource architecture, SNOMI v2 defines four base resource types — each specialisable via Profiles.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon" style="background:rgba(96,165,250,0.12)">📄</div>
+        <h3>ContentUnit</h3>
+        <p>Any piece of content: Reel, Story, Video, Post, Short. Carries all measured metrics and references its creator and campaign.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(52,211,153,0.12)">👤</div>
+        <h3>Actor</h3>
+        <p>Any party: Creator, Advertiser, Agency, Platform, Tool. Holds handles, tier, performance metrics, and exclusivities.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(251,191,36,0.12)">📊</div>
+        <h3>Campaign</h3>
+        <p>Aggregates ContentUnits across creators and platforms. Tracks KPIs, period, objective, and aggregate metrics.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(167,139,250,0.12)">💶</div>
+        <h3>Financial</h3>
+        <p>Budget, Contract, Invoice, Payment, Bonus. Covers deliverables, usage rights, payment terms, and performance bonuses.</p>
+      </div>
+    </div>
+    <h3 style="margin-top:28px">Three-tier architecture</h3>
+    <div class="callout callout-info">
+      <strong>Foundation</strong> → defines types, cardinality, ValueSets<br>
+      <strong>Base Resources</strong> → ContentUnit, Actor, Campaign, Financial<br>
+      <strong>Profiles</strong> → concrete specialisations (ig-reel, creator, advertiser…)
+    </div>
+    <p style="margin-top:12px">Full specification: <a href="https://github.com/rayanebenabs/SNOMI/tree/main/references" target="_blank" rel="noopener">github.com/rayanebenabs/SNOMI/references</a></p>
+  </section>
+
+  <!-- ── CONTENT PROFILES ── -->
+  <section id="content-profiles">
+    <h2>Content profiles <span class="badge">v2</span></h2>
+    <p>Each content format is defined as a Profile of <code>ContentUnit</code>. A profile fixes the platform and format, declares the view threshold, and lists applicable SNOMI metrics.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Profile</th><th>Platform</th><th>Format</th><th>View threshold</th><th>Key metrics</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>ig-reel</code></td><td>Instagram</td><td>Short vertical video ≤ 90s</td><td>3 seconds</td><td>REA.001/002/005, ENG.002, ENG.006, VAL.001</td></tr>
+          <tr><td><code>ig-story</code></td><td>Instagram</td><td>Ephemeral 24h content</td><td>1 view</td><td>REA.001 (viewers), ENG.NAV.*</td></tr>
+          <tr><td><code>ig-post</code></td><td>Instagram</td><td>Image / carousel</td><td>—</td><td>REA.001/002, ENG.002, ENG.004 (saves)</td></tr>
+          <tr><td><code>tk-video</code></td><td>TikTok</td><td>Main feed video 15s–10min</td><td>2 seconds</td><td>REA.005, ENG.006, ENG.005 (shares)</td></tr>
+          <tr><td><code>tk-story</code></td><td>TikTok</td><td>Ephemeral 24h</td><td>—</td><td>REA.001, REA.002</td></tr>
+          <tr><td><code>yt-short</code></td><td>YouTube</td><td>Vertical video ≤ 60s</td><td>platform-defined</td><td>REA.005, ENG.006</td></tr>
+          <tr><td><code>yt-video</code></td><td>YouTube</td><td>Standard video &gt; 60s</td><td>30 seconds</td><td>REA.005, REA.006, ENG.006, watch time</td></tr>
+          <tr><td><code>fb-reel</code></td><td>Facebook</td><td>Short vertical video ≤ 90s</td><td>3 seconds</td><td>REA.001/002/005</td></tr>
+          <tr><td><code>fb-post</code></td><td>Facebook</td><td>Image / text / video</td><td>—</td><td>REA.001/002, ENG.002</td></tr>
+          <tr><td><code>li-post</code></td><td>LinkedIn</td><td>Professional post</td><td>—</td><td>REA.001 (unique impr.), CON.001</td></tr>
+          <tr><td><code>tw-post</code></td><td>X/Twitter</td><td>Tweet (text/image/video)</td><td>—</td><td>REA.002 (views)</td></tr>
+          <tr><td><code>pin-pin</code></td><td>Pinterest</td><td>Visual pin</td><td>—</td><td>REA.002, ENG.004 (saves), CON.001</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── ACTOR PROFILES ── -->
+  <section id="actor-profiles">
+    <h2>Actor profiles <span class="badge">v2</span></h2>
+    <p>All parties in an influencer campaign are modelled as <code>Actor</code> resources with a profile. Each profile adds specific fields on top of the base Actor resource.</p>
+    <div class="cards">
+      <div class="card">
+        <h3>creator</h3>
+        <p>Content creator or influencer. Holds per-platform handles, tier (NANO→MEGA), content categories, agency reference, and exclusivities.</p>
+      </div>
+      <div class="card">
+        <h3>advertiser</h3>
+        <p>Brand or company. Holds sector, brand safety keywords, preferred platforms and tiers, and agency references.</p>
+      </div>
+      <div class="card">
+        <h3>agency</h3>
+        <p>Talent or media agency. Typed as talent / media / full-service. References represented creators and advertiser clients.</p>
+      </div>
+      <div class="card">
+        <h3>platform</h3>
+        <p>Social platform operator. Declares native analytics tool and API availability. Native platform data always carries T5 trust ceiling.</p>
+      </div>
+      <div class="card">
+        <h3>tool</h3>
+        <p>Analytics or management SaaS. Declares trust ceiling (T2 for estimation models, T5 for native API pass-through) and methodology URL.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FINANCIAL RESOURCES ── -->
+  <section id="financial-resources">
+    <h2>Financial resources <span class="badge">v2</span></h2>
+    <p>The <code>Financial</code> resource covers the contractual and monetary layer. All financial resources share the same base type, differentiated by their <code>type</code> field.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Type</th><th>Purpose</th><th>Key fields</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>FIN.Budget</code></td><td>Planned spend allocation</td><td>total_gross, total_net, agency_fee_pct, allocations[ ]</td></tr>
+          <tr><td><code>FIN.Contract</code></td><td>Legal agreement between parties</td><td>deliverables[ ], exclusivity[ ], usage_rights[ ], payment_terms</td></tr>
+          <tr><td><code>FIN.Invoice</code></td><td>Payment request</td><td>from, to, lines[ ], total_gross, due_at, paid_at</td></tr>
+          <tr><td><code>FIN.Payment</code></td><td>Funds transfer record</td><td>from, to, amount, transferred_at, method</td></tr>
+          <tr><td><code>FIN.Bonus</code></td><td>Performance-based additional pay</td><td>trigger_metric, trigger_value, actual_value, amount</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-info" style="margin-top:16px">
+      <strong>Fee types supported:</strong> flat · CPE · CPM · CPA · revenue share · gifting · hybrid (flat + performance)<br>
+      <strong>Usage rights:</strong> paid social · owned channels · earned · OOH · TV · print · packaging<br>
+      <strong>Payment structures:</strong> full upfront · 50/50 split · on delivery · on approval · Net-30 · Net-60 · milestone
+    </div>
+  </section>
+
+  <hr />
 
   <!-- ── MODES ── -->
   <section id="modes">
