@@ -1,7 +1,7 @@
 # SNOMI Full Metrics Catalog
 
 > **Format column** — how the metric value is expressed when cited in a report.
-> All metrics must be accompanied by a Trust Score and a time window (ISO dates).
+> All metrics must be accompanied by a Trust Score, a time window (ISO dates), and a produced date (when the data was extracted — YYYY-MM-DD).
 
 ## Trust Propagation
 
@@ -41,14 +41,14 @@ Always recalculate when inputs are not native.
 
 ## ENG — Engagement
 
-| Code    | Name                         | Definition                                                                                    | Formula                              | Format | Trust |
-|---------|------------------------------|-----------------------------------------------------------------------------------------------|--------------------------------------|--------|-------|
-| ENG.001 | Engagement Rate (Followers)  | Engagement against follower count. Common but biased if audience is unevenly active.          | (L+C+S+Sh) / Followers × 100        | %      | T4    |
-| ENG.002 | Engagement Rate (Reach) ⭐   | Engagement against actual reach. SNOMI preferred metric for content resonance.                | (L+C+S+Sh) / Reach × 100            | %      | T4    |
-| ENG.003 | Comment Rate                 | Comments relative to impressions — deep resonance indicator                                   | Comments / Impressions × 100         | %      | T4    |
-| ENG.004 | Save Rate                    | Saves relative to impressions — perceived content value indicator                             | Saves / Impressions × 100            | %      | T4    |
-| ENG.005 | Share Rate                   | Shares/reposts relative to impressions — virality indicator                                   | Shares / Impressions × 100           | %      | T4    |
-| ENG.006 | Video Completion Rate        | Share watching to completion (or 75%+). Definition of "view" varies by platform.             | Complete views / Total views × 100   | %      | T5    |
+| Code    | Name                         | Definition                                                                                    | Formula (codified)                                        | Format | Trust |
+|---------|------------------------------|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------|--------|-------|
+| ENG.001 | Engagement Rate (Followers)  | Engagement against follower count. Common but biased if audience is unevenly active.          | `(L+C+S+Sh) / [AUD.001] × 100`                          | %      | T4    |
+| ENG.002 | Engagement Rate (Reach) ⭐   | Engagement against actual reach. SNOMI preferred metric for content resonance.                | `(L+C+S+Sh) / [REA.001] × 100`                          | %      | T4    |
+| ENG.003 | Comment Rate                 | Comments relative to impressions — deep resonance indicator                                   | `Comments / [REA.002] × 100`                             | %      | T4    |
+| ENG.004 | Save Rate                    | Saves relative to impressions — perceived content value indicator                             | `Saves / [REA.002] × 100`                                | %      | T4    |
+| ENG.005 | Share Rate                   | Shares/reposts relative to impressions — virality indicator                                   | `Shares / [REA.002] × 100`                               | %      | T4    |
+| ENG.006 | Video Completion Rate        | Share watching to completion (or 75%+). Definition of "view" varies by platform.             | `Complete views / [REA.005] × 100`                       | %      | T5    |
 
 **Interaction components (L+C+S+Sh):** Likes + Comments + Saves + Shares
 Platform variants: Instagram includes Saves; TikTok includes Duets/Stitches; YouTube includes Thumbs up + Comments (no saves native)
@@ -63,53 +63,109 @@ Platform variants: Instagram includes Saves; TikTok includes Duets/Stitches; You
 
 ## REA — Reach & Distribution
 
-| Code    | Name              | Definition                                                                     | Formula                         | Format        | Trust |
-|---------|-------------------|--------------------------------------------------------------------------------|---------------------------------|---------------|-------|
-| REA.001 | Organic Reach     | Unique accounts seeing content organically (no paid boost)                     | Native platform value           | integer       | T5    |
-| REA.002 | Total Impressions | Total displays (one account may generate multiple impressions)                 | Native platform value           | integer       | T5    |
-| REA.003 | Reach Rate        | Share of total audience reached by a piece of content                          | Reach / Followers × 100        | %             | T4    |
-| REA.004 | Frequency         | Average exposures per unique account                                           | Impressions / Reach             | ratio (×)     | T4    |
-| REA.005 | Video Views       | Total view count. "View" definition: Instagram 3s, TikTok 2s, YouTube 30s.    | Native — declare platform def. | integer       | T5    |
+### The Reach / Impressions / Views triad
+
+These three metrics are **not interchangeable**. They measure fundamentally different things and must never be substituted for one another without explicit declaration.
+
+| Concept | Code | What it counts | Deduplicated? | Includes repeats? |
+|---------|------|----------------|---------------|-------------------|
+| Reach | REA.001 | Unique accounts that saw the content | ✅ Yes | ✗ No |
+| Impressions | REA.002 | Total times the content was displayed | ✗ No | ✅ Yes |
+| Video Views | REA.005 | Accounts that watched past the threshold | Partial* | Partial* |
+| Qualified Views | REA.006 | Views ≥ 50% completion — engaged exposure | ✅ Yes (native) | ✗ No |
+
+*View definition and deduplication vary by platform (see REA.005 note below).
+
+**Relationship:** `[REA.002] = [REA.001] × [REA.004]`
+(Impressions = Reach × Frequency). If you know two values, you can derive the third.
+
+**Key rule:** Always declare which of REA.001, REA.002, REA.005, or REA.006 is used as the base for any calculated metric (EMV, CTR, CPM, engagement rate on reach). A metric cited without specifying its exposure base is non-compliant.
+
+| Code    | Name              | Definition                                                                     | Formula (codified)                           | Format        | Trust |
+|---------|-------------------|--------------------------------------------------------------------------------|----------------------------------------------|---------------|-------|
+| REA.001 | Organic Reach     | Unique accounts seeing content organically (no paid boost)                     | Native platform value                        | integer       | T5    |
+| REA.002 | Total Impressions | Total displays — one account may generate multiple impressions via frequency   | Native platform value                        | integer       | T5    |
+| REA.003 | Reach Rate        | Share of total audience reached by a piece of content                          | `[REA.001] / [AUD.001] × 100`               | %             | T4    |
+| REA.004 | Frequency         | Average exposures per unique account                                           | `[REA.002] / [REA.001]`                     | ratio (×)     | T4    |
+| REA.005 | Video Views       | Total view count — **threshold varies by platform, declare when citing**       | Native — declare platform definition         | integer       | T5    |
+| REA.006 | Qualified Views   | Views reaching ≥ 50% completion — measures genuine engaged exposure            | Native (where available) or `[ENG.006] × [REA.005] / 100` | integer | T5 / T4 |
+
+**REA.005 — Platform view thresholds:**
+
+| Platform | View counted after | Deduplicated? |
+|----------|--------------------|---------------|
+| Instagram | 3 seconds | No (same account counts multiple times) |
+| TikTok | 2 seconds (auto-play) | No |
+| YouTube | 30 seconds | Yes (unique viewer) |
+| Facebook | 3 seconds | No |
+| LinkedIn | 2 seconds | No |
+
+**REA.006 — Availability:** Native on YouTube (as "watch time" proxy). On Instagram and TikTok, derive from `[ENG.006] × [REA.005] / 100` → T4. Flag if derived.
+
+**Trust propagation for REA metrics:**
+- REA.003: `min([REA.001] T5, [AUD.001] T5) − 1` = **T4** default.
+- REA.004: `min([REA.002] T5, [REA.001] T5) − 1` = **T4** default.
+- REA.006 (derived): `min([ENG.006] T5, [REA.005] T5) − 1` = **T4**. If native → **T5**.
 
 ---
 
 ## CON — Conversion
 
-| Code    | Name                  | Definition                                                                         | Formula                             | Format              | Trust  |
-|---------|-----------------------|------------------------------------------------------------------------------------|-------------------------------------|---------------------|--------|
-| CON.001 | Link Clicks           | Clicks on bio link, swipe-up, or description link                                  | Native + tracking URL               | integer             | T4     |
-| CON.002 | Click-Through Rate    | Clicks relative to impressions                                                     | Clicks / Impressions × 100          | %                   | T4     |
-| CON.003 | Promo Code Usage Rate | Share of audience using creator-specific promo code                                | Code uses / Reach × 100             | %                   | T3     |
-| CON.004 | Leads Generated       | Form completions / sign-ups attributable to creator (requires UTM or unique code)  | From tracking platform              | integer             | T3     |
-| CON.005 | Attributed Sales      | Revenue attributable to collaboration via tracking. T1 without dedicated tracking. | Sales w/ creator code / Total sales | currency or %       | T3/T1  |
-| CON.006 | Conversion Rate       | Share of generated traffic completing target action                                | Conversions / Clicks × 100          | %                   | T3     |
+| Code    | Name                  | Definition                                                                         | Formula (codified)                             | Format              | Trust  |
+|---------|-----------------------|------------------------------------------------------------------------------------|------------------------------------------------|---------------------|--------|
+| CON.001 | Link Clicks           | Clicks on bio link, swipe-up, or description link                                  | Native + tracking URL                          | integer             | T4     |
+| CON.002 | Click-Through Rate    | Clicks relative to impressions — declare base metric                               | `[CON.001] / [REA.002] × 100`                 | %                   | T4     |
+| CON.003 | Promo Code Usage Rate | Share of audience using creator-specific promo code                                | `Code uses / [REA.001] × 100`                 | %                   | T3     |
+| CON.004 | Leads Generated       | Form completions / sign-ups attributable to creator (requires UTM or unique code)  | From tracking platform                         | integer             | T3     |
+| CON.005 | Attributed Sales      | Revenue attributable to collaboration via tracking. T1 without dedicated tracking. | `Sales w/ creator code / Total sales × 100`   | currency or %       | T3/T1  |
+| CON.006 | Conversion Rate       | Share of generated traffic completing target action                                | `[CON.004 or CON.005] / [CON.001] × 100`      | %                   | T3     |
+
+**Note CON.002:** The denominator must be declared. Using [REA.002] (impressions) vs [REA.001] (reach) can produce results that differ by a factor of [REA.004] (frequency). Always specify: `CON.002[base: REA.002]` or `CON.002[base: REA.001]`.
 
 ---
 
 ## VAL — Value & ROI
 
-| Code    | Name  | Definition                                                                                     | Formula                            | Format                    | Trust |
-|---------|-------|------------------------------------------------------------------------------------------------|------------------------------------|---------------------------|-------|
-| VAL.001 | EMV   | Estimated advertising equivalent value. Highly contested — always declare methodology.         | Impressions × reference CPM / 1000 | currency                  | T3    |
-| VAL.002 | CPE   | Average cost per engagement on sponsored content                                               | Total budget / Total engagements   | currency / engagement     | T4    |
-| VAL.003 | CPM   | Cost per 1,000 impressions. Cite with [CC] + tier + production level for market benchmarks.   | Budget / Impressions × 1000        | currency / 1,000 imp.     | T4    |
-| VAL.004 | CPC   | Cost per click — requires dedicated tracking URL                                               | Budget / Clicks                    | currency / click          | T4    |
-| VAL.005 | ROAS  | Return on ad spend — requires sales tracking                                                   | Attributed revenue / Budget        | ratio (×) e.g. 3.2×       | T2    |
-| VAL.006 | CPA   | Cost per acquisition — requires conversion tracking                                            | Budget / Conversions               | currency / acquisition    | T2    |
+| Code    | Name  | Definition                                                                                     | Formula (codified)                                                  | Format                    | Trust |
+|---------|-------|------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|---------------------------|-------|
+| VAL.001 | EMV   | Estimated advertising equivalent value. **Base metric must be declared.** Always declare methodology. | `[REA.001 or REA.002 or REA.005 or REA.006] × ref_CPM / 1000` | currency                  | T3    |
+| VAL.002 | CPE   | Average cost per engagement on sponsored content                                               | `Budget / (L+C+S+Sh)`                                              | currency / engagement     | T4    |
+| VAL.003 | CPM   | Cost per 1,000 impressions. Cite with [CC] + tier + production level.                         | `Budget / [REA.002] × 1000`                                        | currency / 1,000 imp.     | T4    |
+| VAL.004 | CPC   | Cost per click — requires dedicated tracking URL                                               | `Budget / [CON.001]`                                               | currency / click          | T4    |
+| VAL.005 | ROAS  | Return on ad spend — requires sales tracking                                                   | `[CON.005] / Budget`                                               | ratio (×) e.g. 3.2×       | T2    |
+| VAL.006 | CPA   | Cost per acquisition — requires conversion tracking                                            | `Budget / [CON.004]`                                               | currency / acquisition    | T2    |
 
-**EMV Methodologies:**
+### VAL.001 — EMV base metric declaration
+
+EMV must declare which exposure metric it uses as its base. The choice is not neutral — it changes the result by a factor of [REA.004] (frequency) or more:
+
+| Syntax | Base metric | Effect | When to use |
+|--------|-------------|--------|-------------|
+| `VAL.001[base: REA.001]` | Organic Reach | Most conservative — deduplicated unique accounts | Standard recommendation |
+| `VAL.001[base: REA.002]` | Total Impressions | Inflated by frequency — higher number | Comparable to display advertising |
+| `VAL.001[base: REA.005]` | Video Views | For video content only — threshold varies by platform (declare) | Video campaigns |
+| `VAL.001[base: REA.006]` | Qualified Views (≥50%) | Most rigorous — genuine engaged exposure | Premium / quality-first campaigns |
+
+**Citation example:**
+```
+VAL.001[base: REA.001].IG.FR | €28,400 | Q1 2026 | 2026-04-05 | Launchmetrics method | T3
+VAL.001[base: REA.002].IG.FR | €61,000 | Q1 2026 | 2026-04-05 | Launchmetrics method | T3
+```
+These two lines refer to the same campaign — the difference is 2.15× (the frequency). Both are T3 maximum regardless of input quality.
+
+**EMV Methodologies — always declare:**
 - **Launchmetrics**: weighted by creator tier, vertical, territory
 - **Traackr**: based on native advertising CPMs per platform
 - **Agency custom**: document your formula explicitly
 
 **Trust propagation for VAL metrics:**
-- VAL.001 (EMV): introduces a reference CPM assumption → Δ = 2, capped at **T3** regardless of how good REA.002 is.
-- VAL.002 (CPE): budget (T1 self-reported) + engagements (T5 native) → min = T1, Δ=1 → floor **T1**. If budget is verified (contract) → T4.
-- VAL.003 (CPM): budget / impressions → same as CPE. Trust depends entirely on budget source reliability.
-- VAL.005 (ROAS) / VAL.006 (CPA): require conversion tracking (T2–T3 at best) → propagated trust rarely exceeds **T2**.
+- VAL.001 (EMV): Δ = 2 (ref CPM is an assumption) → capped at **T3** regardless of base metric quality.
+- VAL.002 (CPE): `min(Budget trust, engagement T5) − 1`. Budget T1 (self-reported) → **T1**. Budget T4 (verified contract) → **T4**.
+- VAL.003 (CPM): `min(Budget trust, [REA.002] T5) − 1`. Capped by budget source trust.
+- VAL.005 / VAL.006: require conversion tracking → propagated trust rarely exceeds **T2**.
 
-**Key rule — VAL.001:** EMV is always T3 maximum. A T5 impression count does not
-elevate EMV above T3 because the reference CPM is inherently an assumption.
+**Key rule — VAL.001:** EMV is always T3 maximum. A T5 base metric does not
+elevate EMV above T3 — the reference CPM is inherently an assumption (Δ=2).
 
 ---
 

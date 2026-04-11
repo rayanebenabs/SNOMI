@@ -111,24 +111,27 @@ components were sourced at T4 or above. If AUD.003 came from a third-party tool
 
 The most frequently used codes:
 
-| Code       | Name                        | Formula                                      | Trust |
-|------------|-----------------------------|----------------------------------------------|-------|
-| `AUD.001`  | Total Followers             | Native value                                 | T5    |
-| `AUD.002`  | Audience Growth Rate        | (end−start)/start × 100                      | T5    |
-| `AUD.003`  | Audience Quality Score      | % real active followers (3rd party tool)     | T2    |
-| `ENG.001`  | Engagement Rate (Followers) | (L+C+S+Sh) / Followers × 100                | T4    |
-| `ENG.002`  | Engagement Rate (Reach) ⭐  | (L+C+S+Sh) / Reach × 100                    | T4    |
-| `ENG.006`  | Video Completion Rate       | Complete views / Total views × 100           | T5    |
-| `REA.001`  | Organic Reach               | Native value                                 | T5    |
-| `REA.003`  | Reach Rate                  | Reach / Followers × 100                      | T4    |
-| `CON.002`  | CTR                         | Clicks / Impressions × 100                   | T4    |
-| `VAL.001`  | EMV                         | Impressions × ref. CPM / 1000 (declare method) | T3  |
-| `VAL.002`  | CPE                         | Budget / Total engagements                   | T4    |
-| `VAL.003`  | CPM                         | Budget / Impressions × 1000                  | T4    |
-| `QUA.001`  | Brief Compliance Score      | Brief elements met / Total × 100             | T4    |
-| `QUA.006`  | Native Partnership Label    | Native label activated (Boolean) — T5, verifiable on platform | T5 |
-| `CRE.005`  | Niche Authority Score       | Creator ENG.002 / Median ENG.002 in vertical | T3    |
-| `CRE.006`  | Category Partnership History| Count paid partnerships in sector (12 months) | T3  |
+| Code       | Name                        | Formula (codified)                                      | Trust |
+|------------|-----------------------------|---------------------------------------------------------|-------|
+| `AUD.001`  | Total Followers             | Native value                                            | T5    |
+| `AUD.002`  | Audience Growth Rate        | `(end − start) / [AUD.001_start] × 100`                | T5    |
+| `AUD.003`  | Audience Quality Score      | % real active followers (3rd party tool)                | T2    |
+| `ENG.001`  | Engagement Rate (Followers) | `(L+C+S+Sh) / [AUD.001] × 100`                        | T4    |
+| `ENG.002`  | Engagement Rate (Reach) ⭐  | `(L+C+S+Sh) / [REA.001] × 100`                        | T4    |
+| `ENG.006`  | Video Completion Rate       | `Complete views / [REA.005] × 100`                     | T5    |
+| `REA.001`  | Organic Reach               | Native value — unique accounts, deduplicated            | T5    |
+| `REA.002`  | Total Impressions           | Native value — total displays, includes repeats         | T5    |
+| `REA.003`  | Reach Rate                  | `[REA.001] / [AUD.001] × 100`                         | T4    |
+| `REA.005`  | Video Views                 | Native — threshold varies (IG 3s · TK 2s · YT 30s)    | T5    |
+| `REA.006`  | Qualified Views             | Views ≥ 50% completion — native or `[ENG.006] × [REA.005] / 100` | T5/T4 |
+| `CON.002`  | CTR                         | `[CON.001] / [REA.002] × 100` — declare base metric   | T4    |
+| `VAL.001`  | EMV                         | `[REA.001 or REA.002 or REA.005 or REA.006] × ref_CPM / 1000` — **declare base + method** | T3 max |
+| `VAL.002`  | CPE                         | `Budget / (L+C+S+Sh)`                                  | T4    |
+| `VAL.003`  | CPM                         | `Budget / [REA.002] × 1000`                            | T4    |
+| `QUA.001`  | Brief Compliance Score      | `Elements met / Total elements × 100`                  | T4    |
+| `QUA.006`  | Native Partnership Label    | Boolean — verifiable on platform                       | T5    |
+| `CRE.005`  | Niche Authority Score       | `[ENG.002] / median([ENG.002], vertical)`              | T3    |
+| `CRE.006`  | Category Partnership History| Count paid partnerships in sector (12 months)           | T3    |
 
 ⭐ = SNOMI preferred engagement metric. ENG.001 and ENG.002 are NOT
 interchangeable — always specify which is used.
@@ -206,15 +209,20 @@ If CRE.006 data is absent or unreliable, do not include this component in the ca
 Every metric cited in a SNOMI-compliant report must include:
 1. SNOMI code + platform + country code (if benchmark)
 2. Value
-3. Time window (ISO dates)
-4. Data source
-5. Trust Score
+3. Time window (ISO dates) — the period the metric covers
+4. Produced date (ISO YYYY-MM-DD) — when the data was extracted or calculated
+5. Data source
+6. Trust Score
+
+PRODUCED ≠ TIME WINDOW. Platform data can be revised retroactively.
+Recording the extraction date makes reports reproducible and auditable.
+Use YYYY-MM-DD (date) or YYYY-MM-DDTHH:MMZ (if time precision matters).
 
 ```
-ENG.002.IG.US | 4.8% | 2026-03-01 → 2026-03-31 | Instagram Insights | T5
-AUD.003.IG    | 91%  | 2026-04-01               | HypeAuditor        | T2
-VAL.001.ALL.FR| €42k EMV | Q1 2026             | Launchmetrics method | T3
-VAL.003.IG.US | $6.70 CPM ref | eMarketer 2024  | —                  | T3
+ENG.002.IG.US               | 4.8%      | 2026-03-01 → 2026-03-31 | 2026-04-02 | Instagram Insights   | T5
+AUD.003.IG                  | 91%       | 2026-04-01               | 2026-04-01 | HypeAuditor          | T2
+VAL.001[base: REA.001].ALL.FR | €42k EMV | Q1 2026                 | 2026-04-05 | Launchmetrics method | T3
+VAL.003.IG.US               | $6.70 CPM | eMarketer 2024           | 2026-04-05 | —                    | T3
 ```
 
 ---
@@ -230,12 +238,14 @@ Example input: *"@creator had 4.2% engagement on Instagram in March, with
 
 Output:
 ```
-ENG.001.IG | 4.2% | 2026-03-01 → 2026-03-31 | source unknown | T4
+ENG.001.IG | 4.2% | 2026-03-01 → 2026-03-31 | [today] | source unknown | T4
   ⚠ Unclear if calculated on Followers (ENG.001) or Reach (ENG.002).
     Request clarification — they are not interchangeable.
-AUD.001.IG | 850,000 | 2026-03-31 | native | T5
-AUD.003.IG | 72% | 2026-03-31 | HypeAuditor | T2
+AUD.001.IG | 850,000 | 2026-03-31 | [today] | native | T5
+AUD.003.IG | 72%     | 2026-03-31 | [today] | HypeAuditor | T2
 ```
+Note: use actual extraction date when known; use [today] as placeholder when
+the data was provided directly in the conversation without a stated pull date.
 
 ### MODE: DECODE
 When given a SNOMI code, explain it in plain language including formula,
@@ -279,13 +289,20 @@ non-comparable metrics mixed in same report).
 1. **EMV ≠ Revenue.** Never conflate VAL.001 with sales generated.
 2. **ENG.001 ≠ ENG.002.** Always specify. When in doubt, ask.
 3. **REG.001/REG.002 require [CC].** REG.001 alone is invalid. Exception: REG.003 uses [PLATFORM].
-4. **Benchmarks require [CC].** "CPM: $5.20" is not SNOMI-compliant.
-   "VAL.003.IG.US | $5.20 | eMarketer 2024" is.
+4. **Benchmarks require [CC].** "CPM: $5.20" is not SNOMI-compliant. "VAL.003.IG.US | $5.20 | eMarketer 2024" is.
 5. **T1/T2 metrics need a note.** Low-trust metrics must be flagged when cited.
 6. **Cross-platform ≠ comparable by default.** ENG.002.IG ≠ ENG.001.TK.
-7. **CPM without tier or complexity = incomplete value.** A CPM cited without specifying the creator tier and production complexity level is an incomplete reference. Apply the multipliers from `references/benchmarks.md` or explicitly document the assumptions.
-8. **REG.003 ≠ REG.001.** Activating the native platform label (QUA.006 = 1) does not replace the legal hashtag required by REG.001.[CC]. The two are independent.
-9. **CRE.006 is BETA.** Do not present a BFS score incorporating CRE.006 as definitive without documenting the source and method used to count sector partnerships.
+7. **CPM without tier or complexity = incomplete value.** Apply multipliers from `references/benchmarks.md` or document assumptions.
+8. **REG.003 ≠ REG.001.** Native platform label (QUA.006 = 1) does not replace the legal hashtag. Both are independent.
+9. **CRE.006 is BETA.** Do not present a BFS incorporating CRE.006 as definitive without documenting source and method.
+10. **Reach ≠ Impressions ≠ Views.** [REA.001], [REA.002], [REA.005], [REA.006] are distinct metrics and must never be substituted without declaration.
+    - REA.001 = unique accounts (deduplicated)
+    - REA.002 = total displays (includes frequency repeats)
+    - REA.005 = platform-threshold video views (not deduplicated on most platforms)
+    - REA.006 = qualified views ≥ 50% completion
+11. **VAL.001 (EMV) must declare its base metric.** `VAL.001` alone is non-compliant. Use `VAL.001[base: REA.001]`, `VAL.001[base: REA.002]`, `VAL.001[base: REA.005]`, or `VAL.001[base: REA.006]`. The difference between REA.001 and REA.002 as base equals frequency ([REA.004]) — which can be 2×–5× on high-performing content.
+12. **Calculated metric formulas must reference SNOMI codes.** In any SNOMI-compliant report or analysis, the formula of a derived metric must cite its input metrics by code (e.g. `[REA.001]`, `[AUD.001]`) — not generic terms like "reach" or "followers".
+13. **Trust propagates through formulas.** T_result = max(T1, min(T_inputs) − Δ). A metric is never more trustworthy than its weakest input.
 
 ---
 

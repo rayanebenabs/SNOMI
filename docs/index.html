@@ -665,6 +665,7 @@
     .cit-code { color: var(--primary); font-weight: 600; min-width: 120px; }
     .cit-val { color: var(--text); }
     .cit-window { color: var(--muted); }
+    .cit-produced { color: #a78bfa; font-size: 12px; }
     .cit-source { color: #71717a; }
     .cit-trust { }
 
@@ -1243,13 +1244,14 @@
   <!-- ── CITATION FORMAT ── -->
   <section id="citation">
     <h2>Standard citation format</h2>
-    <p>Every metric cited in a SNOMI-compliant report must include five fields:</p>
+    <p>Every metric cited in a SNOMI-compliant report must include six fields:</p>
     <div class="citation-example">
-      <div style="color:var(--muted); font-size:12px; margin-bottom:12px;">CODE | VALUE | TIME WINDOW | SOURCE | TRUST</div>
+      <div style="color:var(--muted); font-size:12px; margin-bottom:12px;">CODE | VALUE | TIME WINDOW | PRODUCED | SOURCE | TRUST</div>
       <div class="citation-row">
         <span class="cit-code">ENG.002.IG.US</span>
         <span class="cit-val">4.8%</span>
         <span class="cit-window">2026-03-01 → 2026-03-31</span>
+        <span class="cit-produced">⬥ 2026-04-02</span>
         <span class="cit-source">Instagram Insights</span>
         <span class="tag t5">T5</span>
       </div>
@@ -1257,13 +1259,15 @@
         <span class="cit-code">AUD.003.IG</span>
         <span class="cit-val">91%</span>
         <span class="cit-window">2026-04-01</span>
+        <span class="cit-produced">⬥ 2026-04-01</span>
         <span class="cit-source">HypeAuditor</span>
         <span class="tag t2">T2</span>
       </div>
       <div class="citation-row">
-        <span class="cit-code">VAL.001.ALL.FR</span>
+        <span class="cit-code">VAL.001[base: REA.001].ALL.FR</span>
         <span class="cit-val">€42k EMV</span>
         <span class="cit-window">Q1 2026</span>
+        <span class="cit-produced">⬥ 2026-04-05</span>
         <span class="cit-source">Launchmetrics method</span>
         <span class="tag t3">T3</span>
       </div>
@@ -1271,9 +1275,15 @@
         <span class="cit-code">VAL.003.IG.US</span>
         <span class="cit-val">$6.70 CPM ref</span>
         <span class="cit-window">eMarketer 2024</span>
+        <span class="cit-produced">⬥ 2026-04-05</span>
         <span class="cit-source">—</span>
         <span class="tag t3">T3</span>
       </div>
+    </div>
+    <div class="callout callout-info" style="margin-top:16px">
+      <strong>TIME WINDOW vs PRODUCED</strong>
+      <p style="margin:6px 0 0"><strong>TIME WINDOW</strong> is the period the metric covers (when the campaign ran or the data window). <strong>PRODUCED</strong> is the ISO date when the data was extracted or calculated. Platform data can be revised retroactively — knowing when it was pulled is essential for auditability.</p>
+      <p style="margin:6px 0 0; color:var(--muted); font-size:12px">Format: <code>YYYY-MM-DD</code> (date) or <code>YYYY-MM-DDTHH:MMZ</code> (datetime if precision matters)</p>
     </div>
   </section>
 
@@ -2134,12 +2144,16 @@ BFS — Brand Fit Score (0–100)
 
 ## Standard Citation Format
 
-CODE | VALUE | TIME WINDOW | SOURCE | TRUST SCORE
+CODE | VALUE | TIME WINDOW | PRODUCED | SOURCE | TRUST SCORE
+
+PRODUCED = ISO date when the data was extracted or calculated (YYYY-MM-DD).
+Distinct from TIME WINDOW (the measurement period). Platform data may be
+revised retroactively — always record the extraction date.
 
 Example:
-ENG.002.IG.US | 4.8% | 2026-03-01 → 2026-03-31 | Instagram Insights | T5
-AUD.003.IG    | 91%  | 2026-04-01               | HypeAuditor        | T2
-VAL.001.ALL.FR| €42k EMV | Q1 2026             | Launchmetrics      | T3
+ENG.002.IG.US | 4.8% | 2026-03-01 → 2026-03-31 | 2026-04-02 | Instagram Insights | T5
+AUD.003.IG    | 91%  | 2026-04-01               | 2026-04-01 | HypeAuditor        | T2
+VAL.001[base: REA.001].ALL.FR | €42k EMV | Q1 2026 | 2026-04-05 | Launchmetrics | T3
 
 ---
 
