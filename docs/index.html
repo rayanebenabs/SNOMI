@@ -1245,7 +1245,7 @@
   </button>
   <a href="#about" class="nav-logo">
     <span>SNOMI</span>
-    <span class="badge">v1.0</span>
+    <span class="badge">v1.2</span>
   </a>
   <div class="nav-links">
     <a href="#about">About</a>
@@ -1352,7 +1352,7 @@
       <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
         <circle cx="5" cy="5" r="5"/>
       </svg>
-      Open International Standard · v1.0
+      Open International Standard · v1.2
     </div>
     <h1 class="hero-title">Standard Nomenclature<br>of Influence Metrics</h1>
     <p class="lead">
@@ -3417,10 +3417,16 @@ const METRICS = [
   // AUD
   { code: "AUD.001", name: "Total Followers", domain: "AUD", desc: "Total subscribers/followers at a given date. Native platform value. T5", anchor: "#aud" },
   { code: "AUD.002", name: "Audience Growth Rate", domain: "AUD", desc: "(end − start) / start × 100. T5", anchor: "#aud" },
-  { code: "AUD.003", name: "Audience Quality Score", domain: "AUD", desc: "% genuine active followers via 3rd-party tool. T2", anchor: "#aud" },
+  { code: "AUD.003", name: "Audience Quality Score", domain: "AUD", desc: "% genuine active followers via 3rd-party tool (aggregate). T2", anchor: "#aud" },
+  { code: "AUD.003.FAKE", name: "Fake Account Rate", domain: "AUD", desc: "% fake/bot accounts via 3rd-party tool. T2", anchor: "#aud" },
+  { code: "AUD.003.INACT", name: "Inactive Account Rate", domain: "AUD", desc: "% real but inactive accounts via 3rd-party tool. T2", anchor: "#aud" },
   { code: "AUD.004", name: "Target Audience Rate", domain: "AUD", desc: "% audience matching brand's target persona. T3", anchor: "#aud" },
   { code: "AUD.005", name: "Audience Overlap", domain: "AUD", desc: "Shared audience between two creators. T2", anchor: "#aud" },
-  { code: "AUD.006", name: "Demographic Score", domain: "AUD", desc: "Distribution by age, gender, geography. T4", anchor: "#aud" },
+  { code: "AUD.006.AGE", name: "Audience Age Distribution", domain: "AUD", desc: "% per age bracket (13–17, 18–24, 25–34, 35–44, 45–54, 55+). T4 native / T2 3rd-party", anchor: "#aud" },
+  { code: "AUD.006.GEN", name: "Audience Gender Distribution", domain: "AUD", desc: "% Male / Female / Unspecified. T4 native / T2 3rd-party", anchor: "#aud" },
+  { code: "AUD.006.GEO", name: "Audience Geographic Distribution", domain: "AUD", desc: "% per country/region (top N). T4 native / T2 3rd-party", anchor: "#aud" },
+  { code: "AUD.007", name: "Audience Interest Distribution", domain: "AUD", desc: "% per interest/affinity category via 3rd-party tool. T2", anchor: "#aud" },
+  { code: "AUD.008", name: "Audience Following Count", domain: "AUD", desc: "Avg accounts followed by audience members — attention dilution signal. T2", anchor: "#aud" },
   // ENG
   { code: "ENG.001", name: "Engagement Rate (Followers)", domain: "ENG", desc: "(L+C+S+Sh) / Followers × 100. T4. Not interchangeable with ENG.002.", anchor: "#eng" },
   { code: "ENG.002", name: "Engagement Rate (Reach) ⭐", domain: "ENG", desc: "SNOMI preferred. (L+C+S+Sh) / Reach × 100. T4.", anchor: "#eng" },
