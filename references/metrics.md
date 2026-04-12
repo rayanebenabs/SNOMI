@@ -26,16 +26,37 @@ Always recalculate when inputs are not native.
 
 ## AUD — Audience
 
-| Code    | Name                   | Definition                                                                  | Formula                                         | Format          | Trust |
-|---------|------------------------|-----------------------------------------------------------------------------|-------------------------------------------------|-----------------|-------|
-| AUD.001 | Total Followers        | Total subscribers/followers at a given date                                 | Native platform value                           | integer         | T5    |
-| AUD.002 | Audience Growth Rate   | % change in follower count over a period                                    | (end − start) / start × 100                    | %               | T5    |
-| AUD.003 | Audience Quality Score | Estimated share of genuine, active followers                                | % active accounts / total — via 3rd-party tool | %               | T2    |
-| AUD.004 | Target Audience Rate   | Share of audience matching brand's defined target persona                   | % audience meeting target criteria              | %               | T3    |
-| AUD.005 | Audience Overlap       | Shared audience between two creators (for campaign deduplication)           | (Shared followers / min(A,B)) × 100             | %               | T2    |
-| AUD.006 | Demographic Score      | Distribution by age, gender, geography — expressed as breakdown             | % per demographic cohort                        | % breakdown     | T4    |
+| Code         | Name                             | Definition                                                                            | Formula                                           | Format      | Trust |
+|--------------|----------------------------------|---------------------------------------------------------------------------------------|---------------------------------------------------|-------------|-------|
+| AUD.001      | Total Followers                  | Total subscribers/followers at a given date                                           | Native platform value                             | integer     | T5    |
+| AUD.002      | Audience Growth Rate             | % change in follower count over a period                                              | (end − start) / start × 100                      | %           | T5    |
+| AUD.003      | Audience Quality Score           | Estimated share of genuine, active followers (aggregate)                              | % active accounts / total — via 3rd-party tool   | %           | T2    |
+| AUD.003.FAKE | Fake Account Rate                | Estimated share of bot and fake accounts                                              | % fake accounts / total — via 3rd-party tool     | %           | T2    |
+| AUD.003.INACT| Inactive Account Rate            | Share of real but recently inactive accounts                                          | % inactive accounts / total — via 3rd-party tool | %           | T2    |
+| AUD.004      | Target Audience Rate             | Share of audience matching brand's defined target persona                             | % audience meeting target criteria                | %           | T3    |
+| AUD.005      | Audience Overlap                 | Shared audience between two creators (for campaign deduplication)                     | (Shared followers / min(A,B)) × 100               | %           | T2    |
+| AUD.006.AGE  | Audience Age Distribution        | Audience breakdown by age bracket (13–17, 18–24, 25–34, 35–44, 45–54, 55+)          | % per age bracket — platform native or 3rd-party | % breakdown | T4    |
+| AUD.006.GEN  | Audience Gender Distribution     | Audience breakdown by gender                                                          | % Male / Female / Unspecified                     | % breakdown | T4    |
+| AUD.006.GEO  | Audience Geographic Distribution | Audience breakdown by country or region                                               | % per country (top N)                             | % breakdown | T4    |
+| AUD.007      | Audience Interest Distribution   | Audience breakdown by interest/affinity category                                      | % per category (top N) — via 3rd-party tool      | % breakdown | T2    |
+| AUD.008      | Audience Following Count         | Average number of accounts followed by audience members — attention dilution signal   | Mean following count — via 3rd-party tool        | integer     | T2    |
 
-**Note AUD.003:** Values above 85% are generally considered strong. Tools vary significantly — HypeAuditor, Modash, Kolsquare, Upfluence each use proprietary models. Never present as native platform data.
+**Note AUD.003:** Values above 85% are generally considered strong. Tools vary significantly — HypeAuditor, Modash, Kolsquare, Upfluence each use proprietary models. Never present as native platform data. `AUD.003 ≈ 100% − AUD.003.FAKE − AUD.003.INACT` (approximation — tool definitions vary).
+
+**Note AUD.003.FAKE / AUD.003.INACT:** Always declare which tool and version was used. HypeAuditor, Modash and Kolsquare use proprietary definitions of "fake" and "inactive" that are not directly comparable across tools.
+
+**Note AUD.006.AGE / GEN / GEO:** Trust T4 applies when sourced from native platform analytics (Instagram Insights, TikTok Analytics, YouTube Studio). Downgrade to T2 if sourced from a third-party tool.
+
+**Note AUD.007:** Interest taxonomies vary by tool — always declare the tool and its taxonomy. Do not compare AUD.007 values across reports sourced from different tools without normalisation.
+
+**Note AUD.008 — indicative thresholds (non-normative):**
+| Following count (avg) | Interpretation |
+|---|---|
+| < 500 | Focused audience — high attention |
+| 500 – 2 000 | Within norm |
+| > 2 000 | Attention dilution — flag for review |
+
+Cross-reference with AUD.003 and ENG.002 before concluding.
 
 ---
 
