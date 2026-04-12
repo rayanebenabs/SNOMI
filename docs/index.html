@@ -1315,9 +1315,7 @@
   </div>
   <div class="sidebar-section">
     <div class="sidebar-label">Benchmarks</div>
-    <a href="#bench-eng">Engagement rates</a>
-    <a href="#bench-cpm">CPM by market</a>
-    <a href="#bench-tiers">Tiers & complexity</a>
+    <a href="#bench-eng">Engagement rates (IG)</a>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-label">Resources</div>
@@ -1482,7 +1480,7 @@ Domain   ID   Platform  Market (optional)</code></pre>
             </div>
           </div>
 
-          <div class="chain-arrow-v">↓ base for ER(followers) &amp; reach rate</div>
+          <div class="chain-arrow-v">↓ base for contextualised ER &amp; reach rate</div>
 
           <div class="chain-col">
             <div class="chain-col-label">Published content — Instagram Reel</div>
@@ -1499,15 +1497,15 @@ Domain   ID   Platform  Market (optional)</code></pre>
           <div class="chain-col">
             <div class="chain-col-label">Engagement Rate — two valid reads <span class="constraint-warn">⚠ not interchangeable</span></div>
             <div class="chain-split-cards">
-              <div class="chain-metric-card chain-metric-card--muted cmc--t4">
-                <div class="cmc-name">ER (followers) <code>ENG.001</code></div>
+              <div class="chain-metric-card chain-metric-card--primary cmc--t4">
+                <div class="cmc-name">ER (contextualised) <code>ENG.001</code> <span class="preferred-tag">⭐ preferred</span></div>
                 <div class="cmc-value">5.9%</div>
                 <div class="cmc-window">Mar 1 → Mar 31, 2026</div>
-                <div class="cmc-formula">14,400 ÷ 245,000</div>
+                <div class="cmc-formula">(14,400÷180,000)×(180,000÷245,000)</div>
               </div>
               <div class="chain-split-vs">≠</div>
-              <div class="chain-metric-card chain-metric-card--primary cmc--t4">
-                <div class="cmc-name">ER (reach) <code>ENG.002</code> <span class="preferred-tag">★ preferred</span></div>
+              <div class="chain-metric-card chain-metric-card--muted cmc--t4">
+                <div class="cmc-name">ER (reach) <code>ENG.002</code></div>
                 <div class="cmc-value">8.0%</div>
                 <div class="cmc-window">Mar 1 → Mar 31, 2026</div>
                 <div class="cmc-formula">14,400 ÷ 180,000</div>
@@ -1515,15 +1513,15 @@ Domain   ID   Platform  Market (optional)</code></pre>
             </div>
           </div>
 
-          <div class="chain-arrow-v">↓ REA.001 × ref CPM ÷ 1000 · Launchmetrics · Δ2</div>
+          <div class="chain-arrow-v">↓ REA.001 × ads CPM ref (declared · Launchmetrics) ÷ 1000 · Δ2 → T3</div>
 
           <div class="chain-col">
-            <div class="chain-col-label">Estimated Media Value <span class="constraint-cap">⚑ T3 ceiling — CPM is always an assumption</span></div>
+            <div class="chain-col-label">Estimated Media Value <span class="constraint-cap">⚑ trust = CPM source tier (T2–T4)</span></div>
             <div class="chain-metric-card chain-metric-card--cap cmc--t3">
-              <div class="cmc-name">EMV <code>VAL.001[base: REA.001]</code></div>
+              <div class="cmc-name">EMV <code>VAL.001[base: REA.001][CPM: declared · Launchmetrics]</code></div>
               <div class="cmc-value">€8,640</div>
               <div class="cmc-window">Mar 1 → Mar 31, 2026</div>
-              <div class="cmc-formula">180,000 × €48 CPM / 1,000 · Launchmetrics</div>
+              <div class="cmc-formula">180,000 × €48 ads CPM ref / 1,000 · Launchmetrics</div>
             </div>
           </div>
 
@@ -1563,7 +1561,7 @@ Domain   ID   Platform  Market (optional)</code></pre>
           <span class="cit-val">€8,640</span>
           <span class="cit-window">2026-03-01 → 2026-03-31</span>
           <span class="cit-produced">⬥ 2026-04-02</span>
-          <span class="cit-source" style="color:var(--yellow); font-size:11px">= REA.001 × €48 CPM · Δ2 · T3 cap</span>
+          <span class="cit-source" style="color:var(--yellow); font-size:11px">= REA.001 × €48 ads CPM ref (declared · Launchmetrics) · Δ2 → T3</span>
           <span class="tag t3">T3</span>
         </div>
       </div>
@@ -1639,7 +1637,7 @@ Domain   ID   Platform  Market (optional)</code></pre>
       "produced":   "2026-04-02",
       "source":     "Launchmetrics",
       "trust":      "T3",
-      "trust_note": "T3 max — ref_CPM is inherently an assumption"
+      "trust_note": "T3 — declared ads CPM ref (Launchmetrics). Would be T4 with native Ads Manager CPM, T2 with SNOMI-bench-pending."
     }
   ]
 }</code></pre>
@@ -1698,7 +1696,9 @@ Domain   ID   Platform  Market (optional)</code></pre>
           <tr><td>ENG.002 — native IG data</td><td>Engagements T5 + Reach T5</td><td>T5</td><td>−1</td><td><span class="tag t4">T4</span></td></tr>
           <tr><td>ENG.002 — 3rd-party reach</td><td>Engagements T5 + Reach T2</td><td>T2</td><td>−1</td><td><span class="tag t1">T1</span> ⚠</td></tr>
           <tr><td>REA.003 — native data</td><td>REA.001 T5 + AUD.001 T5</td><td>T5</td><td>−1</td><td><span class="tag t4">T4</span></td></tr>
-          <tr><td>VAL.001 EMV — any source</td><td>Impressions + ref CPM assumption</td><td>any</td><td>cap</td><td><span class="tag t3">T3</span> max</td></tr>
+          <tr><td>VAL.001 EMV — native CPM (Ads Manager)</td><td>Exposure + CPM T4 source</td><td>T5</td><td>−1</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>VAL.001 EMV — declared CPM (with source)</td><td>Exposure + CPM T3 source</td><td>T5</td><td>−2</td><td><span class="tag t3">T3</span></td></tr>
+          <tr><td>VAL.001 EMV — SNOMI-bench-pending CPM</td><td>Exposure + CPM T2 estimate</td><td>T5</td><td>−3</td><td><span class="tag t2">T2</span></td></tr>
           <tr><td>CPI — includes AUD.003 T2</td><td>ENG.002 T4 + AUD.003 T2 + …</td><td>T2</td><td>0</td><td><span class="tag t2">T2</span></td></tr>
           <tr><td>CPI — all native inputs</td><td>ENG.002 T4 + REA.003 T4 + …</td><td>T4</td><td>0</td><td><span class="tag t4">T4</span></td></tr>
         </tbody>
@@ -1709,9 +1709,9 @@ Domain   ID   Platform  Market (optional)</code></pre>
       <strong>Consequence for composite scores</strong>
       A CPI cited as T4 is only valid if every component was sourced at T4 or above. If AUD.003 came from a third-party tool (T2), the entire CPI must be cited as T2.
     </div>
-    <div class="callout callout-error">
-      <strong>EMV is always T3 maximum</strong>
-      A T5 impression count does not elevate VAL.001 above T3 — the reference CPM is inherently an assumption, making EMV T3 by definition.
+    <div class="callout callout-warn">
+      <strong>VAL.001 (EMV) trust depends on CPM source</strong>
+      T4 when CPM is pulled from native Ads Manager (declared with platform + format + period). T3 when CPM is a cited third-party benchmark. T2 when CPM is the SNOMI-bench-pending estimate. The exposure count (T5) does not elevate EMV — the CPM source is always the limiting factor.
     </div>
     <div class="callout callout-info">
       <strong>T1 / T2 metrics require a note</strong>
@@ -1800,10 +1800,10 @@ Domain   ID   Platform  Market (optional)</code></pre>
             <span class="dep-formula">native on AUD.001</span>
           </div>
           <div class="dep-metric dep-metric--highlight">
-            <span class="dep-code">ENG.001</span>
-            <span class="dep-name">ER (followers)</span>
+            <span class="dep-code">ENG.001 ⭐</span>
+            <span class="dep-name">ER (contextualised)</span>
             <span class="tag t4">T4</span>
-            <span class="dep-formula">engagements ÷ AUD.001</span>
+            <span class="dep-formula">(eng÷[REA.005|REA.001]) × REA.003</span>
           </div>
           <div class="dep-metric dep-metric--highlight">
             <span class="dep-code">REA.003</span>
@@ -1858,11 +1858,23 @@ Domain   ID   Platform  Market (optional)</code></pre>
             <span class="tag t4">T4</span>
             <span class="dep-formula">REA.002 ÷ REA.001</span>
           </div>
-          <div class="dep-metric dep-metric--star">
-            <span class="dep-code">ENG.002 ★</span>
+          <div class="dep-metric">
+            <span class="dep-code">ENG.002</span>
             <span class="dep-name">ER (reach)</span>
             <span class="tag t4">T4</span>
             <span class="dep-formula">engagements ÷ REA.001</span>
+          </div>
+          <div class="dep-metric dep-metric--highlight">
+            <span class="dep-code">ENG.007 ⭐</span>
+            <span class="dep-name">SER (contextualised)</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">(1L+6C+8S+7Sh)÷[REA.005|REA.001]÷2 × REA.003</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">ENG.008</span>
+            <span class="dep-name">SER (reach)</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">(1L+6C+8S+7Sh) ÷ REA.001 ÷ 2</span>
           </div>
           <div class="dep-metric">
             <span class="dep-code">ENG.003</span>
@@ -1928,7 +1940,7 @@ Domain   ID   Platform  Market (optional)</code></pre>
             <span class="dep-code">VAL.001</span>
             <span class="dep-name">EMV</span>
             <span class="tag t3">T3 max</span>
-            <span class="dep-formula">REA.001 × ref_CPM</span>
+            <span class="dep-formula">REA.001 × ads CPM ref / 1000</span>
           </div>
         </div>
       </div>
@@ -1967,6 +1979,18 @@ Domain   ID   Platform  Market (optional)</code></pre>
             <span class="tag t2">T2</span>
             <span class="dep-formula">Budget ÷ CON.004</span>
           </div>
+          <div class="dep-metric">
+            <span class="dep-code">VAL.007</span>
+            <span class="dep-name">Creator CPM</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">creator_fee ÷ [REA.001|REA.002] × 1000</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">VAL.008</span>
+            <span class="dep-name">Gross CPM</span>
+            <span class="tag t4">T4</span>
+            <span class="dep-formula">(creator_fee+agency_fees) ÷ [REA.001|REA.002] × 1000</span>
+          </div>
         </div>
       </div>
 
@@ -1978,13 +2002,13 @@ Domain   ID   Platform  Market (optional)</code></pre>
             <span class="dep-code">CPI</span>
             <span class="dep-name">Creator Performance Index</span>
             <span class="tag t2">≤T2</span>
-            <span class="dep-formula">ENG.002 · AUD.003 · REA.003 · CRE.001 · CRE.005</span>
+            <span class="dep-formula">ENG.001 · AUD.003 · REA.003 · CRE.001 · CRE.005</span>
           </div>
           <div class="dep-metric dep-metric--composite">
             <span class="dep-code">CoPI</span>
             <span class="dep-name">Collaboration Performance Index</span>
             <span class="tag t3">≤T3</span>
-            <span class="dep-formula">REA.003 · ENG.002 · CON.002 · QUA.001 · QUA.003</span>
+            <span class="dep-formula">REA.003 · ENG.001 · CON.002 · QUA.001 · QUA.003</span>
           </div>
           <div class="dep-metric dep-metric--composite">
             <span class="dep-code">BFS</span>
@@ -1999,7 +2023,7 @@ Domain   ID   Platform  Market (optional)</code></pre>
 
     <div class="callout callout-warn" style="margin-top:20px">
       <strong>Trust propagation applies across the chain</strong>
-      A derived metric's trust score is <code>max(T1, min(T_inputs) − Δ)</code>. If any upstream metric is low-trust, it degrades every downstream metric that depends on it. EMV (VAL.001) is capped at T3 regardless of input quality — the reference CPM assumption always introduces Δ=2.
+      A derived metric's trust score is <code>max(T1, min(T_inputs) − Δ)</code>. If any upstream metric is low-trust, it degrades every downstream metric that depends on it. EMV (VAL.001) trust is bounded by its ads CPM reference source — T4 if pulled from native Ads Manager, T3 if declared from a third-party benchmark, T2 if using SNOMI-bench-pending.
     </div>
   </div>
 </section>
@@ -2617,7 +2641,7 @@ REA.004 (frequency)   = 1,462,000 / 680,000 = 2.15×
       </div>
       <table class="score-components">
         <tbody>
-          <tr><td>Engagement Quality</td><td>30%</td><td>ENG.002</td></tr>
+          <tr><td>Engagement Quality</td><td>30%</td><td>ENG.001</td></tr>
           <tr><td>Audience Quality</td><td>25%</td><td>AUD.003</td></tr>
           <tr><td>Reach Efficiency</td><td>20%</td><td>REA.003</td></tr>
           <tr><td>Content Regularity</td><td>15%</td><td>CRE.001 + CRE.002</td></tr>
@@ -2641,7 +2665,7 @@ REA.004 (frequency)   = 1,462,000 / 680,000 = 2.15×
       <table class="score-components">
         <tbody>
           <tr><td>Reach Efficiency</td><td>25%</td><td>REA.003 vs. benchmark</td></tr>
-          <tr><td>Sponsored Engagement</td><td>25%</td><td>ENG.002 (sponsored vs. organic baseline)</td></tr>
+          <tr><td>Sponsored Engagement</td><td>25%</td><td>ENG.001 (sponsored vs. organic baseline)</td></tr>
           <tr><td>Conversion</td><td>25%</td><td>CON.002 + CON.003 if available</td></tr>
           <tr><td>Brief Compliance</td><td>15%</td><td>QUA.001</td></tr>
           <tr><td>Sentiment</td><td>10%</td><td>QUA.003</td></tr>
@@ -2686,85 +2710,33 @@ REA.004 (frequency)   = 1,462,000 / 680,000 = 2.15×
     </div>
 
     <section id="bench-eng">
-      <h3>ENG.002.IG — Engagement Rate on Reach (Instagram)</h3>
+      <h3>ENG.002.IG — Engagement Rate on Reach (Instagram) · by vertical &amp; tier</h3>
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Vertical</th><th>Global</th><th>NA</th><th>EMEA</th><th>APAC</th><th>LATAM</th><th>Nano</th><th>Macro</th></tr>
+            <tr>
+              <th>Vertical</th>
+              <th>Global avg</th>
+              <th>Nano<br><span style="font-weight:400;font-size:11px">1k–10k</span></th>
+              <th>Micro<br><span style="font-weight:400;font-size:11px">10k–100k</span></th>
+              <th>Mid-tier<br><span style="font-weight:400;font-size:11px">100k–500k</span></th>
+              <th>Macro<br><span style="font-weight:400;font-size:11px">500k–1M</span></th>
+              <th>Mega<br><span style="font-weight:400;font-size:11px">&gt;1M</span></th>
+            </tr>
           </thead>
           <tbody>
-            <tr><td>Fashion & Beauty</td><td>3.1%</td><td>3.2%</td><td>3.0%</td><td>3.8%</td><td>3.5%</td><td>5.1%</td><td>1.8%</td></tr>
-            <tr><td>Food & Lifestyle</td><td>4.0%</td><td>3.9%</td><td>3.8%</td><td>4.6%</td><td>4.2%</td><td>6.7%</td><td>2.2%</td></tr>
-            <tr><td>Sports & Fitness</td><td>4.7%</td><td>4.5%</td><td>4.3%</td><td>5.2%</td><td>5.1%</td><td>7.1%</td><td>2.4%</td></tr>
-            <tr><td>Tech & Gaming</td><td>2.8%</td><td>2.6%</td><td>2.5%</td><td>3.1%</td><td>3.3%</td><td>4.0%</td><td>1.5%</td></tr>
-            <tr><td>Travel</td><td>3.4%</td><td>3.3%</td><td>3.2%</td><td>3.8%</td><td>4.0%</td><td>5.7%</td><td>1.8%</td></tr>
-            <tr><td>Educational content</td><td>3.8%</td><td>3.7%</td><td>3.5%</td><td>4.2%</td><td>4.0%</td><td>6.2%</td><td>2.1%</td></tr>
-            <tr><td>Parenting</td><td>5.1%</td><td>4.9%</td><td>4.8%</td><td>5.6%</td><td>5.5%</td><td>8.0%</td><td>2.7%</td></tr>
-            <tr><td>Sustainability</td><td>4.5%</td><td>4.3%</td><td>4.4%</td><td>5.0%</td><td>4.8%</td><td>6.9%</td><td>2.3%</td></tr>
+            <tr><td>Fashion &amp; Beauty</td><td>3.1%</td><td>5.1%</td><td>3.8%</td><td>2.5%</td><td>1.8%</td><td>1.2%</td></tr>
+            <tr><td>Food &amp; Lifestyle</td><td>4.0%</td><td>6.7%</td><td>4.8%</td><td>3.2%</td><td>2.2%</td><td>1.5%</td></tr>
+            <tr><td>Sports &amp; Fitness</td><td>4.7%</td><td>7.1%</td><td>5.2%</td><td>3.5%</td><td>2.4%</td><td>1.6%</td></tr>
+            <tr><td>Tech &amp; Gaming</td><td>2.8%</td><td>4.0%</td><td>3.2%</td><td>2.1%</td><td>1.5%</td><td>1.0%</td></tr>
+            <tr><td>Travel</td><td>3.4%</td><td>5.7%</td><td>4.2%</td><td>2.8%</td><td>1.8%</td><td>1.2%</td></tr>
+            <tr><td>Educational content</td><td>3.8%</td><td>6.2%</td><td>4.5%</td><td>3.0%</td><td>2.1%</td><td>1.4%</td></tr>
+            <tr><td>Parenting</td><td>5.1%</td><td>8.0%</td><td>5.8%</td><td>3.8%</td><td>2.7%</td><td>1.8%</td></tr>
+            <tr><td>Sustainability</td><td>4.5%</td><td>6.9%</td><td>4.8%</td><td>3.3%</td><td>2.3%</td><td>1.5%</td></tr>
           </tbody>
         </table>
       </div>
-      <p style="font-size:12px; color:var(--muted); margin-top:8px">Sources: HypeAuditor State of Influencer Marketing 2024 · Rival IQ Benchmark Report 2024 · Influencer Marketing Hub 2025</p>
-    </section>
-
-    <section id="bench-cpm" style="margin-top:32px">
-      <h3>VAL.003 — CPM Reference Benchmarks by Market</h3>
-      <p style="font-size:13px; color:var(--muted); margin-bottom:12px">Base values: Mid-tier · Standard production (C2). Apply tier and complexity multipliers below.</p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Market</th><th>Instagram</th><th>TikTok</th><th>YouTube</th><th>Facebook</th><th>X/Twitter</th><th>LinkedIn</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>US .US</td><td>$6.70</td><td>$9.40</td><td>$7.80</td><td>$5.20</td><td>$3.10</td><td>$13.50</td></tr>
-            <tr><td>UK .UK</td><td>£5.20</td><td>£7.80</td><td>£6.10</td><td>£4.00</td><td>£2.40</td><td>£11.20</td></tr>
-            <tr><td>FR .FR</td><td>€4.80</td><td>€7.10</td><td>€5.60</td><td>€3.60</td><td>€2.10</td><td>€9.80</td></tr>
-            <tr><td>DE .DE</td><td>€5.40</td><td>€7.90</td><td>€6.20</td><td>€4.10</td><td>€2.30</td><td>€11.00</td></tr>
-            <tr><td>AU .AU</td><td>A$7.20</td><td>A$10.10</td><td>A$8.40</td><td>A$5.60</td><td>A$3.30</td><td>A$14.80</td></tr>
-            <tr><td>BR .BR</td><td>R$3.20</td><td>R$4.80</td><td>R$3.90</td><td>R$2.50</td><td>R$1.40</td><td>R$6.00</td></tr>
-            <tr><td>IN .IN</td><td>₹210</td><td>₹280</td><td>₹240</td><td>₹160</td><td>₹90</td><td>₹320</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h4 style="margin-top:24px">Final CPM formula</h4>
-      <div class="code-block">
-        <pre><code>Final CPM = Base CPM × Tier multiplier × Complexity multiplier
-
-Example (FR, Instagram, Nano, Heavy production):
-€4.80 × 0.6 × 2.2 = ≈ €6.30</code></pre>
-      </div>
-    </section>
-
-    <section id="bench-tiers" style="margin-top:32px">
-      <h3>Creator tier multipliers</h3>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Tier</th><th>Followers</th><th>CPM multiplier</th><th>Rationale</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Nano</td><td>1k–10k</td><td>× 0.5–0.7</td><td>High ENG, limited reach, negotiated below market rate</td></tr>
-            <tr><td>Micro</td><td>10k–100k</td><td>× 0.8–1.0</td><td>Optimal cost/engagement profile</td></tr>
-            <tr><td>Mid-tier</td><td>100k–500k</td><td>× 1.0 (base)</td><td>SNOMI standard reference</td></tr>
-            <tr><td>Macro</td><td>500k–1M</td><td>× 1.3–1.7</td><td>Premium for guaranteed reach + creator equity</td></tr>
-            <tr><td>Mega</td><td>&gt;1M</td><td>× 1.8–3.0</td><td>Celebrity premium, exclusivity</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <h3 style="margin-top:24px">Production complexity multipliers</h3>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Level</th><th>Label</th><th>Definition</th><th>Multiplier</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>C1</td><td>Light</td><td>Phone-shot, native format, solo creator (Stories, selfie-style TikTok)</td><td>× 0.6–0.8</td></tr>
-            <tr><td>C2</td><td>Standard (base)</td><td>Planned shoot, curated editing, solo or small team — most Reels and feed posts</td><td>× 1.0</td></tr>
-            <tr><td>C3</td><td>Heavy</td><td>Professional crew, significant post-production, long-form YouTube with full edit</td><td>× 1.8–3.0</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <p style="font-size:12px; color:var(--muted); margin-top:8px">Sources: HypeAuditor State of Influencer Marketing 2024 · Rival IQ Benchmark Report 2024 · Influencer Marketing Hub 2025 · platform: Instagram · metric: ENG.002 (reach-based)</p>
     </section>
   </section>
 
@@ -2778,10 +2750,10 @@ Example (FR, Instagram, Nano, Heavy production):
       <li><div class="rule-num">1</div><div class="rule-text"><strong>EMV ≠ Revenue.</strong> Never conflate VAL.001 with sales generated.</div></li>
       <li><div class="rule-num">2</div><div class="rule-text"><strong>ENG.001 ≠ ENG.002.</strong> Always specify which engagement rate is used. When in doubt, ask.</div></li>
       <li><div class="rule-num">3</div><div class="rule-text"><strong>REG.001/REG.002 require [CC].</strong> REG.001 alone is invalid. Exception: REG.003 uses [PLATFORM].</div></li>
-      <li><div class="rule-num">4</div><div class="rule-text"><strong>Benchmarks require [CC].</strong> "CPM: $5.20" is not SNOMI-compliant. "VAL.003.IG.US | $5.20 | eMarketer 2024" is.</div></li>
+      <li><div class="rule-num">4</div><div class="rule-text"><strong>Benchmarks require [CC].</strong> "CPM: $5.20" is not SNOMI-compliant. "VAL.003.IG.US | $5.20 | eMarketer 2024" is. Same applies to any CPM reference: always declare whether it is an ads CPM ref (VAL.001 input), a campaign CPM (VAL.003), a creator CPM (VAL.007), or a gross CPM (VAL.008).</div></li>
       <li><div class="rule-num">5</div><div class="rule-text"><strong>T1/T2 metrics need a note.</strong> Low-trust metrics must be explicitly flagged when cited.</div></li>
-      <li><div class="rule-num">6</div><div class="rule-text"><strong>Cross-platform ≠ comparable by default.</strong> ENG.002.IG ≠ ENG.001.TK.</div></li>
-      <li><div class="rule-num">7</div><div class="rule-text"><strong>CPM without tier or complexity = incomplete value.</strong> Apply multipliers or explicitly document assumptions.</div></li>
+      <li><div class="rule-num">6</div><div class="rule-text"><strong>Cross-platform ≠ comparable by default.</strong> ENG.002.IG ≠ ENG.002.TK. Always compare the same metric code across platforms.</div></li>
+      <li><div class="rule-num">7</div><div class="rule-text"><strong>Always declare which CPM you are citing.</strong> VAL.001 uses an <em>ads CPM ref</em> as input (platform + format + period + source required). VAL.003 is the <em>campaign CPM</em> (budget ÷ impressions). VAL.007 is the <em>creator CPM</em> (fee ÷ reach). VAL.008 is the <em>gross CPM</em> (fee + agency ÷ reach). These four are not interchangeable — never write "CPM" without specifying which.</div></li>
       <li><div class="rule-num">8</div><div class="rule-text"><strong>REG.003 ≠ REG.001.</strong> Native label (QUA.006 = 1) does not replace the legal hashtag. The two are independent.</div></li>
       <li><div class="rule-num">9</div><div class="rule-text"><strong>CRE.006 is BETA.</strong> Do not present a BFS incorporating CRE.006 as definitive without documenting source and method.</div></li>
       <li><div class="rule-num">10</div><div class="rule-text"><strong>Reach ≠ Impressions ≠ Views.</strong> REA.001 (unique accounts, deduplicated), REA.002 (total displays, includes repeats), REA.005 (platform-threshold video views), and REA.006 (qualified views ≥ 50% completion) are distinct metrics. Never substitute one for another without declaration.</div></li>
@@ -3148,25 +3120,30 @@ REG  Regulatory         — National compliance (always requires [CC])
 
 ## Core Metrics Quick Reference
 
-AUD.001 Total Followers           — Native value — T5
-AUD.002 Audience Growth Rate      — (end−start)/start × 100 — T5
-AUD.003 Audience Quality Score    — % real active followers (3rd party) — T2
-ENG.001 Engagement Rate Followers — (L+C+S+Sh) / Followers × 100 — T4
-ENG.002 Engagement Rate Reach ⭐  — (L+C+S+Sh) / Reach × 100 — T4 [PREFERRED]
-ENG.006 Video Completion Rate     — Complete views / Total views × 100 — T5
-REA.001 Organic Reach             — Native value — T5
-REA.003 Reach Rate                — Reach / Followers × 100 — T4
-CON.002 CTR                       — Clicks / Impressions × 100 — T4
-VAL.001 EMV                       — Impressions × ref CPM / 1000 (declare method) — T3
-VAL.002 CPE                       — Budget / Total engagements — T4
-VAL.003 CPM                       — Budget / Impressions × 1000 — T4
-QUA.001 Brief Compliance Score    — Brief elements met / Total × 100 — T4
-QUA.006 Native Partnership Label  — Boolean (0/1) — T5
-CRE.005 Niche Authority Score     — Creator ENG.002 / Median ENG.002 in vertical — T3
-CRE.006 Category Partnership Hist — Count paid partnerships in sector (12 months) — T3 [BETA]
+AUD.001 Total Followers            — Native value — T5
+AUD.002 Audience Growth Rate       — (end−start)/start × 100 — T5
+AUD.003 Audience Quality Score     — % real active followers (3rd party) — T2
+ENG.001 ER (Contextualised) ⭐     — (Σint/[REA.005|REA.001]) × (REA.001/AUD.001) × 100 — T4 [PREFERRED]
+ENG.002 ER (Reach)                 — Σint / REA.001 × 100 — T4
+ENG.007 SER (Contextualised) ⭐    — (1L+6C+8S+7Sh)/[REA.005|REA.001]/2 × (REA.001/AUD.001) × 100 — T4
+ENG.008 SER (Reach)                — (1L+6C+8S+7Sh) / REA.001 / 2 × 100 — T4
+ENG.006 Video Completion Rate      — Complete views / Total views × 100 — T5
+REA.001 Organic Reach              — Native value — T5
+REA.003 Reach Rate                 — REA.001 / AUD.001 × 100 — T4
+CON.002 CTR                        — Clicks / Impressions × 100 — T4
+VAL.001 EMV                        — exposure_base × CPM_ref / 1000 — T2–T4 (CPM source dependent)
+VAL.002 CPE                        — Budget / Total engagements — T4
+VAL.003 CPM (campaign)             — Budget / REA.002 × 1000 — T4
+VAL.007 Creator CPM                — creator_fee / [REA.001|REA.002] × 1000 — T4
+VAL.008 Gross CPM                  — (creator_fee+agency_fees) / [REA.001|REA.002] × 1000 — T4
+QUA.001 Brief Compliance Score     — Brief elements met / Total × 100 — T4
+QUA.006 Native Partnership Label   — Boolean (0/1) — T5
+CRE.005 Niche Authority Score      — Creator ENG.002 / Median ENG.002 in vertical — T3
+CRE.006 Category Partnership Hist  — Count paid partnerships in sector (12 months) — T3 [BETA]
 
-⭐ ENG.002 is the SNOMI preferred engagement metric.
+⭐ ENG.001 is the SNOMI preferred engagement metric (contextualised: density on views × audience penetration).
 ENG.001 and ENG.002 are NOT interchangeable — always specify which.
+ENG.007/ENG.008 are the weighted equivalents (SNOMI Engagement Rate — interactions weighted by quality signal).
 
 ---
 
@@ -3183,7 +3160,7 @@ Mega     &gt;1,000,000        Celebrity premium / exclusivity
 ## Composite Scores
 
 CPI — Creator Performance Index (0–100)
-  Engagement Quality  30%  ENG.002
+  Engagement Quality  30%  ENG.001
   Audience Quality    25%  AUD.003
   Reach Efficiency    20%  REA.003
   Content Regularity  15%  CRE.001 + CRE.002
@@ -3192,7 +3169,7 @@ CPI — Creator Performance Index (0–100)
 
 CoPI — Collaboration Performance Index (0–100)
   Reach Efficiency     25%  REA.003 vs. benchmark
-  Sponsored Engagement 25%  ENG.002 (sponsored vs. organic baseline)
+  Sponsored Engagement 25%  ENG.001 (sponsored vs. organic baseline)
   Conversion           25%  CON.002 + CON.003 if available
   Brief Compliance     15%  QUA.001
   Sentiment            10%  QUA.003
@@ -3238,10 +3215,10 @@ AUDIT     — VALIDATE + BENCHMARK + strategic risk flagging
 1. EMV ≠ Revenue. Never conflate VAL.001 with sales generated.
 2. ENG.001 ≠ ENG.002. Always specify. When in doubt, ask.
 3. REG.001/REG.002 require [CC]. REG.001 alone is invalid.
-4. Benchmarks require [CC]. "CPM: $5.20" is not SNOMI-compliant.
+4. Benchmarks require [CC]. "CPM: $5.20" is not SNOMI-compliant — always declare type (ads CPM ref / VAL.003 / VAL.007 / VAL.008) + source.
 5. T1/T2 metrics need a note. Flag low-trust metrics when cited.
 6. Cross-platform ≠ comparable by default.
-7. CPM without tier or complexity = incomplete value.
+7. Always declare which CPM: ads CPM ref (VAL.001 input) · campaign CPM (VAL.003) · creator CPM (VAL.007) · gross CPM (VAL.008). Never write "CPM" alone.
 8. REG.003 ≠ REG.001. Native label ≠ legal hashtag. Both are required.
 9. CRE.006 is BETA. Document source and method when using in BFS.
 
@@ -3390,7 +3367,7 @@ const METRICS = [
   { code: "CON.005", name: "Attributed Sales", domain: "CON", desc: "Revenue via tracking. T1 without dedicated tracking. T3/T1", anchor: "#con" },
   { code: "CON.006", name: "Conversion Rate", domain: "CON", desc: "Conversions / Clicks × 100. T3", anchor: "#con" },
   // VAL
-  { code: "VAL.001", name: "EMV", domain: "VAL", desc: "Estimated Media Value. Impressions × ref CPM / 1000. Always declare method. T3", anchor: "#val" },
+  { code: "VAL.001", name: "EMV", domain: "VAL", desc: "Estimated Media Value. exposure_base × ads CPM ref / 1000. Always declare base metric + CPM source. T2–T4.", anchor: "#val" },
   { code: "VAL.002", name: "CPE", domain: "VAL", desc: "Cost Per Engagement. Budget / Total engagements. T4", anchor: "#val" },
   { code: "VAL.003", name: "CPM", domain: "VAL", desc: "Cost Per Mille. Budget / Impressions × 1000. Requires [CC] + tier + complexity. T4", anchor: "#val" },
   { code: "VAL.004", name: "CPC", domain: "VAL", desc: "Cost Per Click. Budget / Clicks. T4", anchor: "#val" },
