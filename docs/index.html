@@ -2117,7 +2117,7 @@ Domain   ID   Platform  Market (optional)</code></pre>
     </div>
 
     <h3 style="margin-top:28px; margin-bottom:10px">Interaction signal weights</h3>
-    <p>Not all interactions carry the same signal. A like is passive. A comment requires intent. A save means "I want this later." A share explicitly recommends the content. SNOMI formalises this with standard weights — applied in the weighted variant (<code>ENG.001w</code> / <code>ENG.002w</code>).</p>
+    <p>Not all interactions carry the same signal. A like is passive. A comment requires intent. A save means "I want this later." A share explicitly recommends the content. SNOMI formalises this with standard weights — applied in the SNOMI Engagement Rate (<code>ENG.007</code> / <code>ENG.008</code>). Weights are grounded in behavioral science research (Berger &amp; Milkman 2012; Jones, Libert &amp; Tynski, HBR 2016) and calibrated against empirical interaction-frequency ratios (Socialinsider 2024, 70M+ posts: 100L : 6C : 4S : 10Sh).</p>
     <div class="table-wrap">
       <table>
         <thead>
@@ -2125,9 +2125,9 @@ Domain   ID   Platform  Market (optional)</code></pre>
         </thead>
         <tbody>
           <tr><td>Like / Heart / Thumbs Up</td><td><code>L</code></td><td>×1</td><td>Passive acknowledgement</td><td>All</td></tr>
-          <tr><td>Comment</td><td><code>C</code></td><td>×3</td><td>Active — requires intent and effort</td><td>All</td></tr>
-          <tr><td>Save / Bookmark</td><td><code>S</code></td><td>×4</td><td>High intent — strong retention signal</td><td>IG, TK, YT (playlists), LI</td></tr>
-          <tr><td>Share / Repost / Retweet</td><td><code>Sh</code></td><td>×5</td><td>Amplification — explicit recommendation</td><td>All</td></tr>
+          <tr><td>Comment</td><td><code>C</code></td><td>×6</td><td>Active — requires intent and effort</td><td>All</td></tr>
+          <tr><td>Save / Bookmark</td><td><code>S</code></td><td>×8</td><td>High intent — strong retention signal</td><td>IG, TK, YT (playlists), LI</td></tr>
+          <tr><td>Share / Repost / Retweet</td><td><code>Sh</code></td><td>×7</td><td>Amplification — explicit recommendation</td><td>All</td></tr>
           <tr><td>Duet</td><td><code>Du</code></td><td>×6</td><td>Creates derivative content</td><td>TK only</td></tr>
           <tr><td>Stitch</td><td><code>St</code></td><td>×6</td><td>Creates derivative content</td><td>TK only</td></tr>
         </tbody>
@@ -2185,23 +2185,9 @@ Domain   ID   Platform  Market (optional)</code></pre>
             <td>see input tier</td>
           </tr>
           <tr>
-            <td><code>ENG.001w[inputs:…]</code></td>
-            <td>Weighted ER (Followers)</td>
-            <td><code>(1·L + 3·C + 4·S + 5·Sh) / AUD.001 × 100</code></td>
-            <td>%</td>
-            <td>see input tier</td>
-          </tr>
-          <tr>
             <td><code>ENG.002[inputs:…] ⭐</code></td>
             <td>Engagement Rate (Reach)</td>
             <td><code>Σ(interactions) / REA.001 × 100</code></td>
-            <td>%</td>
-            <td>see input tier</td>
-          </tr>
-          <tr>
-            <td><code>ENG.002w[inputs:…]</code></td>
-            <td>Weighted ER (Reach)</td>
-            <td><code>(1·L + 3·C + 4·S + 5·Sh) / REA.001 × 100</code></td>
             <td>%</td>
             <td>see input tier</td>
           </tr>
@@ -2209,11 +2195,25 @@ Domain   ID   Platform  Market (optional)</code></pre>
           <tr><td><code>ENG.004</code></td><td>Save Rate</td><td><code>S / REA.002 × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
           <tr><td><code>ENG.005</code></td><td>Share Rate</td><td><code>Sh / REA.002 × 100</code></td><td>%</td><td><span class="tag t4">T4</span></td></tr>
           <tr><td><code>ENG.006</code></td><td>Video Completion Rate</td><td><code>Complete views / REA.005 × 100</code></td><td>%</td><td><span class="tag t5">T5</span></td></tr>
+          <tr>
+            <td><code>ENG.007[inputs:…]</code></td>
+            <td>SNOMI Engagement Rate (Followers)</td>
+            <td><code>(1·L + 6·C + 8·S + 7·Sh) / 2 / AUD.001 × 100</code></td>
+            <td>%</td>
+            <td>see input tier</td>
+          </tr>
+          <tr>
+            <td><code>ENG.008[inputs:…] ⭐</code></td>
+            <td>SNOMI Engagement Rate (Reach)</td>
+            <td><code>(1·L + 6·C + 8·S + 7·Sh) / 2 / REA.001 × 100</code></td>
+            <td>%</td>
+            <td>see input tier</td>
+          </tr>
         </tbody>
       </table>
     </div>
 
-    <h3 style="margin-top:28px; margin-bottom:10px">Example — same post, four calculations</h3>
+    <h3 style="margin-top:28px; margin-bottom:10px">Example — same post, five calculations</h3>
     <div class="code-block">
       <pre><code>Post data:  12,000 likes · 840 comments · 2,100 saves · 560 shares
 Reach:      180,000
@@ -2225,16 +2225,22 @@ ENG.002[inputs:L+C].IG          =  (12,000 + 840) / 180,000 × 100
                                  =  7.13%   T3  ← likes + comments
 
 ENG.002[inputs:L+C+S+Sh].IG     =  (12,000 + 840 + 2,100 + 560) / 180,000 × 100
-                                 =  8.61%   T4  ← full signal
+                                 =  8.61%   T4  ← full unweighted signal
 
-ENG.002w[inputs:L+C+S+Sh].IG    =  (12,000×1 + 840×3 + 2,100×4 + 560×5) / 180,000 × 100
-                                 =  (12,000 + 2,520 + 8,400 + 2,800) / 180,000 × 100
-                                 =  25,720 / 180,000 × 100
-                                 =  14.29%  T4  ← weighted full signal</code></pre>
+ENG.008[inputs:L+C+S+Sh].IG     =  (12,000×1 + 840×6 + 2,100×8 + 560×7) / 2 / 180,000 × 100
+                                 =  (12,000 + 5,040 + 16,800 + 3,920) / 2 / 180,000 × 100
+                                 =  37,760 / 2 / 180,000 × 100
+                                 =  10.49%  T4  ← SER (reach) — quality-adjusted
+
+  Interpretation: SER 10.49% vs ER 8.61% → above-average interaction quality
+  (SER ≈ ER for average posts; SER > ER when high-value interactions dominate)
+
+  Normalization ÷2 calibrated from Socialinsider 2024 baseline
+  (100L : 6C : 4S : 10Sh → weighted 238 / unweighted 120 ≈ 2.0)</code></pre>
     </div>
     <div class="callout callout-info" style="margin-top:12px">
-      <strong>Which variant should you use?</strong>
-      <p style="margin:6px 0 0">Use <code>ENG.002w[inputs:L+C+S+Sh]</code> when you have full native access — it gives the most complete picture of engagement quality. Use the unweighted variant when comparing across different SNOMI reports. <strong>Never compare a <code>[inputs:L]</code> figure against a <code>[inputs:L+C+S+Sh]</code> figure</strong> — they measure different things.</p>
+      <strong>ENG.002 vs ENG.008 — which should you use?</strong>
+      <p style="margin:6px 0 0">Use <strong><code>ENG.008[inputs:L+C+S+Sh]</code></strong> (SER on Reach) as the primary metric when you have full native platform access — it captures engagement quality, not just volume. Use <code>ENG.002</code> (unweighted ER) for backward compatibility when comparing with external reports that do not use SNOMI. <strong>Never compare a <code>[inputs:L]</code> figure against a <code>[inputs:L+C+S+Sh]</code> figure</strong> — they measure different things.</p>
     </div>
   </section>
 
