@@ -2279,7 +2279,7 @@ ENG.007[inputs:L+C+S+Sh].IG  ⭐   =  (37,760 / 142,000) / 2 × (180,000 / 250,0
     <h2>VAL — Value & ROI</h2>
     <div class="callout callout-error">
       <strong>EMV ≠ Revenue</strong>
-      VAL.001 (EMV) is an estimated advertising equivalent. Never conflate it with actual sales or revenue generated.
+      VAL.001 (EMV) answers one question: "if we had bought this exposure as paid ads on the same platform, what would it have cost?" It is an advertising equivalent estimate — never conflate it with actual sales, revenue, or business impact.
     </div>
     <div class="table-wrap">
       <table>
@@ -2287,7 +2287,7 @@ ENG.007[inputs:L+C+S+Sh].IG  ⭐   =  (37,760 / 142,000) / 2 × (180,000 / 250,0
           <tr><th>Code</th><th>Name</th><th>Formula (codified)</th><th>Format</th><th>Trust</th></tr>
         </thead>
         <tbody>
-          <tr><td>VAL.001</td><td>EMV</td><td><code>[REA.001|REA.002|REA.005|REA.006] × ref_CPM / 1000</code> — declare base + method</td><td>currency</td><td><span class="tag t3">T3</span> max</td></tr>
+          <tr><td>VAL.001</td><td>EMV</td><td><code>exposure_base × CPM_ref[platform][format] / 1000</code> — declare base + CPM source</td><td>currency</td><td><span class="tag t2">T2</span>–<span class="tag t4">T4</span></td></tr>
           <tr><td>VAL.002</td><td>CPE</td><td><code>Budget / (L+C+S+Sh)</code></td><td>currency/eng.</td><td><span class="tag t4">T4</span></td></tr>
           <tr><td>VAL.003</td><td>CPM</td><td><code>Budget / [REA.002] × 1000</code></td><td>currency/1k</td><td><span class="tag t4">T4</span></td></tr>
           <tr><td>VAL.004</td><td>CPC</td><td><code>Budget / [CON.001]</code></td><td>currency/click</td><td><span class="tag t4">T4</span></td></tr>
@@ -2297,27 +2297,98 @@ ENG.007[inputs:L+C+S+Sh].IG  ⭐   =  (37,760 / 142,000) / 2 × (180,000 / 250,0
       </table>
     </div>
 
-    <h3 style="margin-top:24px; margin-bottom:10px">VAL.001 — EMV base metric declaration</h3>
-    <p>EMV must declare which exposure metric it uses as base. The choice is not neutral — using REA.002 instead of REA.001 inflates the result by a factor equal to frequency (<code>[REA.004]</code>).</p>
+    <h3 style="margin-top:28px; margin-bottom:10px">VAL.001 — CPM reference source</h3>
+    <p>The precision of EMV depends entirely on the CPM reference used. SNOMI defines three accepted sources, each with a different trust level. The source must always be declared in the metric code.</p>
+    <div class="table-wrap" style="margin-top:12px">
+      <table>
+        <thead><tr><th>Source</th><th>Syntax</th><th>Trust</th><th>When to use</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Native</strong> — from the advertiser's own Ads Manager on the same platform</td>
+            <td><code>[CPM: native | IG | Reel | FR | 2026-Q1]</code></td>
+            <td><span class="tag t4">T4</span></td>
+            <td>Advertiser ran paid campaigns on the same platform during the same period. Most defensible — directly comparable.</td>
+          </tr>
+          <tr>
+            <td><strong>Declared</strong> — manually provided with an external source</td>
+            <td><code>[CPM: 4.00 | EUR | IG | Reel | FR | 2025 | Gupta Media]</code></td>
+            <td><span class="tag t3">T3</span></td>
+            <td>No native campaign data. Source and date must be cited explicitly.</td>
+          </tr>
+          <tr>
+            <td><strong>SNOMI bench</strong> — quarterly benchmark (under construction)</td>
+            <td><code>[CPM: SNOMI-bench-pending | IG | Reel | 2025]</code></td>
+            <td><span class="tag t2">T2</span></td>
+            <td>No other source available. Use indicative reference grid below as interim fallback.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:28px; margin-bottom:10px">VAL.001 — Exposure base declaration</h3>
+    <p>The exposure base determines what you are pricing. The choice is not neutral — using REA.002 instead of REA.001 inflates EMV by a factor equal to frequency (<code>REA.004</code>).</p>
     <div class="table-wrap" style="margin-top:12px">
       <table>
         <thead><tr><th>Syntax</th><th>Base</th><th>Effect</th><th>When to use</th></tr></thead>
         <tbody>
-          <tr><td><code>VAL.001[base: REA.001]</code></td><td>Organic Reach</td><td>Most conservative — deduplicated</td><td>Standard recommendation</td></tr>
-          <tr><td><code>VAL.001[base: REA.002]</code></td><td>Impressions</td><td>Inflated by frequency</td><td>Comparable to display advertising</td></tr>
-          <tr><td><code>VAL.001[base: REA.005]</code></td><td>Video Views</td><td>Platform threshold varies — declare</td><td>Video campaigns only</td></tr>
-          <tr><td><code>VAL.001[base: REA.006]</code></td><td>Qualified Views ≥50%</td><td>Most rigorous</td><td>Premium / quality-first campaigns</td></tr>
+          <tr><td><code>VAL.001[base: REA.001]</code></td><td>Organic Reach</td><td>Most conservative — deduplicated unique audience</td><td>Standard recommendation</td></tr>
+          <tr><td><code>VAL.001[base: REA.002]</code></td><td>Impressions</td><td>Inflated by frequency — comparable to display advertising</td><td>When comparing to programmatic display buys</td></tr>
+          <tr><td><code>VAL.001[base: REA.005]</code></td><td>Video Views</td><td>Platform view threshold varies — must declare</td><td>Video campaigns only</td></tr>
+          <tr><td><code>VAL.001[base: REA.006]</code></td><td>Qualified Views ≥50%</td><td>Most rigorous — actual attention metric</td><td>Premium / quality-first campaigns</td></tr>
         </tbody>
       </table>
     </div>
-    <div class="code-block" style="margin-top:12px">
-      <pre><code>VAL.001[base: REA.001].IG.FR | €28,400 | Q1 2026 | Launchmetrics method | T3
-VAL.001[base: REA.002].IG.FR | €61,000 | Q1 2026 | Launchmetrics method | T3
-↑ Same campaign — difference = REA.004 (frequency = 2.15×)</code></pre>
+
+    <h3 style="margin-top:28px; margin-bottom:10px">CPM reference grid — interim fallback <span style="font-size:0.78em; font-weight:400; color:var(--muted)">(SNOMI-bench-pending — global averages 2025, converted to EUR)</span></h3>
+    <div class="callout callout-warn" style="margin-bottom:12px">
+      <strong>SNOMI-bench-pending</strong> — A formally maintained quarterly CPM benchmark is under construction. Until available, use the indicative values below as a last-resort fallback (T2 max). These are global market averages converted at 1 USD = 0.92 EUR (April 2026). Always declare the source and period when using them.
     </div>
-    <div class="callout callout-warn" style="margin-top:16px">
-      <strong>EMV methodologies — always declare</strong>
-      <strong style="color:var(--text); font-weight:400">Launchmetrics:</strong> weighted by creator tier, vertical, territory &nbsp;·&nbsp; <strong style="color:var(--text); font-weight:400">Traackr:</strong> based on native advertising CPMs per platform &nbsp;·&nbsp; <strong style="color:var(--text); font-weight:400">Agency custom:</strong> document your formula explicitly.
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Platform</th><th>Format</th><th>CPM avg (EUR)</th><th>Range (EUR)</th><th>Source</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Instagram</td><td>Reels</td><td>€4.00</td><td>€3.20–€4.60</td><td>AdBacklog / Gupta Media 2025</td></tr>
+          <tr><td>Instagram</td><td>Static / Carousel</td><td>€7.10</td><td>€4.60–€11.05</td><td>Quimby Digital / WebFX 2025</td></tr>
+          <tr><td>Instagram</td><td>Stories</td><td>€5.05</td><td>€3.70–€6.00</td><td>AdBacklog 2025</td></tr>
+          <tr><td>TikTok</td><td>In-feed video</td><td>€4.15</td><td>€2.40–€5.70</td><td>Gupta Media / Varos 2025</td></tr>
+          <tr><td>YouTube</td><td>Pre-roll (skippable)</td><td>€6.00</td><td>€3.20–€9.20</td><td>Adzoola 2025</td></tr>
+          <tr><td>YouTube</td><td>Shorts</td><td>€3.70</td><td>€2.75–€4.60</td><td>Lenostube 2025</td></tr>
+          <tr><td>Facebook</td><td>Feed</td><td>€18.25</td><td>€9.20–€25.75</td><td>SuperAds / Vaizle 2025</td></tr>
+          <tr><td>LinkedIn</td><td>Feed</td><td>€30.40</td><td>€5.50–€46.00</td><td>B2B House / NAV43 2025</td></tr>
+          <tr><td>Snapchat</td><td>Stories</td><td>€9.00</td><td>€6.20–€11.80</td><td>Gupta Media 2025</td></tr>
+          <tr><td>X (Twitter)</td><td>Feed</td><td>€1.90</td><td>€0.50–€6.45</td><td>Hootsuite 2025</td></tr>
+          <tr><td>Pinterest</td><td>Promoted pins</td><td>€3.20</td><td>€1.85–€4.60</td><td>WebFX / Tailwind 2025</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-info" style="margin-top:12px">
+      <strong>Two mandatory adjustments when using this grid</strong>
+      <p style="margin:6px 0 4px"><strong>Western Europe:</strong> apply <strong>−25%</strong> to all values above — global averages are heavily skewed by US rates (e.g. Facebook global avg €18.25 vs EU actual ~€4.50).</p>
+      <p style="margin:0"><strong>Q4 seasonality:</strong> apply <strong>+30% to +50%</strong> on Meta and Snapchat formats during October–December. January resets to −20–40% below annual average.</p>
+    </div>
+
+    <h3 style="margin-top:28px; margin-bottom:10px">Full declaration example</h3>
+    <div class="code-block">
+      <pre><code>── Native CPM (T4) ──────────────────────────────────────────────────────
+VAL.001[base: REA.001][CPM: native | IG | Reel | FR | 2026-Q1].IG.FR
+| €31,200 | T4
+
+  Advertiser had active Meta campaigns in same period →
+  CPM pulled directly from Meta Ads Manager (FR targeting, Reels format)
+
+── Declared CPM (T3) ─────────────────────────────────────────────────────
+VAL.001[base: REA.001][CPM: 4.00 | EUR | IG | Reel | FR | 2025 | Gupta Media].IG.FR
+| €28,400 | T3
+
+── SNOMI bench fallback (T2) ─────────────────────────────────────────────
+VAL.001[base: REA.001][CPM: SNOMI-bench-pending | IG | Reel | 2025].IG.FR
+| €21,300 | T2  ← €4.00 × −25% EU adj = €3.00 / 1000 × 7,100,000 reach
+
+── Same campaign, impressions base — shows frequency inflation ───────────
+VAL.001[base: REA.002][CPM: native | IG | Reel | FR | 2026-Q1].IG.FR
+| €67,100 | T4  ← REA.004 frequency = 2.15× → EMV inflated accordingly</code></pre>
     </div>
   </section>
 
