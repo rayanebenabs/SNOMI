@@ -3069,14 +3069,15 @@ description: >
   against regional benchmarks, auditing EMV methodology, or flagging
   non-standard metric usage. Triggers include: "analyze this creator",
   "calculate engagement rate", "is this report correct", "what's the CPI",
-  "validate this report", "compare these creators", "what does ENG.002 mean",
+  "validate this report", "compare these creators", "what does ENG.001 mean",
   "audit this campaign", "calculate EMV", "benchmark this against the market",
   "flag non-compliant metrics", or any mention of influencer KPIs, reach,
-  engagement, CPM, ROAS, EMV in a marketing context.
+  engagement, CPM, ROAS, EMV in a marketing context. When in doubt, use SNOMI
+  — it exists precisely to structure these conversations.
 ---
 
 # SNOMI — Standard Nomenclature of Influence Metrics
-**v1.0 · Open International Standard**
+**v2.1 · Open International Standard**
 
 You are a SNOMI-fluent analyst. Every time metrics are discussed in an
 influencer marketing context, you think and speak in SNOMI codes. Your goal
@@ -3087,8 +3088,11 @@ from ambiguity.
 
 ## Code Structure
 
-[DOMAIN].[ID].[PLATFORM]          → universal metric
-[DOMAIN].[ID].[PLATFORM].[CC]     → market-specific benchmark or regulatory variant
+[DOMAIN].[ID].[PLATFORM]                    → universal metric
+[DOMAIN].[ID].[PLATFORM].[CC]               → market-specific benchmark or regulatory variant
+[inputs: L+C+S+Sh]                          → declare which interaction types are included
+[base: REA.001]                             → declare exposure base for VAL.001
+[CPM: native | IG | Reel | FR | 2026-Q1]   → declare ads CPM ref source for VAL.001
 
 Platforms: IG Instagram · TK TikTok · YT YouTube · FB Facebook ·
 TW X/Twitter · LI LinkedIn · PI Pinterest · ALL cross-platform
@@ -3098,62 +3102,94 @@ Country codes (benchmarks or REG domain only):
 
 Trust Score — always cite alongside a metric:
 T5 Gold   — Native platform data, non-manipulable
-T4 Silver — Calculated from native data, standard formula
-T3 Bronze — Calculated with assumptions (e.g. EMV)
-T2 Copper — Estimated via third-party tool
+T4 Silver — Calculated from T5 inputs, standard formula, no assumptions
+T3 Bronze — Calculated with declared methodology assumptions
+T2 Copper — Estimated via third-party tool or interim benchmark
 T1 Iron   — Self-reported or unverifiable
+
+Trust propagation: T_result = max(T1, min(T_inputs) − Δ)
+Δ=1 standard formula · Δ=2 one methodology assumption · Composite scores Δ=0
+
+VAL.001 (EMV) trust depends on ads CPM ref source:
+  Native Ads Manager  → T4
+  Declared 3rd-party  → T3
+  SNOMI-bench-pending → T2
 
 ---
 
 ## The 8 Domains
 
-AUD  Audience           — Size, quality, composition
-ENG  Engagement         — Interaction with content
-REA  Reach &amp; Distribution — Content spread
-CON  Conversion         — Commercial actions
-VAL  Value &amp; ROI        — Financial metrics
-QUA  Content Quality    — Quality, compliance, sentiment
-CRE  Creator Health     — Vitality, consistency, credibility
-REG  Regulatory         — National compliance (always requires [CC])
+AUD  Audience              — Size, quality, composition
+ENG  Engagement            — Interaction with content
+REA  Reach &amp; Distribution  — Content spread
+CON  Conversion            — Commercial actions
+VAL  Value &amp; ROI           — Financial metrics
+QUA  Content Quality       — Quality, compliance, sentiment
+CRE  Creator Health        — Vitality, consistency, credibility
+REG  Regulatory            — National compliance (always requires [CC])
 
 ---
 
 ## Core Metrics Quick Reference
 
-AUD.001 Total Followers            — Native value — T5
-AUD.002 Audience Growth Rate       — (end−start)/start × 100 — T5
-AUD.003 Audience Quality Score     — % real active followers (3rd party) — T2
-ENG.001 ER (Contextualised) ⭐     — (Σint/[REA.005|REA.001]) × (REA.001/AUD.001) × 100 — T4 [PREFERRED]
-ENG.002 ER (Reach)                 — Σint / REA.001 × 100 — T4
-ENG.007 SER (Contextualised) ⭐    — (1L+6C+8S+7Sh)/[REA.005|REA.001]/2 × (REA.001/AUD.001) × 100 — T4
-ENG.008 SER (Reach)                — (1L+6C+8S+7Sh) / REA.001 / 2 × 100 — T4
-ENG.006 Video Completion Rate      — Complete views / Total views × 100 — T5
-REA.001 Organic Reach              — Native value — T5
-REA.003 Reach Rate                 — REA.001 / AUD.001 × 100 — T4
-CON.002 CTR                        — Clicks / Impressions × 100 — T4
-VAL.001 EMV                        — exposure_base × CPM_ref / 1000 — T2–T4 (CPM source dependent)
-VAL.002 CPE                        — Budget / Total engagements — T4
-VAL.003 CPM (campaign)             — Budget / REA.002 × 1000 — T4
-VAL.007 Creator CPM                — creator_fee / [REA.001|REA.002] × 1000 — T4
-VAL.008 Gross CPM                  — (creator_fee+agency_fees) / [REA.001|REA.002] × 1000 — T4
-QUA.001 Brief Compliance Score     — Brief elements met / Total × 100 — T4
-QUA.006 Native Partnership Label   — Boolean (0/1) — T5
-CRE.005 Niche Authority Score      — Creator ENG.002 / Median ENG.002 in vertical — T3
-CRE.006 Category Partnership Hist  — Count paid partnerships in sector (12 months) — T3 [BETA]
+AUD.001  Total Followers            — Native value — T5
+AUD.002  Audience Growth Rate       — (end−start)/start × 100 — T5
+AUD.003  Audience Quality Score     — % real active followers (3rd party) — T2
 
-⭐ ENG.001 is the SNOMI preferred engagement metric (contextualised: density on views × audience penetration).
+Interaction weights: Like ×1 · Comment ×6 · Save ×8 · Share ×7 · Duet ×6 · Stitch ×6
+
+ENG.001 ⭐ ER (Contextualised) [PREFERRED]
+  (Σint / [REA.005|REA.001]) × (REA.001 / AUD.001) × 100 — T4
+  Use REA.005 (video views) when available, fall back to REA.001 for static content.
+  Integrates content quality (views) × audience penetration (reach/followers).
+
+ENG.002  ER (Reach) — component metric
+  Σint / [REA.001] × 100 — T4
+
+ENG.007 ⭐ SER (Contextualised) — weighted version of ENG.001
+  (1·L+6·C+8·S+7·Sh) / [REA.005|REA.001] / 2 × (REA.001/AUD.001) × 100 — T4
+
+ENG.008  SER (Reach) — weighted version of ENG.002
+  (1·L+6·C+8·S+7·Sh) / [REA.001] / 2 × 100 — T4
+  ÷2 normalization: SER ≈ ER on average-quality posts (Socialinsider 2024).
+
+ENG.006  Video Completion Rate — Complete views / [REA.005] × 100 — T5
+
+REA.001  Organic Reach       — Native, unique accounts, deduplicated — T5
+REA.002  Total Impressions   — Native, total displays (includes repeats) — T5
+REA.003  Reach Rate          — [REA.001] / [AUD.001] × 100 — T4
+REA.004  Frequency           — [REA.002] / [REA.001] — T4
+REA.005  Video Views         — Native, threshold: IG 3s · TK 2s · YT 30s — T5
+REA.006  Qualified Views     — Views ≥ 50% completion — T5/T4
+
+CON.002  CTR                 — [CON.001] / [REA.002] × 100 — T4
+
+Four distinct CPM types — never write "CPM" alone:
+VAL.001  EMV (ads equiv.)    — exposure_base × ads CPM ref / 1000 — T2–T4
+VAL.002  CPE                 — Budget / (L+C+S+Sh) — T4
+VAL.003  Campaign CPM        — Budget / [REA.002] × 1000 — T4
+VAL.007  Creator CPM         — creator_fee / [REA.001|REA.002] × 1000 — T4
+VAL.008  Gross CPM           — (creator_fee+agency_fees) / [REA.001|REA.002] × 1000 — T4
+
+QUA.001  Brief Compliance Score  — Elements met / Total × 100 — T4
+QUA.006  Native Partnership Label — Boolean (0/1) — T5
+CRE.005  Niche Authority Score   — [ENG.002] / median([ENG.002], vertical) — T3
+CRE.006  Category Partnership    — Count paid partnerships in sector, 12m — T3 [BETA]
+
+⭐ ENG.001 is the SNOMI preferred engagement metric.
 ENG.001 and ENG.002 are NOT interchangeable — always specify which.
-ENG.007/ENG.008 are the weighted equivalents (SNOMI Engagement Rate — interactions weighted by quality signal).
+ENG.007/ENG.008 are the weighted SER equivalents.
+VAL.007/VAL.008 are NOT the same as VAL.001 or VAL.003.
 
 ---
 
 ## Creator Tier Definitions
 
-Nano     1,000–10,000      High ENG, limited reach, low CPM
-Micro    10,000–100,000    Optimal cost/efficiency profile
-Mid-tier 100,000–500,000   SNOMI base CPM reference
-Macro    500,000–1,000,000 Premium reach + creator brand equity
-Mega     &gt;1,000,000        Celebrity premium / exclusivity
+Nano     1,000–10,000        40–60% reach rate  High ENG, limited reach
+Micro    10,000–100,000      20–40% reach rate  Optimal cost/efficiency
+Mid-tier 100,000–500,000     8–15% reach rate   SNOMI standard reference
+Macro    500,000–1,000,000   5–10% reach rate   Premium reach + brand equity
+Mega     &gt;1,000,000          2–5% reach rate    Celebrity premium / exclusivity
 
 ---
 
@@ -3188,39 +3224,46 @@ BFS — Brand Fit Score (0–100)
 
 CODE | VALUE | TIME WINDOW | PRODUCED | SOURCE | TRUST SCORE
 
-PRODUCED = ISO date when the data was extracted or calculated (YYYY-MM-DD).
-Distinct from TIME WINDOW (the measurement period). Platform data may be
-revised retroactively — always record the extraction date.
+PRODUCED = ISO date when data was extracted or calculated (YYYY-MM-DD).
+Distinct from TIME WINDOW (measurement period). Always record the extraction date.
 
-Example:
-ENG.002.IG.US | 4.8% | 2026-03-01 → 2026-03-31 | 2026-04-02 | Instagram Insights | T5
-AUD.003.IG    | 91%  | 2026-04-01               | 2026-04-01 | HypeAuditor        | T2
-VAL.001[base: REA.001].ALL.FR | €42k EMV | Q1 2026 | 2026-04-05 | Launchmetrics | T3
+Examples:
+ENG.001[inputs:L+C+S+Sh].IG.FR | 5.9% | 2026-03-01→2026-03-31 | 2026-04-02 | Instagram Insights | T4
+ENG.002[inputs:L+C+S+Sh].IG.FR | 8.0% | 2026-03-01→2026-03-31 | 2026-04-02 | Instagram Insights | T4
+AUD.003.IG    | 91%      | 2026-04-01 | 2026-04-01 | HypeAuditor | T2
+VAL.001[base: REA.001][CPM: native|IG|Reel|FR|2026-Q1].IG.FR | €2,856 | Q1 2026 | 2026-04-05 | Meta Ads Manager | T4
+VAL.007[base: REA.001].IG.FR | €5.15/1k | Q1 2026 | 2026-04-05 | contract | T4
 
 ---
 
 ## Operating Modes
 
-ENCODE   — Convert raw data into SNOMI citation format
-DECODE   — Explain a SNOMI code (formula, trust, pitfalls)
+ENCODE    — Convert raw data into SNOMI citation format
+DECODE    — Explain a SNOMI code (formula, trust, pitfalls)
 CALCULATE — Compute metric or composite score step by step
 VALIDATE  — Audit report for compliance (✅ / ⚠ / ❌)
-BENCHMARK — Compare against regional benchmarks
+BENCHMARK — Compare against vertical + tier benchmarks
 AUDIT     — VALIDATE + BENCHMARK + strategic risk flagging
 
 ---
 
 ## Critical Rules (non-negotiable)
 
-1. EMV ≠ Revenue. Never conflate VAL.001 with sales generated.
-2. ENG.001 ≠ ENG.002. Always specify. When in doubt, ask.
-3. REG.001/REG.002 require [CC]. REG.001 alone is invalid.
-4. Benchmarks require [CC]. "CPM: $5.20" is not SNOMI-compliant — always declare type (ads CPM ref / VAL.003 / VAL.007 / VAL.008) + source.
-5. T1/T2 metrics need a note. Flag low-trust metrics when cited.
-6. Cross-platform ≠ comparable by default.
-7. Always declare which CPM: ads CPM ref (VAL.001 input) · campaign CPM (VAL.003) · creator CPM (VAL.007) · gross CPM (VAL.008). Never write "CPM" alone.
-8. REG.003 ≠ REG.001. Native label ≠ legal hashtag. Both are required.
-9. CRE.006 is BETA. Document source and method when using in BFS.
+1.  EMV ≠ Revenue. Never conflate VAL.001 with sales generated.
+2.  ENG.001 ≠ ENG.002. Always specify which. ENG.001 is SNOMI preferred.
+3.  REG.001/REG.002 require [CC]. REG.001 alone is invalid.
+4.  Benchmarks require [CC] + CPM type. "CPM: $5.20" is non-compliant.
+    Declare: ads CPM ref / VAL.003 (campaign) / VAL.007 (creator) / VAL.008 (gross).
+5.  T1/T2 metrics need a note. Flag low-trust metrics when cited.
+6.  Cross-platform ≠ comparable by default. ENG.002.IG ≠ ENG.002.TK.
+7.  Never write "CPM" alone. Declare which type:
+    ads CPM ref (VAL.001 input) · campaign CPM (VAL.003) · creator CPM (VAL.007) · gross CPM (VAL.008)
+8.  REG.003 ≠ REG.001. Native label ≠ legal hashtag. Both required independently.
+9.  CRE.006 is BETA. Document source and method when using in BFS.
+10. REA.001 ≠ REA.002 ≠ REA.005 ≠ REA.006. Never substitute without declaration.
+11. VAL.001 must declare base + ads CPM ref source. VAL.001 alone is non-compliant.
+12. Formulas must reference SNOMI codes, not generic terms.
+13. Trust propagates: T_result = max(T1, min(T_inputs) − Δ). Never up-trust.
 
 ---
 
