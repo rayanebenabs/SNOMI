@@ -32,7 +32,7 @@ Always recalculate when inputs are not native.
 | AUD.002      | Audience Growth Rate             | % change in follower count over a period                                              | (end − start) / start × 100                      | %           | T5    |
 | AUD.003      | Audience Quality Score           | Estimated share of genuine, active followers (aggregate)                              | % active accounts / total — via 3rd-party tool   | %           | T2    |
 | AUD.003.FAKE | Fake Account Rate                | Estimated share of bot and fake accounts                                              | % fake accounts / total — via 3rd-party tool     | %           | T2    |
-| AUD.003.INACT| Inactive Account Rate            | Share of real but recently inactive accounts                                          | % inactive accounts / total — via 3rd-party tool | %           | T2    |
+| AUD.003.INACT | Inactive Account Rate            | Share of real but recently inactive accounts                                          | % inactive accounts / total — via 3rd-party tool | %           | T2    |
 | AUD.004      | Target Audience Rate             | Share of audience matching brand's defined target persona                             | % audience meeting target criteria                | %           | T3    |
 | AUD.005      | Audience Overlap                 | Shared audience between two creators (for campaign deduplication)                     | (Shared followers / min(A,B)) × 100               | %           | T2    |
 | AUD.006.AGE  | Audience Age Distribution        | Audience breakdown by age bracket (13–17, 18–24, 25–34, 35–44, 45–54, 55+)          | % per age bracket — platform native or 3rd-party | % breakdown | T4    |
