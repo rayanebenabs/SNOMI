@@ -1794,10 +1794,22 @@ Domain   ID   Platform  Market (optional)</code></pre>
             <span class="dep-formula">AUD.001 × 2 creators</span>
           </div>
           <div class="dep-metric">
-            <span class="dep-code">AUD.006</span>
+            <span class="dep-code">AUD.006.AGE/GEN/GEO</span>
             <span class="dep-name">Demographics</span>
             <span class="tag t4">T4</span>
-            <span class="dep-formula">native on AUD.001</span>
+            <span class="dep-formula">native or 3rd-party</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">AUD.007</span>
+            <span class="dep-name">Interests</span>
+            <span class="tag t2">T2</span>
+            <span class="dep-formula">3rd-party tool</span>
+          </div>
+          <div class="dep-metric">
+            <span class="dep-code">AUD.008</span>
+            <span class="dep-name">Following Count</span>
+            <span class="tag t2">T2</span>
+            <span class="dep-formula">3rd-party tool</span>
           </div>
           <div class="dep-metric dep-metric--highlight">
             <span class="dep-code">ENG.001 ⭐</span>
@@ -2057,16 +2069,30 @@ Domain   ID   Platform  Market (optional)</code></pre>
         <tbody>
           <tr><td>AUD.001</td><td>Total Followers</td><td>Native platform value</td><td>integer</td><td><span class="tag t5">T5</span></td></tr>
           <tr><td>AUD.002</td><td>Audience Growth Rate</td><td>(end − start) / start × 100</td><td>%</td><td><span class="tag t5">T5</span></td></tr>
-          <tr><td>AUD.003</td><td>Audience Quality Score</td><td>% active accounts / total — via 3rd-party tool</td><td>%</td><td><span class="tag t2">T2</span></td></tr>
+          <tr><td>AUD.003</td><td>Audience Quality Score</td><td>% active accounts / total — via 3rd-party tool (aggregate)</td><td>%</td><td><span class="tag t2">T2</span></td></tr>
+          <tr><td>AUD.003.FAKE</td><td>Fake Account Rate</td><td>% fake/bot accounts — via 3rd-party tool</td><td>%</td><td><span class="tag t2">T2</span></td></tr>
+          <tr><td>AUD.003.INACT</td><td>Inactive Account Rate</td><td>% real but inactive accounts — via 3rd-party tool</td><td>%</td><td><span class="tag t2">T2</span></td></tr>
           <tr><td>AUD.004</td><td>Target Audience Rate</td><td>% audience meeting target criteria</td><td>%</td><td><span class="tag t3">T3</span></td></tr>
           <tr><td>AUD.005</td><td>Audience Overlap</td><td>(Shared followers / min(A,B)) × 100</td><td>%</td><td><span class="tag t2">T2</span></td></tr>
-          <tr><td>AUD.006</td><td>Demographic Score</td><td>% per demographic cohort</td><td>% breakdown</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>AUD.006.AGE</td><td>Audience Age Distribution</td><td>% per age bracket (13–17, 18–24, 25–34, 35–44, 45–54, 55+)</td><td>% breakdown</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>AUD.006.GEN</td><td>Audience Gender Distribution</td><td>% Male / Female / Unspecified</td><td>% breakdown</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>AUD.006.GEO</td><td>Audience Geographic Distribution</td><td>% per country/region (top N)</td><td>% breakdown</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>AUD.007</td><td>Audience Interest Distribution</td><td>% per interest category — via 3rd-party tool</td><td>% breakdown</td><td><span class="tag t2">T2</span></td></tr>
+          <tr><td>AUD.008</td><td>Audience Following Count</td><td>Avg accounts followed by audience members — attention dilution signal</td><td>integer</td><td><span class="tag t2">T2</span></td></tr>
         </tbody>
       </table>
     </div>
     <div class="callout callout-info">
       <strong>AUD.003 note</strong>
-      Values above 85% are generally considered strong. Tools vary significantly — HypeAuditor, Modash, Kolsquare, Upfluence each use proprietary models. Never present as native platform data.
+      Values above 85% are generally considered strong. Tools vary significantly — HypeAuditor, Modash, Kolsquare, Upfluence each use proprietary models. Never present as native platform data. <code>AUD.003 ≈ 100% − AUD.003.FAKE − AUD.003.INACT</code> (approximation — tool definitions vary).
+    </div>
+    <div class="callout callout-info">
+      <strong>AUD.006.AGE / GEN / GEO note</strong>
+      Trust T4 when sourced from native platform analytics (Instagram Insights, TikTok Analytics, YouTube Studio). Downgrade to T2 if sourced from a third-party tool.
+    </div>
+    <div class="callout callout-info">
+      <strong>AUD.008 — indicative thresholds</strong>
+      &lt; 500: focused audience (high attention) · 500–2,000: within norm · &gt; 2,000: attention dilution — cross-reference with AUD.003 and ENG.002.
     </div>
   </section>
 
@@ -3132,9 +3158,16 @@ REG  Regulatory            — National compliance (always requires [CC])
 
 ## Core Metrics Quick Reference
 
-AUD.001  Total Followers            — Native value — T5
-AUD.002  Audience Growth Rate       — (end−start)/start × 100 — T5
-AUD.003  Audience Quality Score     — % real active followers (3rd party) — T2
+AUD.001       Total Followers                  — Native value — T5
+AUD.002       Audience Growth Rate             — (end−start)/start × 100 — T5
+AUD.003       Audience Quality Score           — % real active followers (3rd party) — T2
+AUD.003.FAKE  Fake Account Rate                — % fake/bot accounts (3rd party) — T2
+AUD.003.INACT Inactive Account Rate            — % real but inactive accounts (3rd party) — T2
+AUD.006.AGE   Audience Age Distribution        — % per age bracket (T4 native / T2 3rd-party)
+AUD.006.GEN   Audience Gender Distribution     — % Male / Female / Unspecified (T4 native / T2 3rd-party)
+AUD.006.GEO   Audience Geographic Distribution — % per country/region top N (T4 native / T2 3rd-party)
+AUD.007       Audience Interest Distribution   — % per interest category (3rd party) — T2
+AUD.008       Audience Following Count         — avg following count of audience members — T2
 
 Interaction weights: Like ×1 · Comment ×6 · Save ×8 · Share ×7 · Duet ×6 · Stitch ×6
 
