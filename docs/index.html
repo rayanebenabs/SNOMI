@@ -2294,6 +2294,7 @@ ENG.007[inputs:L+C+S+Sh].IG  ⭐   =  (37,760 / 142,000) / 2 × (180,000 / 250,0
           <tr><td>VAL.005</td><td>ROAS</td><td><code>[CON.005] / Budget</code></td><td>ratio (×)</td><td><span class="tag t2">T2</span></td></tr>
           <tr><td>VAL.006</td><td>CPA</td><td><code>Budget / [CON.004]</code></td><td>currency/acq.</td><td><span class="tag t2">T2</span></td></tr>
           <tr><td>VAL.007</td><td>Creator CPM</td><td><code>creator_fee / [REA.001|REA.002] × 1,000</code> — declare base</td><td>currency/1k</td><td><span class="tag t4">T4</span></td></tr>
+          <tr><td>VAL.008</td><td>Gross CPM</td><td><code>(creator_fee + agency_fees) / [REA.001|REA.002] × 1,000</code> — declare base</td><td>currency/1k</td><td><span class="tag t4">T4</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -2370,21 +2371,11 @@ ENG.007[inputs:L+C+S+Sh].IG  ⭐   =  (37,760 / 142,000) / 2 × (180,000 / 250,0
       <p style="margin:0"><strong>Q4 seasonality:</strong> apply <strong>+30% to +50%</strong> on Meta and Snapchat formats during October–December. January resets to −20–40% below annual average.</p>
     </div>
 
-    <h3 style="margin-top:28px; margin-bottom:10px">VAL.007 — Creator CPM vs reference CPM</h3>
-    <p>Creator CPM measures what the brand actually paid per 1,000 exposures, including content production. It is structurally different from the ad reference CPM used in EMV: a creator fee covers both <strong>distribution</strong> (reaching the audience) and <strong>production</strong> (creating the content). A paid ad campaign separates these two costs — you pay the platform for distribution, and your creative agency for production.</p>
+    <h3 style="margin-top:28px; margin-bottom:10px">VAL.007 / VAL.008 — Creator CPM and Gross CPM</h3>
+    <p><strong>VAL.007 (Creator CPM)</strong> measures what the brand paid per 1,000 exposures based on the creator fee alone. <strong>VAL.008 (Gross CPM)</strong> includes agency fees on top — applicable when an agency manages the campaign and charges a commission or retainer on the global budget. Both are compared against the reference CPM (ads) to assess the cost efficiency of the influence channel.</p>
     <div class="callout callout-info" style="margin-top:12px">
-      <strong>Creator CPM is always higher than the reference CPM — and that is expected</strong>
-      <p style="margin:6px 0 0">The delta between VAL.007 and the reference CPM (VAL.001 ÷ exposure) is not a sign of inefficiency. It reflects the embedded production cost of influencer content. A fair comparison adds the brand's creative production budget to the paid ads scenario before drawing conclusions.</p>
-    </div>
-    <div class="table-wrap" style="margin-top:12px">
-      <table>
-        <thead><tr><th>Component</th><th>Influencer campaign</th><th>Equivalent paid ads</th></tr></thead>
-        <tbody>
-          <tr><td>Distribution cost</td><td>Included in creator fee</td><td>Platform CPM × exposure / 1,000</td></tr>
-          <tr><td>Production cost</td><td>Included in creator fee</td><td>Separate creative budget (photography, video)</td></tr>
-          <tr><td>Total comparable cost</td><td>Creator fee</td><td>Ad spend + creative production</td></tr>
-        </tbody>
-      </table>
+      <strong>Creator CPM is structurally higher than the reference CPM — this is expected</strong>
+      <p style="margin:6px 0 0">A creator fee bundles both distribution (reaching the audience) and production (creating the content). A paid ad campaign bills these separately — platform CPM for distribution, creative agency for production. VAL.007 and VAL.008 should never be compared raw against the reference CPM without acknowledging this structural difference.</p>
     </div>
 
     <h3 style="margin-top:28px; margin-bottom:10px">Full declaration example — influence vs ads comparison</h3>
@@ -2411,35 +2402,34 @@ VAL.001[base: REA.005][CPM: native | IG | Reel | FR | 2026-Q1].IG.FR
   = €2,142   T4   ← video views only
 
 ── VAL.007 — Creator CPM ─────────────────────────────────────────────────
-VAL.007[base: REA.001].IG.FR  =  €3,500 / 680,000 × 1,000  =  €5.15 / 1k reach
+VAL.007[base: REA.001].IG.FR  =  €3,500 / 680,000 × 1,000   =  €5.15 / 1k reach
 VAL.007[base: REA.002].IG.FR  =  €3,500 / 1,462,000 × 1,000  =  €2.39 / 1k impressions
 
-Reference CPM (ads):  €4.20 / 1k
+── VAL.008 — Gross CPM (creator fee + agency fees) ──────────────────────
+  Agency fee on this campaign: €875 (25% of creator fee)
+  Total billed to brand: €3,500 + €875 = €4,375
 
-  Creator CPM (reach) €5.15  >  ads CPM €4.20  → +23%   expected: includes production
-  Creator CPM (impr.)  €2.39  <  ads CPM €4.20  → −43%   organic frequency lowers effective CPM
+VAL.008[base: REA.001].IG.FR  =  €4,375 / 680,000 × 1,000   =  €6.43 / 1k reach
+VAL.008[base: REA.002].IG.FR  =  €4,375 / 1,462,000 × 1,000  =  €2.99 / 1k impressions
 
-── Why REA.001 and REA.002 give different EMV values ────────────────────
+── CPM comparison ────────────────────────────────────────────────────────
+Reference CPM (ads, native):  €4.20 / 1k
+
+  VAL.007 on reach:  €5.15  vs  €4.20 ads  → +23%  creator CPM above ads rate
+  VAL.007 on impr.:  €2.39  vs  €4.20 ads  → −43%  organic frequency brings CPM below ads
+  VAL.008 on reach:  €6.43  vs  €4.20 ads  → +53%  gross CPM above ads rate (agency included)
+  VAL.008 on impr.:  €2.99  vs  €4.20 ads  → −29%  still below ads CPM on impressions
+
+  Note: creator fee includes content production — ads CPM does not.
+  This structural difference explains why VAL.007/VAL.008 on reach are higher than the ads rate.
+
+── Why REA.001 and REA.002 give different values ─────────────────────────
 REA.001 (reach)       =   680,000  unique accounts — each person counted once
 REA.002 (impressions) = 1,462,000  total displays  — same person counted every time they see it
 REA.004 (frequency)   = 1,462,000 / 680,000 = 2.15×
 
-  Each person saw the content 2.15 times on average.
-  The CPM is identical (€4.20) — the base is 2.15× larger.
-  → EMV on impressions = REA.004 × EMV on reach, always.
-
-── Influence vs paid ads — fair comparison ───────────────────────────────
-                           Influence        Paid ads equivalent
-  Distribution cost:       included         €2,856 (reach) / €6,140 (impr.)
-  Production cost:         included         ~€1,200 (estimated creative budget)
-                           ─────────        ────────────────────────────────
-  Total comparable cost:   €3,500           €4,056 (reach) / €7,340 (impr.)
-
-  On unique reach:  influence (€3,500) vs ads + production (€4,056) → influence 14% cheaper
-  On impressions:   influence (€3,500) vs ads + production (€7,340) → influence 52% cheaper
-
-  The base metric you choose changes the conclusion entirely.
-  SNOMI requires declaring it — never mix bases across reports or campaigns.</code></pre>
+  EMV and CPM figures on impressions are always exactly REA.004 × the reach-based figure.
+  The base metric you choose changes every conclusion — declare it, never mix across reports.</code></pre>
     </div>
   </section>
 
