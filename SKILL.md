@@ -186,8 +186,8 @@ metrics:
 | `AUD.004`        | Target Audience Rate             | % audience matching brand target persona      | T3    |
 | `AUD.005`        | Audience Overlap                 | Shared audience between two creators          | T2    |
 | `AUD.006.AGE`    | Audience Age Distribution        | % per age bracket (T4 native / T2 3rd-party)  | T4    |
-| `AUD.006.GEN`    | Audience Gender Distribution     | % Male / Female / Unspecified                 | T4    |
-| `AUD.006.GEO`    | Audience Geographic Distribution | % per country/region (top N)                  | T4    |
+| `AUD.006.GEN`    | Audience Gender Distribution     | % Male / Female / Unspecified (T4 native / T2 3rd-party) | T4    |
+| `AUD.006.GEO`    | Audience Geographic Distribution | % per country/region — top N (T4 native / T2 3rd-party) | T4    |
 | `AUD.007`        | Audience Interest Distribution   | % per interest category (3rd-party tool)      | T2    |
 | `AUD.008`        | Audience Following Count         | Avg accounts followed by audience members     | T2    |
 
