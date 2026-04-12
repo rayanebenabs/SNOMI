@@ -176,13 +176,20 @@ metrics:
 
 ### Audience
 
-| Code      | Name                   | Formula                                      | Trust |
-|-----------|------------------------|----------------------------------------------|-------|
-| `AUD.001` | Total Followers        | Native value                                 | T5    |
-| `AUD.002` | Audience Growth Rate   | `(end − start) / [AUD.001_start] × 100`      | T5    |
-| `AUD.003` | Audience Quality Score | % real active followers (3rd-party tool)     | T2    |
-| `AUD.004` | Target Audience Rate   | % audience matching brand target persona     | T3    |
-| `AUD.005` | Audience Overlap       | Shared audience between two creators         | T2    |
+| Code             | Name                             | Formula                                       | Trust |
+|------------------|----------------------------------|-----------------------------------------------|-------|
+| `AUD.001`        | Total Followers                  | Native value                                  | T5    |
+| `AUD.002`        | Audience Growth Rate             | `(end − start) / [AUD.001_start] × 100`       | T5    |
+| `AUD.003`        | Audience Quality Score           | % real active followers (3rd-party tool)      | T2    |
+| `AUD.003.FAKE`   | Fake Account Rate                | % fake/bot accounts (3rd-party tool)          | T2    |
+| `AUD.003.INACT`  | Inactive Account Rate            | % real but inactive accounts (3rd-party tool) | T2    |
+| `AUD.004`        | Target Audience Rate             | % audience matching brand target persona      | T3    |
+| `AUD.005`        | Audience Overlap                 | Shared audience between two creators          | T2    |
+| `AUD.006.AGE`    | Audience Age Distribution        | % per age bracket (T4 native / T2 3rd-party)  | T4    |
+| `AUD.006.GEN`    | Audience Gender Distribution     | % Male / Female / Unspecified                 | T4    |
+| `AUD.006.GEO`    | Audience Geographic Distribution | % per country/region (top N)                  | T4    |
+| `AUD.007`        | Audience Interest Distribution   | % per interest category (3rd-party tool)      | T2    |
+| `AUD.008`        | Audience Following Count         | Avg accounts followed by audience members     | T2    |
 
 ### Engagement
 
