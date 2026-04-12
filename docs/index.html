@@ -2369,26 +2369,38 @@ ENG.007[inputs:L+C+S+Sh].IG  ⭐   =  (37,760 / 142,000) / 2 × (180,000 / 250,0
       <p style="margin:0"><strong>Q4 seasonality:</strong> apply <strong>+30% to +50%</strong> on Meta and Snapchat formats during October–December. January resets to −20–40% below annual average.</p>
     </div>
 
-    <h3 style="margin-top:28px; margin-bottom:10px">Full declaration example</h3>
+    <h3 style="margin-top:28px; margin-bottom:10px">Full declaration example — influence vs ads comparison</h3>
     <div class="code-block">
-      <pre><code>── Native CPM (T4) ──────────────────────────────────────────────────────
+      <pre><code>Campaign:      1 × Instagram Reel, fashion brand launch
+Creator fee:   €3,500
+Reach:         680,000   (REA.001 — unique accounts reached)
+Impressions:   1,462,000 (REA.002 — frequency 2.15×)
+Video views:   510,000   (REA.005)
+CPM source:    native — brand ran Meta Ads (Reels, FR targeting) same period
+               → CPM pulled from Meta Ads Manager: €4.20 / 1,000
+
+── EMV calculations ──────────────────────────────────────────────────────
 VAL.001[base: REA.001][CPM: native | IG | Reel | FR | 2026-Q1].IG.FR
-| €31,200 | T4
+  = 680,000 × 4.20 / 1,000
+  = €2,856   T4   ← conservative — unique people reached
 
-  Advertiser had active Meta campaigns in same period →
-  CPM pulled directly from Meta Ads Manager (FR targeting, Reels format)
-
-── Declared CPM (T3) ─────────────────────────────────────────────────────
-VAL.001[base: REA.001][CPM: 4.00 | EUR | IG | Reel | FR | 2025 | Gupta Media].IG.FR
-| €28,400 | T3
-
-── SNOMI bench fallback (T2) ─────────────────────────────────────────────
-VAL.001[base: REA.001][CPM: SNOMI-bench-pending | IG | Reel | 2025].IG.FR
-| €21,300 | T2  ← €4.00 × −25% EU adj = €3.00 / 1000 × 7,100,000 reach
-
-── Same campaign, impressions base — shows frequency inflation ───────────
 VAL.001[base: REA.002][CPM: native | IG | Reel | FR | 2026-Q1].IG.FR
-| €67,100 | T4  ← REA.004 frequency = 2.15× → EMV inflated accordingly</code></pre>
+  = 1,462,000 × 4.20 / 1,000
+  = €6,140   T4   ← includes repeat exposure (frequency 2.15×)
+
+VAL.001[base: REA.005][CPM: native | IG | Reel | FR | 2026-Q1].IG.FR
+  = 510,000 × 4.20 / 1,000
+  = €2,142   T4   ← video views only
+
+── Influence vs paid ads — the actual comparison ─────────────────────────
+Creator fee:          €3,500
+Buying same reach in ads would have cost:
+  → on unique reach (REA.001):  €2,856  → influence cost 22% more than ads
+  → on impressions  (REA.002):  €6,140  → influence delivered 75% more than ad equivalent
+  → on video views  (REA.005):  €2,142  → influence cost 63% more than ad equivalent
+
+  The base metric you choose changes the conclusion entirely.
+  SNOMI requires declaring it — never mix bases across reports or campaigns.</code></pre>
     </div>
   </section>
 
