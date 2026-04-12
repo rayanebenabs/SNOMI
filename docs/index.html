@@ -2392,9 +2392,18 @@ VAL.001[base: REA.005][CPM: native | IG | Reel | FR | 2026-Q1].IG.FR
   = 510,000 × 4.20 / 1,000
   = €2,142   T4   ← video views only
 
+── Why REA.001 and REA.002 give different EMV values ────────────────────
+REA.001 (reach)       = 680,000   unique accounts — each person counted once
+REA.002 (impressions) = 1,462,000 total displays  — same person counted every time they see it
+REA.004 (frequency)   = 1,462,000 / 680,000 = 2.15×
+
+  Each person saw the content 2.15 times on average.
+  The CPM is identical (€4.20) — the base is just 2.15× larger.
+  → EMV on impressions is always exactly REA.004 × EMV on reach.
+
 ── Influence vs paid ads — the actual comparison ─────────────────────────
 Creator fee:          €3,500
-Buying same reach in ads would have cost:
+Buying same exposure in ads would have cost:
   → on unique reach (REA.001):  €2,856  → influence cost 22% more than ads
   → on impressions  (REA.002):  €6,140  → influence delivered 75% more than ad equivalent
   → on video views  (REA.005):  €2,142  → influence cost 63% more than ad equivalent
