@@ -2378,6 +2378,65 @@ ENG.007[inputs:L+C+S+Sh].IG  ⭐   =  (37,760 / 142,000) / 2 × (180,000 / 250,0
       <p style="margin:6px 0 0">A creator fee bundles both distribution (reaching the audience) and production (creating the content). A paid ad campaign bills these separately — platform CPM for distribution, creative agency for production. VAL.007 and VAL.008 should never be compared raw against the reference CPM without acknowledging this structural difference.</p>
     </div>
 
+    <h3 style="margin-top:28px; margin-bottom:10px">Creator CPM reference grid — interim fallback <span style="font-size:0.78em; font-weight:400; color:var(--muted)">(SNOMI-creator-bench-pending — Western Europe, 2025)</span></h3>
+    <div class="callout callout-warn" style="margin-bottom:12px">
+      <strong>SNOMI-creator-bench-pending</strong> — A formally maintained quarterly creator CPM benchmark is under construction. Values below are derived from market rate data (InfluenceFlow, Captiv8, Socialinsider 2025) combined with average organic reach rates by tier. Use as indicative T2 reference only. Creator fees vary significantly by niche, country, and negotiation context.
+    </div>
+    <p style="margin-bottom:10px; color:var(--muted); font-size:0.9em">Derived from: <code>CPM = creator_fee / (avg_followers_in_tier × avg_reach_rate) × 1,000</code> — EU rate base (US baseline × 0.85), converted at 1 USD = 0.92 EUR.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Tier</th><th>Followers</th><th>Avg reach rate</th><th>Instagram CPM</th><th>TikTok CPM</th><th>YouTube CPM</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Nano</strong></td><td>1k–10k</td><td>40–60%</td><td>€30–€120</td><td>€20–€90</td><td>—</td></tr>
+          <tr><td><strong>Micro</strong></td><td>10k–100k</td><td>20–40%</td><td>€60–€150</td><td>€40–€110</td><td>€15–€40</td></tr>
+          <tr><td><strong>Mid</strong></td><td>100k–500k</td><td>8–15%</td><td>€100–€250</td><td>€70–€180</td><td>€25–€70</td></tr>
+          <tr><td><strong>Macro</strong></td><td>500k–1M</td><td>5–10%</td><td>€200–€500</td><td>€140–€350</td><td>€40–€120</td></tr>
+          <tr><td><strong>Mega</strong></td><td>1M+</td><td>2–5%</td><td>€300–€1,200+</td><td>€200–€800+</td><td>€60–€200+</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout callout-info" style="margin-top:12px">
+      <strong>Key read: nano and micro deliver the best Creator CPM</strong>
+      <p style="margin:6px 0 0">Smaller creators charge less per post but maintain high organic reach rates — their effective CPM on reach is 3–10× lower than mega creators. Macro and mega creator CPMs are high partly because their organic reach rate (as % of followers) drops significantly with size.</p>
+    </div>
+
+    <h3 style="margin-top:20px; margin-bottom:10px">Niche premium adjustments</h3>
+    <p>Apply these multipliers to the base Creator CPM above. Premiums reflect audience purchasing power and advertiser competition in the vertical.</p>
+    <div class="table-wrap" style="margin-top:8px">
+      <table>
+        <thead><tr><th>Niche</th><th>Multiplier</th><th>Rationale</th></tr></thead>
+        <tbody>
+          <tr><td>Finance / Crypto</td><td>×1.30–×1.50</td><td>Regulatory complexity + high-value audiences</td></tr>
+          <tr><td>Luxury / Fashion</td><td>×1.30–×1.40</td><td>Highest brand spend category</td></tr>
+          <tr><td>Tech / SaaS</td><td>×1.25–×1.50</td><td>B2B audiences command premium</td></tr>
+          <tr><td>Beauty / Cosmetics</td><td>×1.20–×1.30</td><td>Consistent high demand</td></tr>
+          <tr><td>Fitness / Wellness</td><td>×1.20–×1.30</td><td>Purchase-ready engaged audiences</td></tr>
+          <tr><td>Travel</td><td>×1.20–×1.25</td><td>High production value required</td></tr>
+          <tr><td>Parenting</td><td>×1.15–×1.25</td><td>Growing vertical</td></tr>
+          <tr><td>Food / Beverage</td><td>×1.15–×1.20</td><td>High competition, lower differentiation</td></tr>
+          <tr><td>Gaming</td><td>×1.10–×1.20</td><td>Platform-dependent</td></tr>
+          <tr><td>Lifestyle (general)</td><td>×1.00</td><td>Baseline</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:20px; margin-bottom:10px">Geographic multipliers</h3>
+    <div class="table-wrap" style="margin-top:8px">
+      <table>
+        <thead><tr><th>Region</th><th>Multiplier vs USA</th></tr></thead>
+        <tbody>
+          <tr><td>USA</td><td>×1.00 (baseline)</td></tr>
+          <tr><td>Western Europe (FR, DE, NL, BE…)</td><td>×0.75–×0.90</td></tr>
+          <tr><td>UK</td><td>×0.80–×0.95</td></tr>
+          <tr><td>Southern Europe (ES, IT, PT…)</td><td>×0.60–×0.75</td></tr>
+          <tr><td>APAC (SG, AU, JP…)</td><td>×0.40–×0.60</td></tr>
+          <tr><td>Latin America</td><td>×0.35–×0.55</td></tr>
+        </tbody>
+      </table>
+    </div>
+
     <h3 style="margin-top:28px; margin-bottom:10px">Full declaration example — influence vs ads comparison</h3>
     <div class="code-block">
       <pre><code>Campaign:      1 × Instagram Reel, fashion brand launch
