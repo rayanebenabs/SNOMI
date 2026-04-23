@@ -1,0 +1,83 @@
+name: "Bug Report — Specification error"
+description: >
+  Report an error in the SNOMI specification: wrong formula, incorrect trust
+  score, contradictory definitions, or broken cross-references.
+title: "Bug: [affected code or section]"
+labels: ["bug", "needs-triage"]
+assignees: ["rayanebenabs"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template for **errors in the specification itself** — wrong
+        formulas, inconsistent definitions, broken links, contradictory rules.
+
+        For proposing *changes* to correct but incomplete spec text, use the
+        [RFC template](rfc.yml) instead.
+
+  - type: input
+    id: affected
+    attributes:
+      label: Affected SNOMI code or section
+      description: "e.g. ENG.002, VAL.001, references/metrics.md §REA, SKILL.md trust table"
+      placeholder: "ENG.002.IG"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - "Critical — wrong formula produces incorrect results in real reports"
+        - "Major — contradictory definitions between two parts of the spec"
+        - "Minor — ambiguous wording that could be misread"
+        - "Editorial — broken link, typo, formatting error"
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: What the spec currently says
+      description: Quote the exact text, formula, or table row that contains the error.
+      placeholder: |
+        From references/metrics.md, ENG.001 formula:
+        `(L+C+S+Sh) / [AUD.001] × 100`
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong
+      description: Explain why this is incorrect. Show the specific error or contradiction.
+      placeholder: |
+        The formula divides by [AUD.001] (followers) but the metric name is
+        "Engagement Rate (Reach)" — the denominator should be [REA.001].
+        Using [AUD.001] is the definition of ENG.002 in SKILL.md, creating
+        a contradiction between the two files.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What it should say
+      description: Propose the corrected text.
+      placeholder: |
+        ENG.001 formula should be: `(L+C+S+Sh) / [REA.001] × 100`
+        (matching the SKILL.md definition and the metric name)
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact on real reports
+      description: >
+        Have you encountered this error in a real campaign report? What was
+        the consequence? This helps prioritise the fix.
+    validations:
+      required: false

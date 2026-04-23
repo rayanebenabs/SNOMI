@@ -1,0 +1,19 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: 💬 General discussion
+    url: https://github.com/rayanebenabs/SNOMI/discussions
+    about: >
+      Questions about how to use SNOMI, interpretation of metric codes,
+      or general feedback — use Discussions, not Issues.
+
+  - name: 📧 Contact the maintainer
+    url: mailto:snomi@thepollen.agency
+    about: >
+      Security issues, conflict of interest reports, or anything that
+      should not be public — email directly.
+
+  - name: 📖 Documentation
+    url: https://rayanebenabs.github.io/SNOMI
+    about: >
+      Full SNOMI specification, metric catalog, benchmarks, and profiles.

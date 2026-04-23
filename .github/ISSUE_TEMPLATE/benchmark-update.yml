@@ -1,0 +1,105 @@
+name: "Benchmark Update"
+description: >
+  Propose new or updated benchmark data for engagement rates, CPM references,
+  or tier thresholds. No RFC required — this is a T1 contribution.
+title: "Benchmark: [metric code] [market/vertical]"
+labels: ["benchmark", "needs-review"]
+assignees: ["rayanebenabs"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Benchmark contributions are **T1 changes** — they go through a 7-day
+        review and do not require a full RFC. All benchmark data must cite
+        a named primary source with a publication date.
+
+  - type: dropdown
+    id: metric
+    attributes:
+      label: Metric code
+      description: Which benchmark are you updating or adding?
+      options:
+        - "ENG.001 — Engagement Rate (Followers)"
+        - "ENG.002 — Engagement Rate (Reach)"
+        - "ENG.006 — Video Completion Rate"
+        - "VAL.003 — CPM Reference"
+        - "CRE.003 — Collaboration Rate thresholds"
+        - "AUD.003 — Audience Quality Score thresholds"
+        - "Other (describe below)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - "IG — Instagram"
+        - "TK — TikTok"
+        - "YT — YouTube"
+        - "FB — Facebook"
+        - "LI — LinkedIn"
+        - "TW — X/Twitter"
+        - "PI — Pinterest"
+        - "ALL — Cross-platform"
+    validations:
+      required: true
+
+  - type: input
+    id: market
+    attributes:
+      label: Market (country code or region)
+      description: "ISO 3166-1 alpha-2 or region: US, FR, DE, UK, AU, BR, IN, EU, APAC, LATAM, GLOBAL"
+      placeholder: "e.g. FR or GLOBAL"
+    validations:
+      required: true
+
+  - type: textarea
+    id: data
+    attributes:
+      label: Proposed benchmark data
+      description: >
+        Provide the data in table format matching the existing structure in
+        `references/benchmarks.md`. Include vertical and tier breakdowns
+        where available.
+      value: |
+        | Vertical | Global | [Region] | Nano | Micro | Mid | Macro | Mega |
+        |----------|--------|----------|------|-------|-----|-------|------|
+        | ...      | x.x%   | x.x%     | x.x% | x.x% | x.x%| x.x% | x.x%|
+    validations:
+      required: true
+
+  - type: textarea
+    id: source
+    attributes:
+      label: Source
+      description: >
+        Full citation: report name, publisher, publication date, URL if available.
+        Self-published agency data is accepted only if the methodology section
+        is publicly available — include a link.
+      placeholder: |
+        HypeAuditor State of Influencer Marketing 2025
+        Published: March 2025
+        URL: https://hypeauditor.com/resources/state-of-influencer-marketing-2025/
+    validations:
+      required: true
+
+  - type: dropdown
+    id: replaces
+    attributes:
+      label: Does this replace existing data?
+      options:
+        - "Yes — replaces existing benchmark for this metric/platform/market"
+        - "No — adds data for a metric/market not currently covered"
+        - "Partial — updates some rows, adds others"
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Methodology notes (optional)
+      description: >
+        Any caveats, sampling methodology, or context reviewers should know
+        (e.g. "data based on 50k accounts, excludes accounts < 1k followers").

@@ -1,0 +1,158 @@
+name: "RFC — Propose a change to SNOMI"
+description: >
+  Request for Comments: propose a new metric, formula revision, new profile,
+  or structural change to the SNOMI specification.
+title: "RFC: [short title]"
+labels: ["rfc", "needs-review"]
+assignees: ["rayanebenabs"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Before opening this RFC**, please:
+        - Search [existing issues](https://github.com/rayanebenabs/SNOMI/issues) for duplicates
+        - Read [CONTRIBUTING.md](../CONTRIBUTING.md) to understand what makes a proposal accepted
+        - Identify the correct **change tier** (T1 / T2 / T3) per GOVERNANCE.md §3
+
+  - type: dropdown
+    id: tier
+    attributes:
+      label: Change tier
+      description: What type of change is this? See GOVERNANCE.md §3 for definitions.
+      options:
+        - "T1 — New benchmark data or note clarification (7-day review)"
+        - "T2 — New metric code, new profile, formula revision (21-day review)"
+        - "T3 — Core model change, breaking change (30-day review)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Affected domain(s)
+      description: Which SNOMI domain(s) does this affect?
+      multiple: true
+      options:
+        - "AUD — Audience"
+        - "ENG — Engagement"
+        - "REA — Reach & Distribution"
+        - "CON — Conversion"
+        - "VAL — Value & ROI"
+        - "QUA — Content Quality"
+        - "CRE — Creator Health"
+        - "REG — Regulatory"
+        - "Foundation (resource model, valuesets)"
+        - "Profiles (content or actor)"
+        - "Composite scores (CPI / CoPI / BFS)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: >
+        What problem does this solve? Describe the real-world use case.
+        Be specific — cite the type of campaign, report, or workflow where
+        this is needed.
+      placeholder: |
+        Example: "When reporting on TikTok Live campaigns, there is no SNOMI
+        code for concurrent peak viewers. Agencies are currently citing this
+        as an informal metric without a trust score, making cross-agency
+        comparison impossible."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed specification text
+      description: >
+        Write the exact text as it should appear in the relevant reference file.
+        For a new metric, include the full table row. For a formula change,
+        show the before/after. Use SNOMI code brackets for formula references.
+      value: |
+        <!-- For a new metric, use this format: -->
+
+        | Code | Name | Definition | Formula | Format | Trust |
+        |------|------|------------|---------|--------|-------|
+        | XXX.001.PL | Name | Definition | `formula using [REA.001]` | format | T? |
+
+        **Note XXX.001:** Any clarifications, edge cases, or trust propagation notes.
+
+        <!-- For a formula change, show: -->
+        <!-- Current: ... -->
+        <!-- Proposed: ... -->
+        <!-- Reason: ... -->
+    validations:
+      required: true
+
+  - type: textarea
+    id: trust
+    attributes:
+      label: Trust score justification
+      description: >
+        Explain why you assigned this default trust score. Show the propagation
+        calculation: T_result = max(T1, min(T_inputs) − Δ). If the metric
+        is always capped (like EMV), explain why.
+      placeholder: |
+        Example: "This metric is calculated from REA.001 (T5 native) and
+        AUD.001 (T5 native) using a standard ratio formula (Δ=1).
+        T_result = min(T5, T5) − 1 = T4."
+    validations:
+      required: true
+
+  - type: textarea
+    id: backward_compat
+    attributes:
+      label: Backward compatibility
+      description: >
+        How does this change affect existing SNOMI-compliant records?
+        If it is breaking, what is the migration path?
+      placeholder: |
+        - "Non-breaking: adds a new optional code, no existing records affected."
+        - "Breaking: renames ENG.001. Migration: existing ENG.001 citations
+          remain valid under v2 semantics; new formula is ENG.001 v3."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: >
+        What other approaches did you consider? Why did you reject them?
+        At least one alternative is required.
+      placeholder: |
+        "Alternative 1: Extend ENG.006 with a sub-code for live.
+        Rejected because live completion rate semantics are fundamentally
+        different from VOD completion rate — conflating them would break
+        trust propagation logic."
+    validations:
+      required: true
+
+  - type: input
+    id: affiliation
+    attributes:
+      label: Your affiliation
+      description: >
+        Agency, tool vendor, brand, researcher, or independent?
+        Helps reviewers contextualise the use case and identify CoI.
+      placeholder: "e.g. Independent / Agency (Pollen) / Tool vendor (HypeAuditor)"
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission checklist
+      options:
+        - label: I have searched for duplicate issues and found none
+          required: true
+        - label: My proposed spec text follows the style guide in CONTRIBUTING.md
+          required: true
+        - label: I have identified the correct change tier
+          required: true
+        - label: I have declared any commercial interest in this proposal
+          required: true
