@@ -9,49 +9,79 @@ the standard evolves over time.
 
 ## 1. Governance Model
 
-SNOMI operates under a **BDFL (Benevolent Dictator For Life) with open RFC**
-model, designed to transition to a multi-stakeholder committee once adoption
-reaches critical mass (see §6).
+SNOMI is governed by the **SNOMI Committee**, a standing body responsible for
+the integrity, evolution, and neutrality of the standard. The Committee operates
+on a **President + Validation Committee** model:
+
+- The **President** holds strategic leadership and final ratification authority
+- The **Validation Committee** reviews all proposed changes and issues formal
+  recommendations before any decision is ratified
+- The **RFC process** ensures that anyone — inside or outside the Committee —
+  can propose changes and be heard
 
 This model was chosen because:
-- SNOMI is an early-stage standard that needs to move fast
-- Design coherence matters more than committee consensus at this stage
-- The RFC process ensures anyone can propose changes and be heard
-- The transition criteria are explicit and public from day one
+- SNOMI must be vendor-neutral and credible to multiple stakeholders
+- Design coherence requires a single ratification authority
+- Rigorous validation of changes requires structured peer review
+- The RFC process creates a public, auditable record of every decision
 
 ---
 
 ## 2. Roles
 
-### 2.1 Lead Maintainer
+### 2.1 President
 
-**Rayane Benabdeljalil**
+**Rayane Benabdeljalil** — President of the SNOMI Committee
 Contact: snomi.team@gmail.com
 
-The Lead Maintainer:
-- Has final decision authority on all specification changes
-- Merges or closes RFCs after the public comment period
+The President:
+- Chairs the SNOMI Committee
+- Has final ratification authority on all specification changes
+- Can veto any Validation Committee recommendation, with written justification
 - Tags releases and maintains the CHANGELOG
-- Appoints Core Contributors
-- Can veto any change at any time, with written justification
+- Appoints and removes Validation Committee members
+- Represents SNOMI in external partnerships and communications
 
-The Lead Maintainer commits to:
+The President commits to:
+- Submitting all T2/T3 decisions to the Validation Committee before ratification
 - Responding to all RFCs within 14 days of submission
-- Publishing written justification for any rejection
+- Publishing written justification for any rejection or veto
 - Declaring any conflict of interest on commercially sensitive proposals
-- Transferring governance to the SNOMI Committee (§6) when criteria are met
 
-### 2.2 Core Contributors
+### 2.2 Validation Committee
 
-Core Contributors are invited by the Lead Maintainer. They:
+The Validation Committee is the peer-review body of the SNOMI standard. It is
+appointed by the President and operates independently on all technical matters.
+
+**Composition:** 3 to 7 members drawn from agencies, platforms, advertisers, or
+academic institutions active in influencer marketing. No single organisation may
+hold more than one seat.
+
+**Current members:** *open — nominations welcome at snomi.team@gmail.com*
+
+The Validation Committee:
+- Reviews all T2 and T3 RFCs during the public comment period
+- Issues a formal **recommendation** (approve / reject / revise) with written
+  rationale before the President ratifies
+- Can flag conflicts of interest and request recusal
+- Conducts an annual review of the full metrics catalog
+- Maintains domain ownership over assigned SNOMI domains (declared per member)
+
+Validation Committee members serve **12-month renewable terms**. The President
+may not unilaterally remove a member mid-term without a written cause statement
+published in the repository.
+
+### 2.3 Core Contributors
+
+Core Contributors are invited by the President. They:
 - Review RFCs and provide structured feedback
 - Maintain specific domains or profiles (declared in their contributor record)
 - Can merge editorial PRs (typos, clarifications) without RFC
-- Do not have veto power — that remains with the Lead Maintainer
+- Do not have ratification power — that remains with the President
 
 Current Core Contributors: *none yet — accepting nominations*
 
-### 2.3 Community Contributors
+### 2.4 Community Contributors
 
 Anyone can:
 - Open an RFC via GitHub Issues using the RFC template
@@ -144,22 +174,20 @@ pointing to the replacement code. Retired codes remain valid in historical recor
 
 ---
 
-## 6. Transition to SNOMI Committee
+## 6. Committee Expansion
 
-The governance model transitions from BDFL to a **multi-stakeholder committee**
-when **all three** of the following criteria are met:
+The Validation Committee is designed to grow as SNOMI adoption increases.
+Expansion is triggered when **both** of the following criteria are met:
 
-1. **Adoption threshold:** 3 or more independent organisations (agencies, tools,
+1. **Adoption threshold:** 5 or more independent organisations (agencies, tools,
    or advertisers) publicly declare SNOMI compliance in their reporting
 2. **Contribution threshold:** 5 or more T2/T3 RFCs accepted from external
-   contributors (i.e., not the Lead Maintainer) within any 12-month window
-3. **Maintainer nomination:** at least 3 candidates from distinct organisations
-   are willing to serve as committee members
+   contributors within any 12-month window
 
-When criteria are met, the Lead Maintainer will publish a transition plan within
-30 days. The committee will have an odd number of members (3, 5, or 7) with no
-single organisation holding more than 2 seats. The Lead Maintainer becomes a
-permanent non-voting facilitator during the first committee cycle.
+When expansion criteria are met, the President will publish an open call for
+nominations within 30 days. New members are confirmed by a majority vote of the
+existing Validation Committee. The Committee size may not exceed 7 members at
+any time, and no single organisation may hold more than one seat.
 
 ---
 
@@ -188,8 +216,10 @@ complaint involves the Lead Maintainer, it should be sent to a Core Contributor.
 ## 9. Amendments to This Document
 
 Changes to GOVERNANCE.md itself follow the T3 process (30-day comment period).
-The Lead Maintainer cannot amend GOVERNANCE.md without a public RFC, except for
-editorial corrections (T0).
+The President cannot amend GOVERNANCE.md without a public RFC and a formal
+recommendation from the Validation Committee, except for editorial corrections
+(T0). Any amendment to §2 (Roles) requires explicit Validation Committee
+approval.
 
 ---
 
