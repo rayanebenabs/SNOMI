@@ -1644,7 +1644,7 @@ Domain   ID   Platform  Market (optional)</code></pre>
       "produced":   "2026-04-02",
       "source":     "Launchmetrics",
       "trust":      "T3",
-      "trust_note": "T3 — declared ads CPM ref (Launchmetrics). Would be T4 with native Ads Manager CPM, T2 with SNOMI-bench-pending."
+      "trust_note": "T3 — declared ads CPM ref (Launchmetrics). Would be T4 with native Ads Manager CPM, T2 with SNOMI-bench."
     }
   ]
 }</code></pre>
@@ -1705,7 +1705,7 @@ Domain   ID   Platform  Market (optional)</code></pre>
           <tr><td>REA.003 — native data</td><td>REA.001 T5 + AUD.001 T5</td><td>T5</td><td>−1</td><td><span class="tag t4">T4</span></td></tr>
           <tr><td>VAL.001 EMV — native CPM (Ads Manager)</td><td>Exposure + CPM T4 source</td><td>T5</td><td>−1</td><td><span class="tag t4">T4</span></td></tr>
           <tr><td>VAL.001 EMV — declared CPM (with source)</td><td>Exposure + CPM T3 source</td><td>T5</td><td>−2</td><td><span class="tag t3">T3</span></td></tr>
-          <tr><td>VAL.001 EMV — SNOMI-bench-pending CPM</td><td>Exposure + CPM T2 estimate</td><td>T5</td><td>−3</td><td><span class="tag t2">T2</span></td></tr>
+          <tr><td>VAL.001 EMV — SNOMI-bench CPM</td><td>Exposure + CPM T2 estimate</td><td>T5</td><td>−3</td><td><span class="tag t2">T2</span></td></tr>
           <tr><td>CPI — includes AUD.003 T2</td><td>ENG.002 T4 + AUD.003 T2 + …</td><td>T2</td><td>0</td><td><span class="tag t2">T2</span></td></tr>
           <tr><td>CPI — all native inputs</td><td>ENG.002 T4 + REA.003 T4 + …</td><td>T4</td><td>0</td><td><span class="tag t4">T4</span></td></tr>
         </tbody>
@@ -1718,7 +1718,7 @@ Domain   ID   Platform  Market (optional)</code></pre>
     </div>
     <div class="callout callout-warn">
       <strong>VAL.001 (EMV) trust depends on CPM source</strong>
-      T4 when CPM is pulled from native Ads Manager (declared with platform + format + period). T3 when CPM is a cited third-party benchmark. T2 when CPM is the SNOMI-bench-pending estimate. The exposure count (T5) does not elevate EMV — the CPM source is always the limiting factor.
+      T4 when CPM is pulled from native Ads Manager (declared with platform + format + period). T3 when CPM is a cited third-party benchmark. T2 when CPM is the SNOMI-bench estimate. The exposure count (T5) does not elevate EMV — the CPM source is always the limiting factor.
     </div>
     <div class="callout callout-info">
       <strong>T1 / T2 metrics require a note</strong>
@@ -2042,7 +2042,7 @@ Domain   ID   Platform  Market (optional)</code></pre>
 
     <div class="callout callout-warn" style="margin-top:20px">
       <strong>Trust propagation applies across the chain</strong>
-      A derived metric's trust score is <code>max(T1, min(T_inputs) − Δ)</code>. If any upstream metric is low-trust, it degrades every downstream metric that depends on it. EMV (VAL.001) trust is bounded by its ads CPM reference source — T4 if pulled from native Ads Manager, T3 if declared from a third-party benchmark, T2 if using SNOMI-bench-pending.
+      A derived metric's trust score is <code>max(T1, min(T_inputs) − Δ)</code>. If any upstream metric is low-trust, it degrades every downstream metric that depends on it. EMV (VAL.001) trust is bounded by its ads CPM reference source — T4 if pulled from native Ads Manager, T3 if declared from a third-party benchmark, T2 if using SNOMI-bench.
     </div>
   </div>
 </section>
@@ -2375,10 +2375,10 @@ ENG.007[inputs:L+C+S+Sh].IG  ⭐   =  (37,760 / 142,000) / 2 × (180,000 / 250,0
             <td>No native campaign data. Source and date must be cited explicitly.</td>
           </tr>
           <tr>
-            <td><strong>SNOMI bench</strong> — quarterly benchmark (under construction)</td>
-            <td><code>[CPM: SNOMI-bench-pending | IG | Reel | 2025]</code></td>
+            <td><strong>SNOMI bench</strong> — VAL.003 published benchmark (references/benchmarks.md)</td>
+            <td><code>[CPM: SNOMI-bench | IG | Reel | FR | 2025]</code></td>
             <td><span class="tag t2">T2</span></td>
-            <td>No other source available. Use indicative reference grid below as interim fallback.</td>
+            <td>Use the VAL.003 reference grid below (per market + platform). Cite as: SNOMI benchmarks.md + year.</td>
           </tr>
         </tbody>
       </table>
@@ -2398,9 +2398,9 @@ ENG.007[inputs:L+C+S+Sh].IG  ⭐   =  (37,760 / 142,000) / 2 × (180,000 / 250,0
       </table>
     </div>
 
-    <h3 style="margin-top:28px; margin-bottom:10px">CPM reference grid — interim fallback <span style="font-size:0.78em; font-weight:400; color:var(--muted)">(SNOMI-bench-pending — global averages 2025, converted to EUR)</span></h3>
-    <div class="callout callout-warn" style="margin-bottom:12px">
-      <strong>SNOMI-bench-pending</strong> — A formally maintained quarterly CPM benchmark is under construction. Until available, use the indicative values below as a last-resort fallback (T2 max). These are global market averages converted at 1 USD = 0.92 EUR (April 2026). Always declare the source and period when using them.
+    <h3 style="margin-top:28px; margin-bottom:10px">VAL.003 — Ads CPM reference grid <span style="font-size:0.78em; font-weight:400; color:var(--muted)">(global averages 2025–2026 · T2 · per-market detail in references/benchmarks.md)</span></h3>
+    <div class="callout callout-info" style="margin-bottom:12px">
+      <strong>Published benchmark — cite as SNOMI-bench</strong> — Values below are global platform averages (T2). For per-market breakdowns (.US / .UK / .FR / .DE) with primary sources (eMarketer, IAB UK, BUMP/UDECAM, IAB Germany), see <strong>references/benchmarks.md § VAL.003</strong>. Always declare platform, format, market, and period in any VAL.001 citation.
     </div>
     <div class="table-wrap">
       <table>
@@ -3311,7 +3311,7 @@ Trust propagation: T_result = max(T1, min(T_inputs) − Δ)
 VAL.001 (EMV) trust depends on ads CPM ref source:
   Native Ads Manager  → T4
   Declared 3rd-party  → T3
-  SNOMI-bench-pending → T2
+  SNOMI-bench → T2
 
 ---
 
