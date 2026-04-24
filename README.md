@@ -153,6 +153,40 @@ SNOMI/
 
 ---
 
+## MCP Server
+
+SNOMI exposes a public **Model Context Protocol (MCP)** server with 6 tools. Connect it to any MCP-compatible AI (Claude Desktop, Cursor, etc.) and interact with SNOMI directly in conversation.
+
+**Endpoint:** `https://snomi-production.up.railway.app/mcp`
+
+| Tool | Description |
+|------|-------------|
+| `snomi_encode` | Format raw metrics into SNOMI citation strings |
+| `snomi_decode` | Explain any SNOMI code (formula, trust, pitfalls) |
+| `snomi_calculate` | Step-by-step metric calculation with trust propagation |
+| `snomi_validate` | Check a JSON report against schema + 14 business rules |
+| `snomi_benchmark` | Benchmarks by metric, tier, market, vertical |
+| `snomi_audit` | Full audit: compliance + benchmarks + risk flags |
+
+### Connect to Claude Desktop
+
+Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "snomi": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://snomi-production.up.railway.app/mcp"]
+    }
+  }
+}
+```
+
+Source: [`tools/snomi-mcp/`](tools/snomi-mcp/)
+
+---
+
 ## AI Integration
 
 Load `SKILL.md` into any AI model to get a SNOMI-fluent analyst that supports 6 operating modes:

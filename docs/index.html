@@ -1253,6 +1253,7 @@
     <a href="#benchmarks">Benchmarks</a>
     <a href="#regulatory">Regulatory</a>
     <a href="#scores">Scores</a>
+    <a href="#mcp">MCP</a>
     <a href="#integration">AI Integration</a>
     <a href="#contact">Contact</a>
   </div>
@@ -1323,6 +1324,12 @@
     <a href="#content-profiles">Content profiles</a>
     <a href="#actor-profiles">Actor profiles</a>
     <a href="#financial-resources">Financial resources</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">MCP Server</div>
+    <a href="#mcp">Overview</a>
+    <a href="#mcp-tools">6 tools</a>
+    <a href="#mcp-connect">Connect</a>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-label">AI Integration</div>
@@ -2942,6 +2949,78 @@ REA.004 (frequency)   = 1,462,000 / 680,000 = 2.15×
         <p>Full report audit = VALIDATE + BENCHMARK + strategic risk flagging.</p>
       </div>
     </div>
+  </section>
+
+  <hr />
+
+  <!-- ── MCP SERVER ── -->
+  <section id="mcp">
+    <h2>MCP Server</h2>
+    <p>SNOMI exposes a public <strong>Model Context Protocol (MCP)</strong> server. Connect it to any MCP-compatible AI client and interact with the full SNOMI standard directly in conversation — no copy-pasting, no manual lookup.</p>
+
+    <div class="code-block" style="margin:24px 0 8px">
+      <span style="color:var(--muted);font-size:13px">Public endpoint</span>
+      <pre><code>https://snomi-production.up.railway.app/mcp</code></pre>
+    </div>
+
+    <span id="mcp-tools" style="display:block; scroll-margin-top:calc(var(--nav-h) + 24px)"></span>
+    <h3 style="margin-top:32px">6 tools</h3>
+    <div class="cards" style="margin-top:16px">
+      <div class="card">
+        <div class="card-icon" style="background:rgba(96,165,250,0.12)">🔁</div>
+        <h3>snomi_encode</h3>
+        <p>Format raw metrics (likes, reach, followers…) into a complete SNOMI citation string with trust score.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(52,211,153,0.12)">🔍</div>
+        <h3>snomi_decode</h3>
+        <p>Explain any SNOMI code — formula, trust level, pitfalls, citation example.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(251,191,36,0.12)">🧮</div>
+        <h3>snomi_calculate</h3>
+        <p>Step-by-step metric calculation with trust propagation. Supports ENG.001, ENG.007, VAL.001, REA.003 and more.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(167,139,250,0.12)">✅</div>
+        <h3>snomi_validate</h3>
+        <p>Check a JSON report against SNOMI schema and 14 business rules. Returns errors, warnings, and compliance verdict.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(251,146,60,0.12)">📊</div>
+        <h3>snomi_benchmark</h3>
+        <p>Engagement and CPM benchmarks by metric, tier, market, and vertical. Compare your value against industry data.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:rgba(248,113,113,0.12)">🔬</div>
+        <h3>snomi_audit</h3>
+        <p>Full report audit = compliance validation + benchmark comparison + risk flags (trust violations, saturation, disclosure).</p>
+      </div>
+    </div>
+
+    <span id="mcp-connect" style="display:block; scroll-margin-top:calc(var(--nav-h) + 24px)"></span>
+    <h3 style="margin-top:40px">Connect to Claude Desktop</h3>
+    <p style="margin-bottom:16px">Add the following to <code>~/Library/Application Support/Claude/claude_desktop_config.json</code>, then restart Claude Desktop.</p>
+    <div class="code-block" style="position:relative">
+      <button class="copy-btn" onclick="copyCode(this, 'mcp-claude-code')">Copy</button>
+      <pre id="mcp-claude-code"><code>{
+  "mcpServers": {
+    "snomi": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://snomi-production.up.railway.app/mcp"]
+    }
+  }
+}</code></pre>
+    </div>
+
+    <h3 style="margin-top:32px">Connect to Cursor / other MCP clients</h3>
+    <p style="margin-bottom:16px">Any MCP-compatible client that supports HTTP transport can connect directly:</p>
+    <div class="code-block">
+      <pre><code>URL: https://snomi-production.up.railway.app/mcp
+Transport: Streamable HTTP (MCP 2025-03-26)</code></pre>
+    </div>
+
+    <p style="margin-top:24px;color:var(--muted)">Source: <a href="https://github.com/rayanebenabs/SNOMI/tree/main/tools/snomi-mcp" target="_blank" style="color:var(--primary)">tools/snomi-mcp/</a> — deployed on Railway, auto-updates on push to main.</p>
   </section>
 
   <hr />
