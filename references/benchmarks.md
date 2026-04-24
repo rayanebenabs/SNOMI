@@ -92,6 +92,160 @@
 
 ---
 
+## VAL.007 — Creator CPM Reference Benchmarks by Market
+
+> **Formula:** `VAL.007[base: REA.001] = creator_fee / REA.001 × 1000`
+> **Distinct from VAL.003 (Campaign CPM):** VAL.003 is the ads media buying reference (cost per 1,000 impressions on paid channels); VAL.007 is what a brand pays a creator per 1,000 accounts organically reached. VAL.007 is structurally higher than VAL.003 — it incorporates creation value, audience trust, and content rights. Do not use ads CPM data as a proxy for creator CPM.
+> Values below are derived from 2024–2025 published creator rate cards combined with SNOMI tier reach rates (REA.003). Base: REA.001 (organic reach, unique accounts). Nano figures carry high variance — treat as directional only.
+
+> **REA.001 vs. REA.002 — why "€10–20" is commonly cited in practice:** Industry reports and practitioners often use impressions (REA.002) as denominator, which produces values ~2–3× lower than REA.001-based figures (Frequency on IG ≈ 2–2.5). A Micro creator charging €600 with 15K organic reach = **€40/1K [base: REA.001]** = **~€16/1K [base: REA.002]** — both correct, neither comparable without declaring the base. Always declare `[base: REA.001]` or `[base: REA.002]`.
+
+### Instagram — Creator CPM by tier and market
+
+*C2 standard production · Feed + Reel blended · all-vertical median · base: REA.001 (organic reach)*
+
+| Tier     | Followers    | .US          | .UK          | .FR          | .DE          |
+|----------|--------------|--------------|--------------|--------------|--------------|
+| Nano     | 1K–10K       | $50–140      | £40–112      | €35–98       | €38–105      |
+| Micro    | 10K–100K     | $30–80       | £24–64       | €22–56       | €24–60       |
+| Mid-tier | 100K–500K    | $60–155      | £48–124      | €55–138      | €58–148      |
+| Macro    | 500K–1M      | $115–280     | £92–224      | €82–197      | €88–212      |
+| Mega     | >1M          | $280–800+    | £224–640+    | €196–560+    | €210–605+    |
+
+> **Methodology:** computed from 2026 published per-post rate cards (Stan Store, Afluencer, ClickAnalytic, Nothing.fr) divided by REA.001 estimates using SNOMI tier reach rates (Nano 45–55%, Micro 25–35%, Mid-tier 10–14%, Macro 6–9%, Mega 2–5%). C2 portion extracted as middle third of published range. Country scaling: .FR ≈ 70% of .US, .UK ≈ 80% of .US, .DE ≈ 75% of .US (InfluenceFlow 2026 · AdAmigo country benchmarks 2026). VAL.007 is structurally 5–30× higher than VAL.003 ads CPM — expected, not anomalous.
+
+**Sources:** Stan Store Influencer Pay Rates 2026 · Afluencer Influencer Rates 2026 · ClickAnalytic Influencer Price List 2026 · Nothing.fr Tarifs TikTok 2026 · InfluenceFlow Pricing Guide 2026 · Modash Influencer Pricing 2026
+
+### TikTok — Creator CPM by tier and market
+
+*C2 standard production · base: REA.001 · all-vertical median*
+*TikTok algorithmic reach is structurally higher than IG reach per post, producing lower VAL.007 values than equivalent IG. Nano included but with high variance — TikTok viral spikes can compress CPM dramatically post-campaign. Do not compare across platforms without declaring platform + base.*
+
+| Tier     | Followers    | .US          | .UK          | .FR          | .DE          |
+|----------|--------------|--------------|--------------|--------------|--------------|
+| Nano     | 1K–10K       | $20–55       | £16–44       | €20–35 ¹     | €18–38       |
+| Micro    | 10K–100K     | $10–30       | £8–24        | €7–22        | €8–24        |
+| Mid-tier | 100K–500K    | $15–42       | £12–34       | €10–30       | €12–32       |
+| Macro    | 500K–1M      | $25–70       | £20–56       | €17–49       | €19–53       |
+| Mega     | >1M          | $60–200+     | £48–160+     | €42–140+ ²   | €45–150+     |
+
+> ¹ **Nano .FR (TikTok):** source data gives €35–55/1K abonnés (Nothing.fr 2026) = €20–35/1K REA.001 (assuming ~8K avg reach for 5K-follower Nano at 160% reach rate on TikTok). High variance — treat as lower bound.
+> ² **Mega .FR (TikTok):** source data gives €6–9/1K abonnés = ~€36–54/1K REA.001 at 3M followers / ~500K reach. Upper bound adjusted for viral variability.
+> **Nano on TikTok (general):** pre-campaign estimates are directional only. Always calculate VAL.007 post-campaign from actual contract fee + native REA.001.
+
+**Sources:** Nothing.fr Tarifs TikTok 2026 · Influencer Marketing Hub 2025 · HypeAuditor TikTok Benchmark 2025 · Kolsquare Europe 2025 · Stan Store 2026
+
+### Niche adjustments
+
+*Apply multiplicatively to the all-vertical median. Multipliers are split by tier band because niche premium does not scale linearly — Luxury at Nano is not the same value proposition as Luxury at Mega.*
+
+| Niche                    | Nano–Micro   | Mid-tier–Macro | Mega         | Driver |
+|--------------------------|--------------|----------------|--------------|--------|
+| Fashion & Ready-to-wear  | ×1.1–1.4     | ×1.4–1.8       | ×1.8–2.5     | Brand equity and aspirational positioning scale with creator status |
+| Luxury goods             | ×1.4–1.8     | ×2.0–2.8       | ×2.5–4.0     | Exclusivity premium; very few qualifying creators at Nano |
+| Beauty & Skincare        | ×1.1–1.3     | ×1.2–1.5       | ×1.3–1.6     | High creator supply at Micro; premium justified by proven conversion at Macro |
+| Finance & Insurance      | ×1.5–2.0     | ×1.6–2.5       | ×1.5–2.5     | Expertise-driven trust; regulatory risk priced in regardless of tier |
+| Health & Medical         | ×1.3–1.8     | ×1.5–2.2       | ×1.5–2.0     | Compliance exposure commands consistent premium across tiers |
+| Food & Lifestyle         | ×0.8–1.0     | ×0.9–1.1       | ×1.0–1.2     | Very high creator supply compresses rates; slight Mega premium for celebrity kitchens |
+| Sports & Fitness         | ×0.9–1.1     | ×1.0–1.3       | ×1.2–1.6     | Broad Micro supply; Macro premium for sport-specific authority (running, tennis…) |
+| Gaming                   | ×0.7–1.0     | ×0.9–1.2       | ×1.0–1.4     | Young audience with lower purchasing power; YouTube/Twitch more common than IG |
+| Travel                   | ×0.7–0.9     | ×0.8–1.0       | ×0.9–1.2     | Seasonal demand, high creator supply, and high production cost absorb margin |
+| Parenting & Family       | ×1.0–1.3     | ×1.1–1.4       | ×1.2–1.5     | FMCG brands compete for trust; audience purchasing power high |
+| Sustainability & Eco     | ×1.0–1.2     | ×1.0–1.3       | ×1.0–1.3     | Growing brand interest; niche maturing but creator supply increasing |
+| Tech & Software          | ×1.2–1.5     | ×1.3–1.8       | ×1.4–2.0     | B2B crossover; high audience conversion value; LinkedIn/YouTube skewed |
+| Automotive               | ×1.0–1.3     | ×1.5–2.5       | ×2.5–5.0     | Rare Nano campaigns; Macro/Mega commands celebrity-adjacent rates |
+| Home & Interior          | ×0.9–1.2     | ×1.0–1.3       | ×1.0–1.4     | Growing TikTok niche; moderate premium; Pinterest over-indexed |
+
+> **Niche × tier interaction:** when tier and niche multipliers are both applied, use the formula `VAL.007_adjusted = VAL.007_base × niche_multiplier`. Do not stack niche multipliers across niches for multi-vertical creators — select the dominant niche or negotiate separately.
+
+#### Absolute CPM reference by niche — all tiers blended
+
+*Cross-check from published industry aggregates (2026). Base: estimated REA.002 (impressions) — multiply by 2–3 to convert to REA.001. Trust: T2 (blended-tier aggregate, methodology not always disclosed by source).*
+
+| Niche                  | CPM créateur [REA.002 est.] | CPM créateur [REA.001 est.] | Source |
+|------------------------|-----------------------------|-----------------------------|--------|
+| Finance & Investissement | $40–120                   | $80–360                     | ClickAnalytic 2026 |
+| Technologie & SaaS     | $30–90                      | $60–270                     | ClickAnalytic 2026 |
+| Santé & Bien-être      | $30–65                      | $60–195                     | Stan Store 2026    |
+| Mode & Beauté          | $20–55                      | $40–165                     | Stan Store 2026    |
+| Alimentation           | $20–45                      | $40–135                     | Stan Store 2026    |
+
+> These figures are blended across all tiers and should be used as a cross-check, not as a primary reference. High upper bounds reflect Mega/celebrity rates inflating the average. Always prefer the `VAL.007_base × niche_multiplier` method for deal-level valuation.
+
+### Production level and format adjustments
+
+*In VAL.007, production complexity inflates the creator fee (numerator) but C3 content also tends to generate better algorithmic reach (partially inflating the denominator). Net CPM impact is therefore less than the fee multiplier alone.*
+
+#### Content production level
+
+| Level | Definition | Fee vs. C2 | Reach vs. C2 | Net VAL.007 impact |
+|-------|-----------|------------|--------------|-------------------|
+| C1 Light | UGC-style, Stories, selfie-shot TikTok, quick native format | ×0.4–0.6 | ×0.8–1.0 | **×0.4–0.6** (fee-driven) |
+| C2 Standard *(base)* | Planned Reel or feed post, curated editing, solo or small team | ×1.0 | — | **×1.0** |
+| C3 Heavy | Film crew, complex edit, artisanal long-form, significant post-production | ×1.8–3.5 | ×1.15–1.35 | **×1.4–2.5** (reach partially offsets fee) |
+
+> **C3 caveat:** the reach uplift of high-production content is niche-dependent. Fashion and Food see the strongest uplift; Finance and B2B see minimal algorithmic benefit from production quality. Adjust accordingly.
+
+#### Usage rights — additive modifier
+
+Usage rights inflate VAL.007 mechanically: the fee rises but REA.001 does not. Always isolate usage rights cost when comparing VAL.007 across deals.
+
+| Rights scope | Added to content fee | Note |
+|---|---|---|
+| Republication organique (6 mois) | +20–40% | Repost sur canaux de la marque sans amplification payante |
+| Whitelisting / Spark Ads (6–12 mois) | +50–150% | Usage paid le plus courant — et le plus rentable pour la marque |
+| Web, e-commerce, email | +25–75% | — |
+| Multi-platform / white-label | +50–100% | — |
+| OOH, affichage, retail | +75–200% | Auditer séparément du CPM influenceur |
+| Exclusivité sectorielle | +5–50% | Empêche le créateur de travailler avec un concurrent direct |
+| Inflation saisonnière Q4 (oct.–déc.) | +20–30% | Black Friday / Noël — s'applique au total fees, droits inclus |
+
+> **Best practice:** when a deal includes usage rights, split the citation into two components: `VAL.007_content` (content fee only / REA.001) and declare the rights uplift separately. Blending both into a single VAL.007 figure makes cross-deal comparison impossible.
+> **Whitelisting note:** +50–150% reflects the actual market range in 2026 (ClickAnalytic, InfluenceFlow). Rates below +30% for Spark Ads access are now atypical — creators have internalized its commercial value.
+
+#### Format reference (Instagram)
+
+| Format | Typical reach vs. feed Reel | Fee vs. Reel | Net VAL.007 vs. Reel |
+|--------|----------------------------|--------------|----------------------|
+| Feed post (static) | ×0.6–0.8 | ×0.7–0.9 | Similar or slightly higher |
+| Reel *(base)* | ×1.0 | ×1.0 | ×1.0 |
+| Stories (24h) | ×0.3–0.5 of followers | ×0.3–0.5 | Higher CPM — low denominator |
+| Carousel | ×0.7–0.9 | ×0.9–1.1 | Slightly higher CPM |
+
+> Stories VAL.007 is structurally high — small reach, small fee, but the ratio stays elevated. Do not compare Stories VAL.007 directly against Reel VAL.007 without flagging the format.
+
+### VAL.007 vs. VAL.003 ratio — negotiation signal
+
+*Compares creator pricing against media buying benchmarks for the same market. Reference denominator: VAL.003 mid-tier base, same market and platform.*
+
+| Ratio VAL.007 / VAL.003.base | Signal             | Interpretation |
+|------------------------------|--------------------|----------------|
+| < 0.8×                       | Below-market       | Creator may be underpriced; audit for exclusivity gaps or audience quality issues |
+| 0.8–1.5×                     | Market range       | Fair pricing; organic reach premium within norms |
+| 1.5–2.5×                     | Premium            | Justified by niche authority (CRE.005), high AUD.003, or strong BFS |
+| > 2.5×                       | Significant premium | Validate with CRE.005 and BFS; request pricing rationale |
+
+### Nano paradox — VAL.007
+
+VAL.007 for Nano creators frequently exceeds Mid-tier values despite lower absolute fees, because organic reach (REA.001) is proportionally smaller than the creator's price floor. A €200 flat fee with 1,500 organic reach yields VAL.007 = €133/1K — well above any tier benchmark. This is not a pricing anomaly: Nano engagement quality (ENG.001) and audience trust often justify the cost on a CPE basis (VAL.002). For Nano negotiations, use VAL.002 (CPE) as the primary efficiency metric, not VAL.007.
+
+### Trust score implications
+
+| Context | Trust |
+|---------|-------|
+| Calculated from actual contract fee + native REA.001 | **T4 Silver** |
+| Pre-campaign estimate using this benchmark table (source + date declared) | **T2 Copper** |
+| Estimate with no declared benchmark reference | **T1 Iron** |
+
+> **Before this section existed:** all benchmark-derived VAL.007 estimates defaulted to T1 Iron — no declared reference was available. Estimates using this table may now be cited as T2 Copper provided the source (`SNOMI benchmarks.md · 2025`) and date are declared in the citation.
+
+> **Example compliant citations:**
+> `VAL.007[base: REA.001].IG.FR | €45–65/1K | Mid-tier · Beauty · C2 | est. 2025-05 | SNOMI benchmarks.md 2025 | T2`
+> `VAL.007[base: REA.001].IG.FR | €55–90/1K | Mid-tier · Finance · C2 | est. 2025-05 | SNOMI benchmarks.md 2025 | T2`
+> `VAL.007_content[base: REA.001].IG.FR | €35–90/1K | Mid-tier · Lifestyle · C3 · usage rights excluded | 2025-05 | SNOMI benchmarks.md 2025 | T2`
+
+---
+
 ## CRE.003 — Collaboration Rate Risk Thresholds (all markets)
 
 | Rate     | Signal           | Interpretation |
