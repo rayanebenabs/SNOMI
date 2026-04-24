@@ -2999,11 +2999,18 @@ REA.004 (frequency)   = 1,462,000 / 680,000 = 2.15×
     </div>
 
     <span id="mcp-connect" style="display:block; scroll-margin-top:calc(var(--nav-h) + 24px)"></span>
-    <h3 style="margin-top:40px">Connect to Claude Desktop</h3>
-    <p style="margin-bottom:16px">Add the following to <code>~/Library/Application Support/Claude/claude_desktop_config.json</code>, then restart Claude Desktop.</p>
-    <div class="code-block" style="position:relative">
-      <button class="copy-btn" onclick="copyCode(this, 'mcp-claude-code')">Copy</button>
-      <pre id="mcp-claude-code"><code>{
+
+    <div class="tabs" style="margin-top:40px">
+      <div class="tab active" onclick="switchTab(event, 'tab-mcp-ai')">MCP — AI clients</div>
+      <div class="tab" onclick="switchTab(event, 'tab-mcp-rest')">REST API — Applications</div>
+    </div>
+
+    <div class="tab-panel active" id="tab-mcp-ai">
+      <h3 style="margin-top:24px">Claude Desktop</h3>
+      <p style="margin-bottom:16px">Add to <code>~/Library/Application Support/Claude/claude_desktop_config.json</code>, then restart.</p>
+      <div class="code-block" style="position:relative">
+        <button class="copy-btn" onclick="copyCode(this, 'mcp-claude-code')">Copy</button>
+        <pre id="mcp-claude-code"><code>{
   "mcpServers": {
     "snomi": {
       "command": "npx",
@@ -3011,13 +3018,64 @@ REA.004 (frequency)   = 1,462,000 / 680,000 = 2.15×
     }
   }
 }</code></pre>
+      </div>
+      <h3 style="margin-top:28px">Cursor / other MCP clients</h3>
+      <div class="code-block" style="margin-top:12px">
+        <pre><code>URL:       https://snomi-production.up.railway.app/mcp
+Transport: Streamable HTTP (MCP 2025-03-26)</code></pre>
+      </div>
     </div>
 
-    <h3 style="margin-top:32px">Connect to Cursor / other MCP clients</h3>
-    <p style="margin-bottom:16px">Any MCP-compatible client that supports HTTP transport can connect directly:</p>
-    <div class="code-block">
-      <pre><code>URL: https://snomi-production.up.railway.app/mcp
-Transport: Streamable HTTP (MCP 2025-03-26)</code></pre>
+    <div class="tab-panel" id="tab-mcp-rest">
+      <h3 style="margin-top:24px">Base URL</h3>
+      <div class="code-block" style="margin:12px 0 24px">
+        <pre><code>https://snomi-production.up.railway.app</code></pre>
+      </div>
+      <p style="margin-bottom:16px">All endpoints accept <code>POST</code> with <code>Content-Type: application/json</code> and return <code>{ ok: true, result: "..." }</code> or <code>{ ok: false, error: "..." }</code>.</p>
+
+      <table style="width:100%;border-collapse:collapse;margin-bottom:28px">
+        <thead>
+          <tr style="border-bottom:1px solid var(--border)">
+            <th style="text-align:left;padding:8px 12px;color:var(--muted);font-weight:500">Endpoint</th>
+            <th style="text-align:left;padding:8px 12px;color:var(--muted);font-weight:500">Required body</th>
+            <th style="text-align:left;padding:8px 12px;color:var(--muted);font-weight:500">Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border-soft)"><td style="padding:8px 12px;font-family:var(--mono);font-size:13px;color:var(--primary)">POST /api/encode</td><td style="padding:8px 12px;font-size:13px;color:var(--muted)">metric_code, value</td><td style="padding:8px 12px;font-size:13px">Format metrics into a SNOMI citation string</td></tr>
+          <tr style="border-bottom:1px solid var(--border-soft)"><td style="padding:8px 12px;font-family:var(--mono);font-size:13px;color:var(--primary)">POST /api/decode</td><td style="padding:8px 12px;font-size:13px;color:var(--muted)">code</td><td style="padding:8px 12px;font-size:13px">Explain a SNOMI code — formula, trust, pitfalls</td></tr>
+          <tr style="border-bottom:1px solid var(--border-soft)"><td style="padding:8px 12px;font-family:var(--mono);font-size:13px;color:var(--primary)">POST /api/calculate</td><td style="padding:8px 12px;font-size:13px;color:var(--muted)">metric_code + inputs</td><td style="padding:8px 12px;font-size:13px">Calculate a metric step-by-step with trust score</td></tr>
+          <tr style="border-bottom:1px solid var(--border-soft)"><td style="padding:8px 12px;font-family:var(--mono);font-size:13px;color:var(--primary)">POST /api/validate</td><td style="padding:8px 12px;font-size:13px;color:var(--muted)">json_content</td><td style="padding:8px 12px;font-size:13px">Validate a report — schema + 14 business rules</td></tr>
+          <tr style="border-bottom:1px solid var(--border-soft)"><td style="padding:8px 12px;font-family:var(--mono);font-size:13px;color:var(--primary)">POST /api/benchmark</td><td style="padding:8px 12px;font-size:13px;color:var(--muted)">metric_code</td><td style="padding:8px 12px;font-size:13px">Benchmarks by tier, market, vertical</td></tr>
+          <tr><td style="padding:8px 12px;font-family:var(--mono);font-size:13px;color:var(--primary)">POST /api/audit</td><td style="padding:8px 12px;font-size:13px;color:var(--muted)">json_content</td><td style="padding:8px 12px;font-size:13px">Full audit: compliance + benchmarks + risk flags</td></tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin-bottom:12px">Examples</h3>
+      <div class="code-block" style="position:relative">
+        <button class="copy-btn" onclick="copyCode(this, 'api-validate-code')">Copy</button>
+        <pre id="api-validate-code"><code>// Validate a report
+const res = await fetch('https://snomi-production.up.railway.app/api/validate', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ json_content: JSON.stringify(report) })
+});
+const { ok, result } = await res.json();</code></pre>
+      </div>
+      <div class="code-block" style="position:relative;margin-top:12px">
+        <button class="copy-btn" onclick="copyCode(this, 'api-calc-code')">Copy</button>
+        <pre id="api-calc-code"><code>// Calculate ENG.001
+const res = await fetch('https://snomi-production.up.railway.app/api/calculate', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    metric_code: 'ENG.001',
+    likes: 420, comments: 38, saves: 95, shares: 12,
+    reach: 8400, followers: 24000
+  })
+});
+const { ok, result } = await res.json();</code></pre>
+      </div>
     </div>
 
     <p style="margin-top:24px;color:var(--muted)">Source: <a href="https://github.com/rayanebenabs/SNOMI/tree/main/tools/snomi-mcp" target="_blank" style="color:var(--primary)">tools/snomi-mcp/</a> — deployed on Railway, auto-updates on push to main.</p>

@@ -153,24 +153,17 @@ SNOMI/
 
 ---
 
-## MCP Server
+## MCP Server & REST API
 
-SNOMI exposes a public **Model Context Protocol (MCP)** server with 6 tools. Connect it to any MCP-compatible AI (Claude Desktop, Cursor, etc.) and interact with SNOMI directly in conversation.
+SNOMI exposes a public server with two integration modes — **MCP** for AI clients and **REST API** for applications.
 
-**Endpoint:** `https://snomi-production.up.railway.app/mcp`
+**Base URL:** `https://snomi-production.up.railway.app`
 
-| Tool | Description |
-|------|-------------|
-| `snomi_encode` | Format raw metrics into SNOMI citation strings |
-| `snomi_decode` | Explain any SNOMI code (formula, trust, pitfalls) |
-| `snomi_calculate` | Step-by-step metric calculation with trust propagation |
-| `snomi_validate` | Check a JSON report against schema + 14 business rules |
-| `snomi_benchmark` | Benchmarks by metric, tier, market, vertical |
-| `snomi_audit` | Full audit: compliance + benchmarks + risk flags |
+### MCP (Claude Desktop, Cursor, …)
 
-### Connect to Claude Desktop
-
-Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+```
+POST /mcp
+```
 
 ```json
 {
@@ -181,6 +174,36 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
     }
   }
 }
+```
+
+### REST API
+
+| Endpoint | Body | Description |
+|----------|------|-------------|
+| `POST /api/encode` | `{ metric_code, value, ... }` | Format raw metrics into SNOMI citation |
+| `POST /api/decode` | `{ code }` | Explain a SNOMI code |
+| `POST /api/calculate` | `{ metric_code, likes, reach, ... }` | Calculate a metric step-by-step |
+| `POST /api/validate` | `{ json_content }` | Validate a JSON report |
+| `POST /api/benchmark` | `{ metric_code, tier?, market?, vertical? }` | Get benchmarks |
+| `POST /api/audit` | `{ json_content, tier?, market?, vertical? }` | Full audit |
+
+All endpoints return `{ ok: true, result: "..." }` or `{ ok: false, error: "..." }`.
+
+```js
+// Example — validate a report
+const res = await fetch('https://snomi-production.up.railway.app/api/validate', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ json_content: JSON.stringify(report) })
+});
+const { ok, result } = await res.json();
+
+// Example — calculate ENG.001
+const res = await fetch('https://snomi-production.up.railway.app/api/calculate', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ metric_code: 'ENG.001', likes: 420, comments: 38, saves: 95, shares: 12, reach: 8400, followers: 24000 })
+});
 ```
 
 Source: [`tools/snomi-mcp/`](tools/snomi-mcp/)
