@@ -57,7 +57,13 @@ appointed by the President and operates independently on all technical matters.
 academic institutions active in influencer marketing. No single organisation may
 hold more than one seat.
 
-**Current members:** *open — nominations welcome at snomi.team@gmail.com*
+**Current members:**
+
+| Name | LinkedIn |
+|------|----------|
+| Rayane Benabdeljalil | [linkedin.com/in/rayane-benabdeljalil](https://www.linkedin.com/in/rayane-benabdeljalil/) |
+| Lucile Couret | [linkedin.com/in/lucilecouret](https://www.linkedin.com/in/lucilecouret/) |
+| Rita Bennani | [linkedin.com/in/rita-bennani-71884664](https://www.linkedin.com/in/rita-bennani-71884664/) |
 
 The Validation Committee:
 - Reviews all T2 and T3 RFCs during the public comment period
