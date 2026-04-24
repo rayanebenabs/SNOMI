@@ -33,7 +33,7 @@ jobs:
         if: always()
         run: |
           if ls examples/content-unit/*.json 2>/dev/null | head -1 | grep -q .; then
-            npx --yes snomi-validate@2.1.0 validate examples/content-unit/*.json --format json | tee /tmp/cu-results.json
+            npx --yes snomi-validate@latest validate examples/content-unit/*.json --format json | tee /tmp/cu-results.json
           else
             echo "No ContentUnit examples found — skipping"
           fi
@@ -43,7 +43,7 @@ jobs:
         if: always()
         run: |
           if ls examples/actor/*.json 2>/dev/null | head -1 | grep -q .; then
-            npx --yes snomi-validate@2.1.0 validate examples/actor/*.json --format json | tee /tmp/actor-results.json
+            npx --yes snomi-validate@latest validate examples/actor/*.json --format json | tee /tmp/actor-results.json
           else
             echo "No Actor examples found — skipping"
           fi
@@ -53,7 +53,7 @@ jobs:
         if: always()
         run: |
           if ls examples/campaign/*.json 2>/dev/null | head -1 | grep -q .; then
-            npx --yes snomi-validate@2.1.0 validate examples/campaign/*.json --format json | tee /tmp/campaign-results.json
+            npx --yes snomi-validate@latest validate examples/campaign/*.json --format json | tee /tmp/campaign-results.json
           else
             echo "No Campaign examples found — skipping"
           fi
@@ -63,7 +63,7 @@ jobs:
         if: always()
         run: |
           if ls examples/financial/*.json 2>/dev/null | head -1 | grep -q .; then
-            npx --yes snomi-validate@2.1.0 validate examples/financial/*.json --format json | tee /tmp/financial-results.json
+            npx --yes snomi-validate@latest validate examples/financial/*.json --format json | tee /tmp/financial-results.json
           else
             echo "No Financial examples found — skipping"
           fi
