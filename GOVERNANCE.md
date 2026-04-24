@@ -71,6 +71,23 @@ Validation Committee members serve **12-month renewable terms**. The President
 may not unilaterally remove a member mid-term without a written cause statement
 published in the repository.
 
+### Joining the Validation Committee
+
+The Validation Committee is open to professionals active in influencer marketing,
+digital advertising, or adjacent fields. We are particularly looking for
+practitioners from agencies, platforms, advertisers, and academic institutions.
+
+**To apply**, send an email to [snomi.team@gmail.com](mailto:snomi.team@gmail.com)
+with the subject line `Validation Committee — Application` and include:
+
+- Your name and current organisation
+- Your area of expertise within influencer marketing
+- Which SNOMI domain(s) you would like to maintain (see §3 and the metrics catalog)
+- A brief statement on why metric standardisation matters to you
+
+Applications are reviewed on a rolling basis. Accepted candidates are confirmed
+by the President and announced publicly in the repository.
+
 ### 2.3 Core Contributors
 
 Core Contributors are invited by the President. They:
