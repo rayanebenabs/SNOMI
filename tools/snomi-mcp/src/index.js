@@ -1,6 +1,12 @@
 import express from 'express';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { createMcpServer } from './server.js';
+import { encodeTool }    from './tools/encode.js';
+import { decodeTool }    from './tools/decode.js';
+import { calculateTool } from './tools/calculate.js';
+import { validateTool }  from './tools/validate.js';
+import { benchmarkTool } from './tools/benchmark.js';
+import { auditTool }     from './tools/audit.js';
 
 const app = express();
 app.use(express.json({ limit: '1mb' }));
@@ -26,25 +32,48 @@ app.post('/mcp', async (req, res) => {
   }
 });
 
+// ── REST API ─────────────────────────────────────────────────────────────────
+
+function apiHandler(fn) {
+  return async (req, res) => {
+    try {
+      const result = await fn(req.body);
+      res.json({ ok: true, result });
+    } catch (err) {
+      res.status(400).json({ ok: false, error: err.message });
+    }
+  };
+}
+
+app.post('/api/encode',    apiHandler(p => encodeTool(p)));
+app.post('/api/decode',    apiHandler(p => decodeTool(p.code)));
+app.post('/api/calculate', apiHandler(p => calculateTool(p)));
+app.post('/api/validate',  apiHandler(p => validateTool(p.json_content)));
+app.post('/api/benchmark', apiHandler(p => benchmarkTool(p)));
+app.post('/api/audit',     apiHandler(p => auditTool(p)));
+
+// ── Health & root ─────────────────────────────────────────────────────────────
+
 app.get('/health', (_req, res) => res.json({
   status: 'ok', server: 'snomi-mcp', version: '2.1.0',
-  tools: ['snomi_encode','snomi_decode','snomi_calculate','snomi_validate','snomi_benchmark','snomi_audit']
+  mcp_endpoint: '/mcp',
+  api_endpoints: ['/api/encode','/api/decode','/api/calculate','/api/validate','/api/benchmark','/api/audit']
 }));
 
 app.get('/', (_req, res) => res.json({
-  name: 'SNOMI MCP Server',
+  name: 'SNOMI Server',
   version: '2.1.0',
-  description: 'Model Context Protocol server for SNOMI — Standard Nomenclature of Influence Metrics',
-  mcp_endpoint: '/mcp',
+  description: 'SNOMI — Standard Nomenclature of Influence Metrics',
   docs: 'https://github.com/rayanebenabs/SNOMI',
-  tools: [
-    { name: 'snomi_encode',    description: 'Convert raw metrics into SNOMI citation format' },
-    { name: 'snomi_decode',    description: 'Explain a SNOMI metric code' },
-    { name: 'snomi_calculate', description: 'Calculate a SNOMI metric from raw inputs' },
-    { name: 'snomi_validate',  description: 'Validate a JSON report for SNOMI compliance' },
-    { name: 'snomi_benchmark', description: 'Get benchmarks by metric, tier, market, vertical' },
-    { name: 'snomi_audit',     description: 'Full compliance + benchmark + risk audit' }
-  ]
+  mcp_endpoint: '/mcp',
+  api: {
+    'POST /api/encode':    'Format raw metrics into a SNOMI citation string',
+    'POST /api/decode':    'Explain a SNOMI code — body: { code }',
+    'POST /api/calculate': 'Calculate a metric — body: { metric_code, ...inputs }',
+    'POST /api/validate':  'Validate a JSON report — body: { json_content }',
+    'POST /api/benchmark': 'Get benchmarks — body: { metric_code, tier?, market?, vertical?, value? }',
+    'POST /api/audit':     'Full audit — body: { json_content, tier?, market?, vertical? }'
+  }
 }));
 
 const PORT = process.env.PORT || 3000;
