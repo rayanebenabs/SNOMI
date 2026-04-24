@@ -1,0 +1,65 @@
+{
+  "id": "cu-pollen-renault-reel-001",
+  "resourceType": "ContentUnit",
+  "profile": "ig-reel",
+  "status": "active",
+  "snomi_version": "2.1",
+  "meta": {
+    "created_at": "2026-03-01T10:00:00Z",
+    "updated_at": "2026-03-15T08:30:00Z",
+    "produced_by": "Pollen Agency / snomi-validate"
+  },
+  "platform": "IG",
+  "format": "REEL",
+  "content_type": "video",
+  "creator": {
+    "resourceType": "Actor",
+    "id": "actor-camille-roux"
+  },
+  "is_sponsored": true,
+  "native_label_used": true,
+  "disclosure_tags": ["#partenariat", "#pub"],
+  "published_at": "2026-03-10T12:00:00Z",
+  "url": "https://www.instagram.com/reel/example123/",
+  "duration_seconds": 28,
+  "metrics": [
+    {
+      "code": "REA.001.IG",
+      "value": "142500",
+      "produced": "2026-03-15",
+      "source": "Instagram Insights — native",
+      "trust": "T1"
+    },
+    {
+      "code": "REA.002.IG",
+      "value": "198400",
+      "produced": "2026-03-15",
+      "source": "Instagram Insights — native",
+      "trust": "T1"
+    },
+    {
+      "code": "ENG.001.IG",
+      "value": "0.042",
+      "produced": "2026-03-15",
+      "source": "Instagram Insights — native",
+      "trust": "T1",
+      "note": "contextualised engagement rate: (likes+comments+saves+shares) / REA.001"
+    },
+    {
+      "code": "VAL.001[base: REA.001][CPM: native|IG|Reel|FR|2026-Q1].IG.FR",
+      "value": "3990.00",
+      "produced": "2026-03-15",
+      "source": "Pollen Agency internal — CPM sourced from IG native benchmark Q1 2026",
+      "trust": "T2",
+      "note": "EMV = REA.001 × CPM-ref / 1000. CPM ref: 28.00 EUR (IG Reel FR Q1 2026, native benchmark)."
+    },
+    {
+      "code": "REG.001.FR",
+      "value": "compliant",
+      "produced": "2026-03-15",
+      "source": "ARPP audit",
+      "trust": "T1",
+      "note": "French ARPP disclosure rules satisfied via native label + #partenariat tag"
+    }
+  ]
+}

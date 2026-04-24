@@ -1,0 +1,151 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://snomi.io/schema/v2/content-unit.json",
+  "title": "SNOMI ContentUnit v2.1",
+  "description": "A single piece of content published on a social platform",
+  "type": "object",
+
+  "allOf": [
+    {
+      "required": ["id","resourceType","profile","status","snomi_version","meta"],
+      "properties": {
+        "id":            { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+        "resourceType":  { "type": "string", "const": "ContentUnit" },
+        "profile":       { "type": "string", "enum": ["ig-reel","ig-story","ig-post","ig-video","tk-video","tk-story","yt-short","yt-video","fb-reel","fb-post","li-post","tw-post","pin-pin"] },
+        "status":        { "type": "string", "enum": ["draft","active","completed","archived","cancelled","retired","disputed"] },
+        "snomi_version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+        "meta":          {
+          "type": "object",
+          "required": ["created_at"],
+          "properties": {
+            "created_at":  { "type": "string", "format": "date-time" },
+            "updated_at":  { "type": "string", "format": "date-time" },
+            "produced_by": { "type": "string" },
+            "source_url":  { "type": "string", "format": "uri" }
+          }
+        }
+      }
+    }
+  ],
+
+  "required": [
+    "id","resourceType","profile","status","snomi_version","meta",
+    "platform","format","content_type","creator","is_sponsored"
+  ],
+
+  "properties": {
+    "id":            { "type": "string" },
+    "resourceType":  { "type": "string", "const": "ContentUnit" },
+    "profile":       { "type": "string" },
+    "status":        { "type": "string" },
+    "snomi_version": { "type": "string" },
+    "meta":          { "type": "object" },
+
+    "platform": {
+      "type": "string",
+      "enum": ["IG","TK","YT","FB","TW","LI","PI","SC","BE","TH"],
+      "description": "Platform where content is published — must match profile"
+    },
+    "format": {
+      "type": "string",
+      "enum": ["REEL","STORY","POST","VIDEO","SHORT","LIVE","CAROUSEL","ARTICLE","PIN","TWEET","THREAD","PODCAST"]
+    },
+    "content_type": {
+      "type": "string",
+      "enum": ["video","image","carousel","text","audio","mixed"]
+    },
+    "url":          { "type": "string", "format": "uri" },
+    "published_at": { "type": "string", "format": "date-time" },
+    "time_window": {
+      "type": "object",
+      "required": ["start"],
+      "properties": {
+        "start": { "type": "string", "format": "date" },
+        "end":   { "type": "string", "format": "date" }
+      }
+    },
+    "creator": {
+      "type": "object",
+      "required": ["resourceType","id"],
+      "properties": {
+        "resourceType": { "type": "string", "const": "Actor" },
+        "id":           { "type": "string", "minLength": 1 }
+      }
+    },
+    "campaign": {
+      "type": "object",
+      "required": ["resourceType","id"],
+      "properties": {
+        "resourceType": { "type": "string", "const": "Campaign" },
+        "id":           { "type": "string", "minLength": 1 }
+      }
+    },
+    "is_sponsored":       { "type": "boolean" },
+    "native_label_used":  { "type": "boolean" },
+    "disclosure_tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "language": { "type": "string", "pattern": "^[a-z]{2}$" },
+    "country_target": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[A-Z]{2}$" }
+    },
+    "boost": {
+      "type": "object",
+      "properties": {
+        "platform_ad_account": { "type": "string" },
+        "budget": {
+          "type": "object",
+          "required": ["amount","currency"],
+          "properties": {
+            "amount":   { "type": "number" },
+            "currency": { "type": "string", "pattern": "^[A-Z]{3}$" }
+          }
+        },
+        "start_date": { "type": "string", "format": "date" },
+        "end_date":   { "type": "string", "format": "date" },
+        "objective":  { "type": "string" }
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code","value","produced","source","trust"],
+        "properties": {
+          "code":    { "type": "string", "pattern": "^(AUD|ENG|REA|CON|VAL|QUA|CRE|REG)\\." },
+          "value":   { "type": "string", "minLength": 1 },
+          "time_window": {
+            "type": "object",
+            "required": ["start"],
+            "properties": {
+              "start": { "type": "string", "format": "date" },
+              "end":   { "type": "string", "format": "date" }
+            }
+          },
+          "produced": { "type": "string", "format": "date" },
+          "source":   { "type": "string", "minLength": 1 },
+          "trust":    { "type": "string", "enum": ["T1","T2","T3","T4","T5"] },
+          "note":     { "type": "string" }
+        }
+      }
+    },
+    "profile_data": { "type": "object" },
+
+    "duration_seconds": { "type": "integer", "minimum": 1 },
+    "word_count":       { "type": "integer", "minimum": 1 },
+    "thumbnail_url":    { "type": "string", "format": "uri" },
+    "hashtags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "mentions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "caption": { "type": "string" }
+  },
+
+  "additionalProperties": false
+}

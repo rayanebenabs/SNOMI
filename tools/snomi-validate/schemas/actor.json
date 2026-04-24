@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://snomi.io/schema/v2/actor.json",
+  "title": "SNOMI Actor v2.1",
+  "description": "Any party participating in the influencer marketing ecosystem",
+  "type": "object",
+
+  "required": ["id","resourceType","profile","status","snomi_version","meta","name"],
+
+  "properties": {
+    "id":            { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "resourceType":  { "type": "string", "const": "Actor" },
+    "profile":       { "type": "string", "enum": ["creator","advertiser","agency","platform","tool","regulatory-body"] },
+    "status":        { "type": "string", "enum": ["draft","active","completed","archived","cancelled","retired","disputed"] },
+    "snomi_version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "meta":          {
+      "type": "object",
+      "required": ["created_at"],
+      "properties": {
+        "created_at":  { "type": "string", "format": "date-time" },
+        "updated_at":  { "type": "string", "format": "date-time" },
+        "produced_by": { "type": "string" },
+        "source_url":  { "type": "string", "format": "uri" }
+      }
+    },
+    "name":       { "type": "string", "minLength": 1 },
+    "legal_name": { "type": "string" },
+    "country":    { "type": "string", "pattern": "^[A-Z]{2}$" },
+    "languages": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[a-z]{2}$" }
+    },
+    "contact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "email":   { "type": "string" },
+        "website": { "type": "string", "format": "uri" },
+        "phone":   { "type": "string" }
+      }
+    },
+    "handles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["platform","username"],
+        "additionalProperties": false,
+        "properties": {
+          "platform":  { "type": "string", "enum": ["IG","TK","YT","FB","TW","LI","PI","SC","BE","TH"] },
+          "username":  { "type": "string", "pattern": "^[^@]" },
+          "url":       { "type": "string", "format": "uri" },
+          "verified":  { "type": "boolean" },
+          "followers": {
+            "type": "object",
+            "required": ["code","value","produced","source","trust"],
+            "properties": {
+              "code":     { "type": "string", "pattern": "^AUD\\.001\\." },
+              "value":    { "type": "string" },
+              "produced": { "type": "string", "format": "date" },
+              "source":   { "type": "string" },
+              "trust":    { "type": "string", "enum": ["T1","T2","T3","T4","T5"] },
+              "note":     { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "profile_data": { "type": "object" }
+  },
+
+  "additionalProperties": false
+}

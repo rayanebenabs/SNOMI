@@ -1,0 +1,68 @@
+name: Publish to npm
+
+# Triggers on any tag like v2.1.0, v2.2.0, v3.0.0-rc.1
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
+
+jobs:
+  publish:
+    name: Publish snomi-validate to npm
+    runs-on: ubuntu-latest
+
+    # Only publish from the SNOMI repo, not forks
+    if: github.repository == 'rayanebenabs/SNOMI'
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        working-directory: ./tools/snomi-validate
+        run: npm ci
+
+      # ── Run tests before publishing ──────────────────────────────────────────
+      - name: Run tests
+        working-directory: ./tools/snomi-validate
+        run: npm test
+
+      # ── Sync package version to the git tag ─────────────────────────────────
+      - name: Set package version from tag
+        working-directory: ./tools/snomi-validate
+        run: |
+          TAG="${{ github.ref_name }}"
+          VERSION="${TAG#v}"   # strip leading "v"
+          npm version "$VERSION" --no-git-tag-version
+          echo "Publishing version $VERSION"
+
+      # ── Publish ─────────────────────────────────────────────────────────────
+      - name: Publish to npm
+        working-directory: ./tools/snomi-validate
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # ── Create GitHub Release ────────────────────────────────────────────────
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "snomi-validate ${{ github.ref_name }}"
+          body: |
+            ## snomi-validate ${{ github.ref_name }}
+
+            Published to npm: https://www.npmjs.com/package/snomi-validate
+
+            ```bash
+            npx snomi-validate@${{ github.ref_name }} validate report.json
+            ```
+
+            See [CHANGELOG.md](CHANGELOG.md) for what's new.
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-rc') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-alpha') }}

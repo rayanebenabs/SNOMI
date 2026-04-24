@@ -1,0 +1,138 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://snomi.io/schema/v2/campaign.json",
+  "title": "SNOMI Campaign v2.1",
+  "description": "Aggregates ContentUnits produced by Creators for an Advertiser within a period",
+  "type": "object",
+
+  "required": ["id","resourceType","profile","status","snomi_version","meta","name","advertiser","creators","objective","period","platforms"],
+
+  "properties": {
+    "id":            { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "resourceType":  { "type": "string", "const": "Campaign" },
+    "profile":       { "type": "string", "const": "campaign" },
+    "status":        { "type": "string", "enum": ["draft","active","completed","archived","cancelled","retired","disputed"] },
+    "snomi_version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+    "meta": {
+      "type": "object",
+      "required": ["created_at"],
+      "properties": {
+        "created_at":  { "type": "string", "format": "date-time" },
+        "updated_at":  { "type": "string", "format": "date-time" },
+        "produced_by": { "type": "string" },
+        "source_url":  { "type": "string", "format": "uri" }
+      }
+    },
+    "name": { "type": "string", "minLength": 1 },
+    "advertiser": {
+      "type": "object",
+      "required": ["resourceType","id"],
+      "properties": {
+        "resourceType": { "type": "string", "const": "Actor" },
+        "id":           { "type": "string", "minLength": 1 }
+      }
+    },
+    "agency": {
+      "type": "object",
+      "required": ["resourceType","id"],
+      "properties": {
+        "resourceType": { "type": "string", "const": "Actor" },
+        "id":           { "type": "string", "minLength": 1 }
+      }
+    },
+    "creators": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["resourceType","id"],
+        "properties": {
+          "resourceType": { "type": "string", "const": "Actor" },
+          "id":           { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "content_units": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["resourceType","id"],
+        "properties": {
+          "resourceType": { "type": "string", "const": "ContentUnit" },
+          "id":           { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "objective": {
+      "type": "string",
+      "enum": ["awareness","engagement","conversion","consideration","branding","ugc","launch"]
+    },
+    "period": {
+      "type": "object",
+      "required": ["start"],
+      "properties": {
+        "start": { "type": "string", "format": "date" },
+        "end":   { "type": "string", "format": "date" }
+      }
+    },
+    "platforms": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "enum": ["IG","TK","YT","FB","TW","LI","PI","SC","BE","TH","ALL"] }
+    },
+    "country_targets": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^[A-Z]{2}$" }
+    },
+    "brief_url": { "type": "string", "format": "uri" },
+    "budget": {
+      "type": "object",
+      "required": ["resourceType","id"],
+      "properties": {
+        "resourceType": { "type": "string", "const": "Financial" },
+        "id":           { "type": "string" }
+      }
+    },
+    "contract": {
+      "type": "object",
+      "required": ["resourceType","id"],
+      "properties": {
+        "resourceType": { "type": "string", "const": "Financial" },
+        "id":           { "type": "string" }
+      }
+    },
+    "kpis": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["metric_code","target_value"],
+        "additionalProperties": false,
+        "properties": {
+          "metric_code":   { "type": "string", "pattern": "^(AUD|ENG|REA|CON|VAL|QUA|CRE|REG)\\." },
+          "target_value":  { "type": "string" },
+          "actual_value":  { "type": "string" },
+          "trust":         { "type": "string", "enum": ["T1","T2","T3","T4","T5"] },
+          "achieved":      { "type": "boolean" }
+        }
+      }
+    },
+    "aggregate_metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code","value","produced","source","trust"],
+        "properties": {
+          "code":        { "type": "string", "pattern": "^(AUD|ENG|REA|CON|VAL|QUA|CRE|REG)\\." },
+          "value":       { "type": "string" },
+          "time_window": { "type": "object" },
+          "produced":    { "type": "string", "format": "date" },
+          "source":      { "type": "string" },
+          "trust":       { "type": "string", "enum": ["T1","T2","T3","T4","T5"] },
+          "note":        { "type": "string" }
+        }
+      }
+    }
+  },
+
+  "additionalProperties": false
+}

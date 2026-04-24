@@ -1,0 +1,6 @@
+# Test files — not needed in the published package
+test/
+node_modules/
+.github/
+*.log
+.DS_Store

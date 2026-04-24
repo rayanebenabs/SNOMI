@@ -1,0 +1,104 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://snomi.io/schema/v2/valuesets.json",
+  "title": "SNOMI ValueSets v2.1",
+  "description": "All controlled vocabularies used in SNOMI resources",
+
+  "definitions": {
+    "platform": {
+      "type": "string",
+      "enum": ["IG","TK","YT","FB","TW","LI","PI","SC","BE","TH","ALL"],
+      "description": "Social media platform code"
+    },
+    "contentFormat": {
+      "type": "string",
+      "enum": ["REEL","STORY","POST","VIDEO","SHORT","LIVE","CAROUSEL","ARTICLE","PIN","TWEET","THREAD","PODCAST"]
+    },
+    "contentType": {
+      "type": "string",
+      "enum": ["video","image","carousel","text","audio","mixed"]
+    },
+    "contentProfile": {
+      "type": "string",
+      "enum": ["ig-reel","ig-story","ig-post","ig-video","tk-video","tk-story","yt-short","yt-video","fb-reel","fb-post","li-post","tw-post","pin-pin"]
+    },
+    "actorProfile": {
+      "type": "string",
+      "enum": ["creator","advertiser","agency","platform","tool","regulatory-body"]
+    },
+    "resourceType": {
+      "type": "string",
+      "enum": ["ContentUnit","Actor","Campaign","Financial"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft","active","completed","archived","cancelled","retired","disputed"]
+    },
+    "trust": {
+      "type": "string",
+      "enum": ["T1","T2","T3","T4","T5"],
+      "description": "T5=Gold (native platform) … T1=Iron (self-reported)"
+    },
+    "actorTier": {
+      "type": "string",
+      "enum": ["NANO","MICRO","MID","MACRO","MEGA"]
+    },
+    "campaignObjective": {
+      "type": "string",
+      "enum": ["awareness","engagement","conversion","consideration","branding","ugc","launch"]
+    },
+    "contentCategory": {
+      "type": "string",
+      "enum": ["beauty","fashion","fitness","food","travel","tech","family","finance","education","entertainment","sustainability","health","automotive","luxury","pets"]
+    },
+    "financialType": {
+      "type": "string",
+      "enum": ["Budget","Contract","Invoice","Payment","Bonus"]
+    },
+    "feeType": {
+      "type": "string",
+      "enum": ["flat","cpe","cpm","cpa","rev_share","gifting","hybrid"]
+    },
+    "usageRightType": {
+      "type": "string",
+      "enum": ["paid_social","owned","earned","ooh","tv","print","packaging"]
+    },
+    "paymentStructure": {
+      "type": "string",
+      "enum": ["full_upfront","split_50_50","split_30_70","on_delivery","on_approval","net_30","net_60","milestone"]
+    },
+    "agencyType": {
+      "type": "string",
+      "enum": ["talent","media","full_service","pr","performance"]
+    },
+    "metricDomain": {
+      "type": "string",
+      "enum": ["AUD","ENG","REA","CON","VAL","QUA","CRE","REG"]
+    },
+    "countryCode": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$",
+      "description": "ISO 3166-1 alpha-2 country code"
+    },
+    "languageCode": {
+      "type": "string",
+      "pattern": "^[a-z]{2}$",
+      "description": "ISO 639-1 language code"
+    },
+    "currencyCode": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "ISO 4217 currency code"
+    },
+    "metricCode": {
+      "type": "string",
+      "pattern": "^(AUD|ENG|REA|CON|VAL|QUA|CRE|REG)\\.",
+      "description": "SNOMI metric code — must start with a valid domain"
+    },
+    "snomiVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+(\\.\\d+)?$",
+      "description": "Semantic version string e.g. '2.1'"
+    }
+  }
+}

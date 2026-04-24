@@ -1,0 +1,103 @@
+name: SNOMI Compliance Check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'examples/**/*.json'
+      - 'spec/**/*.json'
+      - '.github/workflows/validate.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'examples/**/*.json'
+      - 'spec/**/*.json'
+      - '.github/workflows/validate.yml'
+
+jobs:
+  validate:
+    name: Validate SNOMI JSON examples
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # ── Validate ContentUnit examples ────────────────────────────────────────
+      - name: Validate ContentUnit examples
+        if: always()
+        run: |
+          if ls examples/content-unit/*.json 2>/dev/null | head -1 | grep -q .; then
+            npx --yes snomi-validate@2.1.0 validate examples/content-unit/*.json --format json | tee /tmp/cu-results.json
+          else
+            echo "No ContentUnit examples found — skipping"
+          fi
+
+      # ── Validate Actor examples ──────────────────────────────────────────────
+      - name: Validate Actor examples
+        if: always()
+        run: |
+          if ls examples/actor/*.json 2>/dev/null | head -1 | grep -q .; then
+            npx --yes snomi-validate@2.1.0 validate examples/actor/*.json --format json | tee /tmp/actor-results.json
+          else
+            echo "No Actor examples found — skipping"
+          fi
+
+      # ── Validate Campaign examples ───────────────────────────────────────────
+      - name: Validate Campaign examples
+        if: always()
+        run: |
+          if ls examples/campaign/*.json 2>/dev/null | head -1 | grep -q .; then
+            npx --yes snomi-validate@2.1.0 validate examples/campaign/*.json --format json | tee /tmp/campaign-results.json
+          else
+            echo "No Campaign examples found — skipping"
+          fi
+
+      # ── Validate Financial examples ──────────────────────────────────────────
+      - name: Validate Financial examples
+        if: always()
+        run: |
+          if ls examples/financial/*.json 2>/dev/null | head -1 | grep -q .; then
+            npx --yes snomi-validate@2.1.0 validate examples/financial/*.json --format json | tee /tmp/financial-results.json
+          else
+            echo "No Financial examples found — skipping"
+          fi
+
+      # ── Upload results as artifact ───────────────────────────────────────────
+      - name: Upload validation results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: snomi-validation-results
+          path: /tmp/*-results.json
+          if-no-files-found: ignore
+
+      # ── Summary in PR ────────────────────────────────────────────────────────
+      - name: Write job summary
+        if: always()
+        run: |
+          echo "## SNOMI Validation Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          for f in /tmp/*-results.json; do
+            [ -f "$f" ] || continue
+            resource=$(basename "$f" -results.json)
+            echo "### $resource" >> $GITHUB_STEP_SUMMARY
+            # Extract compliant status
+            python3 -c "
+          import json, sys
+          data = json.load(open('$f'))
+          items = data if isinstance(data, list) else [data]
+          ok = sum(1 for i in items if i.get('compliant'))
+          total = len(items)
+          errs = sum(i['summary']['errors'] for i in items)
+          warns = sum(i['summary']['warnings'] for i in items)
+          status = '✅' if errs == 0 else '❌'
+          print(f'{status} {ok}/{total} compliant — {errs} errors, {warns} warnings')
+            " >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          done

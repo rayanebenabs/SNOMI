@@ -1,0 +1,63 @@
+name: Spec Lint
+
+# Validates that every JSON example in the spec/ directory
+# passes snomi-validate — so spec examples are always correct by construction.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  spec-lint:
+    name: Spec examples are valid SNOMI
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Install from the local tools/ folder (uses the version in this repo)
+      - name: Install snomi-validate (local)
+        run: npm install --prefix /tmp/snomi-validate-cli snomi-validate@latest
+
+      - name: Validate all spec examples
+        id: validate
+        run: |
+          set +e
+          ERRORS=0
+
+          echo "Scanning spec/ for SNOMI JSON examples..."
+          find spec/ -name '*.json' | sort | while read f; do
+            result=$(node /tmp/snomi-validate-cli/node_modules/.bin/snomi-validate validate "$f" --format json 2>&1)
+            compliant=$(echo "$result" | python3 -c "import json,sys; d=json.load(sys.stdin); items=d if isinstance(d,list) else [d]; print(all(i.get('compliant') for i in items))" 2>/dev/null)
+            if [ "$compliant" = "True" ]; then
+              echo "✅ $f"
+            else
+              echo "❌ $f"
+              echo "$result" | python3 -c "
+          import json, sys
+          d = json.load(sys.stdin)
+          items = d if isinstance(d, list) else [d]
+          for item in items:
+              for e in item.get('schema_errors', []):
+                  print(f'   schema: {e[\"path\"]} — {e[\"message\"]}')
+              for r in item.get('rule_issues', []):
+                  if r['level'] == 'error':
+                      print(f'   rule [{r[\"rule\"]}]: {r[\"message\"]}')
+              "
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+
+          if [ $ERRORS -gt 0 ]; then
+            echo ""
+            echo "❌ $ERRORS spec file(s) failed SNOMI validation."
+            echo "Fix the examples before merging."
+            exit 1
+          fi
+          echo ""
+          echo "✅ All spec examples are SNOMI-compliant."

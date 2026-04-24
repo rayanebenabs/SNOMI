@@ -1,0 +1,77 @@
+[
+  {
+    "id": "cu-bad-001",
+    "resourceType": "ContentUnit",
+    "profile": "ig-reel",
+    "status": "active",
+    "snomi_version": "2.1",
+    "meta": {
+      "created_at": "2026-03-01T10:00:00Z"
+    },
+    "platform": "TK",
+    "format": "video",
+    "content_type": "sponsored",
+    "creator": {
+      "resourceType": "Actor",
+      "id": "actor-x"
+    },
+    "is_sponsored": true,
+    "metrics": [
+      {
+        "code": "REA.001",
+        "value": "50000",
+        "source": "tool-estimate",
+        "trust": "T2"
+      },
+      {
+        "code": "VAL.001.IG.FR",
+        "value": "1400.00",
+        "produced": "2026-03-15",
+        "source": "internal",
+        "trust": "T3"
+      },
+      {
+        "code": "REG.001",
+        "value": "compliant",
+        "produced": "2026-03-15",
+        "source": "self-declared",
+        "trust": "T1"
+      }
+    ]
+  },
+  {
+    "id": "actor-camille-roux",
+    "resourceType": "Actor",
+    "profile": "creator",
+    "status": "active",
+    "snomi_version": "2.1",
+    "meta": {
+      "created_at": "2026-01-01T00:00:00Z"
+    },
+    "name": "Camille Roux",
+    "handles": [
+      {
+        "platform": "IG",
+        "username": "@camilleroux",
+        "followers": {
+          "code": "AUD.001.TK",
+          "value": "248000",
+          "produced": "2026-03-01",
+          "source": "Instagram Insights",
+          "trust": "T1"
+        }
+      },
+      {
+        "platform": "IG",
+        "username": "camille_backup",
+        "followers": {
+          "code": "AUD.001.IG",
+          "value": "12000",
+          "produced": "2026-03-01",
+          "source": "Instagram Insights",
+          "trust": "T1"
+        }
+      }
+    ]
+  }
+]

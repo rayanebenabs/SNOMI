@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://snomi.io/schema/v2/common.json",
+  "title": "SNOMI Common Types v2.1",
+  "description": "Shared complex types used across all SNOMI resources",
+
+  "definitions": {
+
+    "Period": {
+      "type": "object",
+      "description": "Time range with mandatory start",
+      "required": ["start"],
+      "additionalProperties": false,
+      "properties": {
+        "start": { "type": "string", "format": "date" },
+        "end":   { "type": "string", "format": "date" }
+      }
+    },
+
+    "CurrencyValue": {
+      "type": "object",
+      "description": "Monetary value with denomination",
+      "required": ["amount", "currency"],
+      "additionalProperties": false,
+      "properties": {
+        "amount":   { "type": "number" },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" }
+      }
+    },
+
+    "MetricCitation": {
+      "type": "object",
+      "description": "A single measured or calculated SNOMI metric value",
+      "required": ["code", "value", "produced", "source", "trust"],
+      "additionalProperties": false,
+      "properties": {
+        "code":        { "type": "string", "pattern": "^(AUD|ENG|REA|CON|VAL|QUA|CRE|REG)\\." },
+        "value":       { "type": "string", "minLength": 1 },
+        "time_window": { "$ref": "#/definitions/Period" },
+        "produced":    { "type": "string", "format": "date", "description": "Extraction date YYYY-MM-DD" },
+        "source":      { "type": "string", "minLength": 1 },
+        "trust":       { "type": "string", "enum": ["T1","T2","T3","T4","T5"] },
+        "note":        { "type": "string" }
+      }
+    },
+
+    "Handle": {
+      "type": "object",
+      "description": "A creator or actor identity on a single platform",
+      "required": ["platform", "username"],
+      "additionalProperties": false,
+      "properties": {
+        "platform":  { "type": "string", "enum": ["IG","TK","YT","FB","TW","LI","PI","SC","BE","TH"] },
+        "username":  { "type": "string", "pattern": "^[^@]", "description": "Handle without @" },
+        "url":       { "type": "string", "format": "uri" },
+        "verified":  { "type": "boolean" },
+        "followers": { "$ref": "#/definitions/MetricCitation" }
+      }
+    },
+
+    "Reference": {
+      "type": "object",
+      "description": "Typed pointer to another SNOMI resource",
+      "required": ["resourceType", "id"],
+      "additionalProperties": false,
+      "properties": {
+        "resourceType": { "type": "string", "enum": ["ContentUnit","Actor","Campaign","Financial"] },
+        "id":           { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "Meta": {
+      "type": "object",
+      "description": "Provenance and audit fields",
+      "required": ["created_at"],
+      "additionalProperties": false,
+      "properties": {
+        "created_at":  { "type": "string", "format": "date-time" },
+        "updated_at":  { "type": "string", "format": "date-time" },
+        "produced_by": { "type": "string" },
+        "source_url":  { "type": "string", "format": "uri" }
+      }
+    },
+
+    "SnomiResourceBase": {
+      "description": "Fields every SNOMI resource must include",
+      "required": ["id","resourceType","profile","status","snomi_version","meta"],
+      "properties": {
+        "id":            { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$", "description": "kebab-case human-readable identifier" },
+        "resourceType":  { "type": "string", "enum": ["ContentUnit","Actor","Campaign","Financial"] },
+        "profile":       { "type": "string", "minLength": 1 },
+        "status":        { "type": "string", "enum": ["draft","active","completed","archived","cancelled","retired","disputed"] },
+        "snomi_version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" },
+        "meta":          { "$ref": "#/definitions/Meta" }
+      }
+    },
+
+    "Boost": {
+      "type": "object",
+      "description": "Paid amplification details",
+      "additionalProperties": false,
+      "properties": {
+        "platform_ad_account": { "type": "string" },
+        "budget":    { "$ref": "#/definitions/CurrencyValue" },
+        "start_date":{ "type": "string", "format": "date" },
+        "end_date":  { "type": "string", "format": "date" },
+        "objective": { "type": "string" }
+      }
+    },
+
+    "Contact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "email":   { "type": "string", "format": "email" },
+        "website": { "type": "string", "format": "uri" },
+        "phone":   { "type": "string" }
+      }
+    }
+
+  }
+}

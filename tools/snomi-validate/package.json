@@ -1,0 +1,39 @@
+{
+  "name": "snomi-validate",
+  "version": "2.1.0",
+  "description": "Official JSON Schema validator and CLI for the SNOMI v2.1 standard (Standard Nomenclature of Influence Metrics)",
+  "license": "MIT",
+  "author": "Rayane Benabdeljalil <snomi@thepollen.agency>",
+  "homepage": "https://snomi.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rayanebenabs/SNOMI"
+  },
+  "keywords": [
+    "snomi",
+    "influencer-marketing",
+    "metrics",
+    "standard",
+    "validator",
+    "json-schema"
+  ],
+  "main": "src/validator.js",
+  "bin": {
+    "snomi-validate": "./bin/snomi.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "schemas/"
+  ],
+  "scripts": {
+    "test": "node test/run.js"
+  },
+  "dependencies": {
+    "ajv": "^8.12.0",
+    "ajv-formats": "^2.1.1"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}
