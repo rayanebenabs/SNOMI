@@ -25,7 +25,7 @@ This model was chosen because:
 
 ### 2.1 Lead Maintainer
 
-**Rayane Benabdeljalil** — [Pollen Agency](https://thepollen.agency)
+**Rayane Benabdeljalil**
 Contact: snomi.team@gmail.com
 
 The Lead Maintainer:
