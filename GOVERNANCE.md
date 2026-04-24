@@ -26,7 +26,7 @@ This model was chosen because:
 ### 2.1 Lead Maintainer
 
 **Rayane Benabdeljalil** — [Pollen Agency](https://thepollen.agency)
-Contact: snomi@thepollen.agency
+Contact: snomi.team@gmail.com
 
 The Lead Maintainer:
 - Has final decision authority on all specification changes
@@ -179,7 +179,7 @@ provide written public justification.
 
 SNOMI follows the [Contributor Covenant v2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct/).
 
-Violations can be reported to snomi@thepollen.agency. All reports are handled
+Violations can be reported to snomi.team@gmail.com. All reports are handled
 confidentially. The Lead Maintainer is the initial point of contact; if the
 complaint involves the Lead Maintainer, it should be sent to a Core Contributor.
 

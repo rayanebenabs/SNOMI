@@ -178,7 +178,7 @@ SNOMI uses an RFC process for all changes. See [CONTRIBUTING.md](CONTRIBUTING.md
 | New metric / formula change | Open an [RFC](https://github.com/rayanebenabs/SNOMI/issues/new?template=rfc.yml) — 21-day comment period |
 | Core model change | Open an [RFC](https://github.com/rayanebenabs/SNOMI/issues/new?template=rfc.yml) — 30-day comment period |
 
-Questions? Email [snomi@thepollen.agency](mailto:snomi@thepollen.agency) or open a [Discussion](https://github.com/rayanebenabs/SNOMI/discussions).
+Questions? Email [snomi.team@gmail.com](mailto:snomi.team@gmail.com) or open a [Discussion](https://github.com/rayanebenabs/SNOMI/discussions).
 
 ---
 
@@ -192,4 +192,4 @@ Reference implementations and tooling are additionally available under the MIT L
 
 ---
 
-*SNOMI v2.1 · Maintained by [Rayane Benabdeljalil](https://thepollen.agency) · [snomi@thepollen.agency](mailto:snomi@thepollen.agency)*
+*SNOMI v2.1 · Maintained by [Rayane Benabdeljalil](https://thepollen.agency) · [snomi.team@gmail.com](mailto:snomi.team@gmail.com)*

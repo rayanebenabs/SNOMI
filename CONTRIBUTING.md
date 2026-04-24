@@ -110,7 +110,7 @@ contradictory definitions):
 2. Include: the affected code, what the current spec says, what it should say,
    and the impact on real reports
 
-For security or sensitive issues, email snomi@thepollen.agency directly.
+For security or sensitive issues, email snomi.team@gmail.com directly.
 
 ---
 
@@ -143,4 +143,4 @@ to review:
 ---
 
 *Questions? Open a [Discussion](https://github.com/rayanebenabs/SNOMI/discussions)
-or email snomi@thepollen.agency*
+or email snomi.team@gmail.com*

@@ -3,7 +3,7 @@
   "version": "2.1.0",
   "description": "Official JSON Schema validator and CLI for the SNOMI v2.1 standard (Standard Nomenclature of Influence Metrics)",
   "license": "MIT",
-  "author": "Rayane Benabdeljalil <snomi@thepollen.agency>",
+  "author": "Rayane Benabdeljalil <snomi.team@gmail.com>",
   "homepage": "https://snomi.io",
   "repository": {
     "type": "git",
