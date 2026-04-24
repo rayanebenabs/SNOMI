@@ -11,6 +11,11 @@ jobs:
     name: Publish snomi-validate to npm
     runs-on: ubuntu-latest
 
+    # Required for OIDC Trusted Publishing (no NPM_TOKEN needed)
+    permissions:
+      id-token: write
+      contents: write
+
     # Only publish from the SNOMI repo, not forks
     if: github.repository == 'rayanebenabs/SNOMI'
 
@@ -42,12 +47,10 @@ jobs:
           npm version "$VERSION" --no-git-tag-version
           echo "Publishing version $VERSION"
 
-      # ── Publish ─────────────────────────────────────────────────────────────
+      # ── Publish (OIDC Trusted Publishing — no token required) ───────────────
       - name: Publish to npm
         working-directory: ./tools/snomi-validate
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public --provenance
 
       # ── Create GitHub Release ────────────────────────────────────────────────
       - name: Create GitHub Release
